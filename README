@@ -1,258 +1,437 @@
 
-
-Why
+WHY
 ----
 
 - Open source
 - Cross platform
 - Cross culture
 - Multi language (C# and Java ports)
-- Implementation of features found in modern environments, but able to run within more legacy environments
-- Don't Repeat Yourself- aggregation of very common functionality in one library
+- Re-implementation of features found in modern environments, but
+  made available to legacy environments (e.g. JDK 1.5, .NET 2.0)
+- Single Responsibility Principles (SRP)
+- Don't Repeat Yourself (DRY) practices
+- Single JAR/DLL deployment
 
 
-Change log
------------
+CHANGE LOGS
+------------
 
-- changelog for 0.9.2
+CHANGELOG 0.9.2
+- Annotation-based method-call tracing
 
-  - Annotation-based method-call tracing
-
-      example: @Trace(level=LogLevel.WARN) 
-               public int add(int a, int b);
+  example: // This logs input args, result and exceptions (if any)
+           // with fine-grained configurability in presentation of data
+           @Trace(level=LogLevel.WARN) 
+           public int add(int a, int b) {...}
                
-               This logs input args, result and exceptions (if any) with fine-grained configurability in presentation of data
+
+- Stopwatch class allowing for high-precision performance benchmarking
+
+  example: Stopwatch sw = new Stopwatch();
+           sw.start();
+           sw.stop();
+           long ns = sw.getNanosElapsed();
 
 
-  - Stopwatch class allowing for performance measurements
+- Robust resource loading by classpath, supporting loading from within
+  JARs, HTTP-based URLs as well as file-system, through the same API
 
-      example: Stopwatch sw = new Stopwatch();
-               sw.start();
-               sw.stop();
-               long ns = sw.getNanosElapsed();
-
-
-  - Robust resource file loading, supporting loading from within JARs, HTTP-based URLs as well as file-system, through the same API
-
-      example: URL url = FileUtils.getResourceUrl("/java/util/test.xml"); // this file could reside inside a JAR, or on the file-system
-               String xmlData = FileUtils.getResourceTextData(url); 
-
-  - Tuples
-
-      example: Pair<A,B> tuple1 = new Pair<A,B>(a,b);
-               Triple<A,B,C> tuple2 = new Triple<A,B,C>(a,b,c);
-               etc.
-
-  - Bugfixes
-      1) StringUtils: split() ignoring last character when using multi-char array separator
-      2) SharedModuloCounterLight: overriden getValue() always returned 0
-      3) FileUtils: readFileToEnd() is releasing resources in a more appropriate way
+  example: // this file could reside inside a JAR, or outside a JAR
+           URL url = FileUtils.getResourceUrl("/java/util/test.xml"); 
+           String xmlData = FileUtils.getResourceTextData(url); 
 
 
-- changelog for 0.9.1
-  - ~100% code coverage
-  - ~100% documentation & full checked Exception documentation
+- Tuples
+  example: Pair<A,B> tuple1 = new Pair<A,B>(a,b);
+           Triple<A,B,C> tuple2 = new Triple<A,B,C>(a,b,c);
+           etc.
 
-- changelog for 0.8
-  - Bouncycastle encryption/decryption support added
 
-- changelog for 0.7
-  - Other utilities
+- Bugfixes
+  1) StringUtils: split() ignoring last character when using 
+     multi-char array separator
+  2) SharedModuloCounterLight: getValue() always returned 0
+  3) FileUtils: readFileToEnd() Windows memory leak fixed
 
-     Array utilities: ArrayUtils.box(...) // convert primitive array to the corresponding wrapper type array e.g. int[] -> Integer[]
-                      ArrayUtils.unbox(Integer[]) // convert wrapper type array to the corresponding primitive array e.g. Integer -> int[]
-     Byte arrays:     ByteArrayUtils.getBytes(Long) // results in a byte[]
-                      ByteArrayUtils.LITTLE_ENDIAN // true on Intel platforms, false elsewhere
-     Conversions:     ConversionUtils.toBase64(...) // Base64 conversions
-                      ConversionUtils.toBinary(...) // e.g. 255 becomes 11111111
-                      ConversionUtils.toHex(...) // e.g. 255 becomes FF
-                      ConversionUtils.toByteArray(...) // convert strings and othery types to byte arrays 
-                      ConversionUtils.toString(...) // convert byte arrays to strings
-     Escaping:        EscapingUtils.toHtml(...) // escape HTML chars
-                      EscapingUtils.toXml(...) // escape XML chars
-                      EscapingUtils.toUrl(...) // URL escaping
-                      EscapingUtils.fromXml(...) // un-escape XML
-                      EscapingUtils.fromHtml(...) // un-escape HTML
-                      EscapingUtils.fromUrl(...) // un-escape URLs
-     Files:           FileUtils.appendText(...) // append text to a file
-                      FileUtils.readToEnd(...) // read entire file in memory (as text)
-                      FileUtils.readFileInMemory(...) // read entire file in memory (as byte[])
-                      FileUtils.delete(...) // delete
-                      FileUtils.tryDelete(...) // delete (no exceptions allowed)
-                      FileUtils.touch(...) // create or update file
-                      FileUtils.scanPath(...) // configurable scan for hidden/normal, folders/files, ascending/descending, etc.
-     OS:              OsUtils: Detect operating system type Windows, OSX, Linux, BSD
-     Random:          RandomUtils.getPseudoInt32(...) // quickly get a pseudo random
-                      RandomUtils.getSecureInt32(...) // get secure random
-                      RandomUtils.getPseudoAlphanumericText(...) // get specified length alphanumeric string
-                      RandomUtils.getSecureBytes(...) // get specified length bytes
-     Reflection:      ReflectionUtils.activate(...) // instantiate class by name of class type
-                      ReflectionUtils.equal(...) // check if two methods, fields, properties or constructors appear to be the same
-                      ReflectionUtils.findAnnotations(...) // find annotations, optionally from superclasses as well
-                      // other methods for discovering superclasses and implemented interfaces
-     Stream:          StreamUtils.readFully(...) // read a specified number of bytes from an input stream
-                      StreamUtils.readAllCharacters(...) // read stream until a specified number of characters is read
-                      StreamUtils.readUntil(...) // read stream until a byte or char is encountered
-                      // other methods for skipping functionality, until a byte or char is encountered, or until a number of bytes or chars is passed
-     String:          // String utilities for ordinal as well as culture-aware comparisons, parsing, splitting, replacing, padding, matching, etc.
-                      isNullOrEmpty(String) // single method to check for null or ""
 
-- changelog for 0.6
-  - SLF4J logging
+CHANGELOG 0.9.1
+- ~100% code coverage
+- ~100% documentation & full checked Exception documentation
 
-- changelog for 0.5
-  - Validation framework
 
-     example: // how to validate a last name
-              bool notNull = true;
-              bool notEmpty = true;
-              bool noNullChars = true;
+CHANGELOG 0.8
+- Bouncycastle encryption/decryption support added
+- CryptographicString class, allows for storing strings encrypted
+  in memory. Accessing the string decrypts it, as char[] or byte[]
 
-              StringPropertyMetadata strMeta = new StringPropertyMetadata("Last name", 3, 50, notNull, notEmpty, noNullChars);
-              strMeta.validate(null); // Last name cannot be null
-              strMeta.validate(""); // Last name cannot be empty
-              strMeta.validate("ab"); // Last name cannot have fewer than 3 characters in length
-              strMeta.validate("abc\0def"); Last name cannot contain the null character
 
-     example: // how to validate a file
-              bool notNull = true;
-              bool notEmpty = true;
-              bool noNullChars = true;
+CHANGELOG 0.7
+- Arrays utilities
+  example: // convert primitive array to the corresponding
+           // wrapper type array e.g. int[] -> Integer[]
+           Integer[] ints = ArrayUtils.box(new int[] { 1,2,3});
 
-              StringPropertyMetadata strMeta = new StringPropertyMetadata("Last name", 3, 50, notNull, notEmpty, noNullChars);
-              strMeta.validate(null); // Last name cannot be null
-              strMeta.validate(""); // Last name cannot be empty
-              strMeta.validate("ab"); // Last name cannot have fewer than 3 characters in length
-              strMeta.validate("abc\0def"); Last name cannot contain the null character
+           // inverse operation 
+           int[] intsCopy = ArrayUtils.unbox(ints);
 
-      others:  All basic data types
-               CreditCard
-               Domain
-               Email
-               FileName (cross platform)
-               IPv4
-               IPv6
-               MacAddress
-               Path (cross platform)
-               SubDomain
-               Username
+           // add/remove operations
+           String[] strVals = new String[] { "hello", "hello" };
+           strVals = ArrayUtils.add(strVals, "test");
+           strVals = ArrayUtils.remove(strVals, "test");
+         
+           // resize
+           ArrayUtils.resize(strVals, 1); // last element lost
+           ArrayUtils.resize(strVals, 2); // last element is null
 
-- changelog for 0.4
-  - Transactions
+           // get part of array
+           ArrayUtils.subArray(strVals, 0, 1); // single element
 
-      example: // transactionally swap two files, by using a temp file, in case an error occurs
-               String source="/home/test.txt";
-               String destination="home/test2.txt";
+- Byte array utilities
+  example:  // convert multi-byte arithmetic structures
+                ByteArrayUtils.getBytes(Long)
 
-               // used for the swap process
-               String temp = "home/temp-file.txt";
+                // support for little and big endian
+                ByteArrayUtils.LITTLE_ENDIAN 
 
-               TransactionManager tm = new TransactionManager();               
+- Conversion utilities
+  example: // convert various data types to BASE64
+           ConversionUtils.toBase64(...)
+           ConversionUtils.fromBase64...
+
+           // hex conversions 
+           ConversionUtils.toHex(...)
+           ConversionUtils.fromHex...
+
+           // binary conversions
+           ConversionUtils.toBinary(...)
+           ConversionUtils.fromBinary...
+
+           // byte[] conversions
+           ConversionUtils.toByteArray(...)
+           ConversionUtils.toString(...)
+
+           // alphanumeric conversions (e.g. for shortening)
+           ConversionUtils.toAlphanumeric(...)
+           ConversionUtils.fromAlphanumeric...
+
+           // human-readable intervals, e.g. 2:10:23 -> 2 hours ago
+           ConversionUtils.toHumanReadable(...)
+
+- Escaping
+  example: // escape HTML
+           EscapingUtils.toHtml(...)
+           EscapingUtils.fromHtml(...)
+
+           // escape XML
+           EscapingUtils.toXml(...)
+           EscapingUtils.fromXml(...)
+
+           // URL escaping
+           EscapingUtils.toUrl(...)
+           EscapingUtils.fromUrl(...);
+
+- File utilities
+  example: // append text to a file, if missing it is created
+           FileUtils.appendText(...);
+
+           // read entire file in memory (as text)
+           FileUtils.readToEnd(...)
+
+           // read entire file in memory (as byte[])
+           FileUtils.readFileInMemory(...) 
+           
+           // deletion
+           FileUtils.delete(...) // throws exception upon failure
+           FileUtils.tryDelete(...) // no exceptions thrown
+
+           // touch file
+           FileUtils.touch(...) // create or update
+
+           // search for file, highly configurable for:
+           // - files/folders or both
+           // - hidden/normal or both
+           // - sorting order (ascending/descending/none)
+           // - traversal (depth/breadth/shallow)
+           FileUtils.scanPath(...) 
+
+           // test read/write and access right for a path
+           FileUtils.tryPerformCreateReadWriteDeleteAccess("C:\\");
+
+           // forensically copy file (maintains MAC dates)
+           FileUtils.cloneFile(from, to);
+
+- Operating System utils
+  example: // OS detection
+           boolean tux = OsUtils.isLinux();
+           boolean win = OsUtils.isWindows();
+           boolean bsd = OsUtils.isBsd();
+           boolean osx = OsUtils.isOSX();
+
+- Randomisation utilities
+  example: // one-liner for a pseudo random
+           RandomUtils.getPseudoInt32(...) 
+           RandomUtils.getPseudoInt64(...) 
+
+           // one-liner for a secure random
+           RandomUtils.getSecureInt32(...) 
+           RandomUtils.getSecureInt64(...) 
+
+           // one-liner for pseudo alphanumeric text
+           RandomUtils.getPseudoAlphanumericText(...)
+
+           // one-liner for secure, arbitratily-sized byte array
+           RandomUtils.getSecureBytes(...) 
+
+           // one-liner for a pseudorandom BASE64 
+           RandomUtils.getPseudoBase64(...);
+
+- Reflection utilities
+  example: // instantiate class by name of class type
+           ReflectionUtils.activate(...) 
+
+           // check if two methods, fields, properties or constructors
+           // appear to be the same (via signature comparison)
+           ReflectionUtils.equal(...) 
+
+           // get all declared and/or inherited annotations
+           ReflectionUtils.findAnnotations(...) 
+
+           // discover bean properties
+           PropertyInfo pi = ReflectionUtils.getProperty("name");
+
+           // search all fields, methods and properties
+           ReflectionUtils.getMember(A.class, "name", true);
+
+           // check if an interface is implemented
+           ReflectionUtils.isImplementing(A.class, Serializable.class);
+
+           // check if class extends another class
+           ReflectionUtils.isExtending(Client.class, Person.class);
+
+           // check if a class "looks like a duck" (duck-typing)
+           ReflectionUtils.isLookingLike(A.class, B.class);
+
+           // one-liner proxying
+           ReflectionUtils.proxy(myObj, MyInterfaceType.class);
+          
+                     
+- Streams
+  example: // copy stream contents
+           StreamUtils.copy(inputStream, outputStream, size);
+           
+           // block until read a specified number of bytes from stream
+           StreamUtils.readFully(inputStream, 100);
+
+           // block until read a specified number of chars from stream
+           StreamUtils.readAllCharacters(stream, 100);
+
+           // read stream until a byte or char is encountered
+           StreamUtils.readUntil(inputStream, "\r\n.\r\n");
+
+           // skip bytes 
+           StreamUtils.skipBytes(inputStream, 100);
+
+           // skip characters
+           StreamUtils.skipBytes(inputStream, 100); 
+
+           // chunked writing / reading from streams
+           byte[] data = ...
+           int chunkSize = 1024;
+           StreamUtils.writeFully(outputStream, data, chunkSize);
+
+
+
+- String utilities
+  example: // char range generation 
+           StringUtils.charRange(65, 91); // chars A..Z
+
+           // String comparison implementations:
+           // e.g. this returns true for German locale
+           equal("straße", "strasse", StringComparison.CurrentCulture)
+           // and this returns true
+           startsWith("str", "STR", StringComparison.OrdinalIgnoreCase) 
+         
+           // single method to check for null or ""
+           isNullOrEmpty(String) 
+
+           compare(...)
+           concat(...)
+           contains(...)
+           containsAny(...)
+           containsAll(...)
+           TODO: document more functions here          
+
+
+#CHANGELOG 0.6
+- SLF4J logging
+
+
+#CHANGELOG 0.5
+- Validation framework
+  example: // validate a last name
+           StringPropertyMetadata strMeta = new 
+             StringPropertyMetadata("Last name", 3, 50, true, true, true);
+
+           // ValidationException: "Last name cannot be null"
+           strMeta.validate(null); 
+
+           // ValidationException: "Last name cannot be empty"
+           strMeta.validate(""); 
+
+           // "Last name cannot have fewer than 3 characters in length"
+           strMeta.validate("ab"); 
+
+           // "Last name cannot contain the null character"
+           strMeta.validate("abc\0def"); 
+
+           // "Last name cannot be over 50 characters in length"
+           strMeta.validate("...51 chars here..."); 
+
+  others:  All basic data types (int, double, String, boolean, etc.)
+           File names and folders (cross platform)
+           File system paths (cross platform)
+           Domain names (to RFC spec)
+           Sub-domain names (to RFC spec)
+           Emails (to RFC spec)           
+           Active Directory usernames (LDAP spec)
+           CreditCard
+           IPv4
+           IPv6
+           MAC addresses
+           
+
+#CHANGELOG 0.4
+- Transactions
+
+  example: // transactionally swap two files, by using a temp file,
+           // in the case that an error occurs roll back all actions
+           String src="/home/test1.txt";
+           String dst="/home/test2.txt";
+
+           // used for the swap process
+           String temp = "/home/temp.txt";
+
+           TransactionManager tm = new TransactionManager();               
  
-               // move source file to a temp location, rollback action is to move the temp file back to source location
-               tm.add(moveFileAction(source, temp), moveFileAction(temp, source));
+           // action is to move source file to a temp location, 
+           // rollback action is to move the temp file back to source
+           tm.add(moveFileAction(src, temp), 
+                  moveFileAction(temp, src));
 
-               // move destination file to source, rollback action moves source to destination
-               tm.add(moveFileAction(destination, source), moveFileAction(source, destination));
+           // action is to move destination file to source, 
+           // rollback action is to move source to destination
+           tm.add(moveFileAction(dst, src),
+                  moveFileAction(src, dst));
 
-               // this is the last action, no rollback action required
-               tm.add(moveFileAction(temp, destination));
+           // this is the last action, no rollback action required
+           tm.add(moveFileAction(temp, dst));
 
-               // safely swap files
-               tm.commitWithRollback();
+           // safely swap files
+           tm.commitWithRollback();
 
-               // ... somewhere later in code
-               private ActionWithNoArgument moveFileAction(final String src, final String dest) {
-                   return new ActionWithNoArgument() {
-                       public void execute() {
-                           File file = new File(src);
-                           file.moveTo(dest);
-                       }
+           // ... somewhere outside method scope ...
+           private ActionWithNoArgument moveFileAction(final String src,
+                                                       final String dest)
+           {
+               return new ActionWithNoArgument() {
+                   public void execute() {
+                       File file = new File(src);
+                       file.moveTo(dest);
                    }
                }
+           }
 
-      others:  commit();
-               rollback();
-               commitWithRollback();
-               resumeCommit();
-               resumeRollback();
-               skipCommitStep();
-               skipRollbackStep();
+  others:  commit();
+           rollback();
+           commitWithRollback();
+           resumeCommit();
+           resumeRollback();
+           skipCommitStep();
+           skipRollbackStep();
   
-- changelog for 0.3
-  - Parallel task library
+
+#CHANGELOG 0.3
+- Parallel task library
   
-      example: // declare a simple printing task
-               ParallelAction<Integer> pa = new ParallelAction<Integer>(){
-                   public void executeWith(Integer arg) {
-                       for(int i=0; i < arg; i++)
-                           System.out.println(i);
-                   }
-               };
-
-               // background execution
-               pa.executeLater();
-
-               // blocking execution
-               pa.executeAndWait();
-
-      example: // declare a simple function
-               ParallelFunction<Integer, Double> pf = new ParallelAction<Integer, Double>(){
-                   public Double operateOn(Integer arg) {
-                       Double dbl = new Double(arg);
-                       return Math.exp(dbl);
-                   }
-               };
-
-               // background execution
-               ITaskResult<Double> result = Linq.first(pf.executeLater()));
-               if(!result.isSuccessful())
-                  throw new Exception("Could not perform calculation", result.getError());
-
-                  // print result
-                  System.out.println(result.getResult());                  
+  example: // declare a simple printing task
+           ParallelAction<Integer> pa = new ParallelAction<Integer>(){
+               public void executeWith(Integer arg) {
+                   for(int i=0; i < arg; i++)
+                       System.out.println(i);
                }
+           };
 
-      example:  // actions and functions can be grouped into collections
-                ParallelActionCollection<String> pac = new ParallelActionCollection<String>();
-                pac.addAction(...);
-                pac.addAction(...);
+           // background execution
+           pa.executeLater();
+
+           // blocking execution
+           pa.executeAndWait();
+
+  example: // declare a simple function
+           ParallelFunction<Integer, Double> pf =
+             new ParallelAction<Integer, Double>(){
+               public Double operateOn(Integer arg) {
+                   Double dbl = new Double(arg);
+                   return Math.exp(dbl);
+               }
+           };
+
+           // background execution
+           ITaskResult<Double> result = Linq.first(pf.executeLater()));
+           if(!result.isSuccessful())
+              throw new Exception("Could not perform calculation", 
+                                  result.getError());
+           
+           // print result
+           System.out.println(result.getResult());                  
+           
+  example: // actions and functions can be grouped into collections
+           ParallelActionCollection<String> pac = 
+             new ParallelActionCollection<String>();
+           pac.addAction(...);
+           pac.addAction(...);
  
-                // wait for all to complete
-                pac.executeAndWaitAll();
+           // wait for all to complete
+           pac.executeAndWaitAll();
 
-               // background execution (e.g. reverse order)
-               for(ITaskResult<String> result : pf.executeAndYield(TaskResultOrder.ReverseOrder)) {
-                  if(!result.isSuccessful())
-                     // tasks are identified and any errors are preserved
-                     throw new Exception("Could not perform calculation with ID="+result.getTaskId(), result.getError());
+           // background execution (e.g. reverse order)
+           for(ITaskResult<String> result :
+               pf.executeAndYield(TaskResultOrder.ReverseOrder)) {
+             if(!result.isSuccessful())
+                // tasks are identified and any errors are preserved
+                throw new Exception("Could not perform calculation with "
+                   + "ID="+result.getTaskId(), result.getError());
   
-                  System.out.println(result.getResult());                  
-               }
+                System.out.println(result.getResult());                  
+           }
 
-      others:  Cancellable actions and functions
-               Timed actions and functions (automatically stop after a configurable amount of time)
-              
-- changelog for 0.2
-  - Linq for Java
+  others:  Cancellable actions and functions:
+           These give the ability to stop a task mid-way.
 
-      example: Iterable<String> someStrings = ...
-               int count = Linq.count(someStrings);
+           Timed actions and functions:
+           Automatically stop if a configurable amount of time passes.
+            
+  
+#CHANGELOG 0.2
+- Linq for Java
 
-      example: // simulate: String[] names = people.select(p=>p.toString()).reverse()
-               Person[] people = ...
-               String[] peopleNames = Linq.select(people, toStringSelector());
-               peopleNames = Linq.reverse(peopleNames);
+  example: Iterable<String> someStrings = ...
+           int count = Linq.count(someStrings);
 
-               // ... somewhere else in code, declaration of method
-               private FunctionWithOneArgument<Person, String> toStringSelector(Person person) {
-                   // return a new function, taking a person and returning its toString() result
-                   return new FunctionWithOneArgument<Person, String>() {
-                       public String operateOn(Person person) {
-                          return person.toString();
-                       }
+  example: // simulate: String[] names = people.select(p=>p.toString()).reverse()
+           Person[] people = ...
+           String[] peopleNames = Linq.select(people, toStringSelector());
+           peopleNames = Linq.reverse(peopleNames);
+
+           // ... somewhere else in code, declaration of method
+           private FunctionWithOneArgument<Person, String> toStringSelector(Person person) {
+               // return a new function, taking a person and returning its toString() result
+               return new FunctionWithOneArgument<Person, String>() {
+                   public String operateOn(Person person) {
+                       return person.toString();
                    }
-               }              
+               }
+           }              
      
       others:  aggregate();
                all();
@@ -280,63 +459,88 @@ Change log
                zip();
                // most things you expect from LINQ have been implemented
 
-- changelog for 0.1.2
-  - CONSTANTS class
+#CHANGELOG 0.1.2
+- CONSTANTS class
 
-      example: CONSTANT.CRLF // this equals \r\n
-               CONSTANT.DIRECTORY_SEPARATOR // this equals \ for Windows, / for *nix
-               CONSTANT.EMPTY_STRING // this equals to ""
+  example: CONSTANT.CRLF // this equals to "\r\n"
+           CONSTANT.ENVIRONMENT_NEWLINE // "\r\n" on Windows, "\n" on *nix
+           CONSTANT.DIRECTORY_SEPARATOR // "\\" for Windows, "/" for *nix
+           CONSTANT.EMPTY_STRING // same as ""
+           CONSTANT.ZERO_GUID // "00000000-0000-0000-0000-000000000000"
+           CONSTANT.A // "A"
+           CONSTANT.a // "a"
+           CONSTANT.ONE // "1"
+           // etc.
 
-- changelog for 0.1.1
-  - More collections
 
-      example: // AVL-backed hashtable implementation. AVL trees are one of the fastest BSTs for lookups
-               AvlHashtable<Long, Person> idToPersonMap = new AvlHashtable<Long, Person>(){};
-               idToPersonMap.add(123, new Person());
-               Person person = idToPersonMap.get(123); 
+#CHANGELOG 0.1.1
+- More collections
 
-      example: Person[] arrayPeople = ...
-               ReifiedArray<Person> people = new ReifiedArray<Person>(arrayPeople); // implements Iterable<Person>
+  example: // AVL-backed hashtable implementation. 
+           // AVL trees are the fastest BSTs for lookups
+           AvlHashtable<Long, Person> idToPersonMap = 
+             new AvlHashtable<Long, Person>(){};
+           idToPersonMap.add(123, new Person());
+           Person person = idToPersonMap.get(123); 
 
-      example: LRUBuffer<String> buffer = new LRUBuffer<String>(2){};
-               buffer.add("1");
-               buffer.add("2");
-               buffer.add("3"); // buffer contains only "2" and "3" now (Least Recently Used algorithm)
+  example: Person[] arrayPeople = ...
+           // implements Iterable<Person>
+           ReifiedArray<Person> people = 
+             new ReifiedArray<Person>(arrayPeople); 
 
-- changelog for 0.1
-  - Reified collections
+  example: // Least-Recently Used algorithm buffer
+           LRUBuffer<String> buffer = new LRUBuffer<String>(2){};
+           buffer.add("1");
+           buffer.add("2");
+           buffer.add("3"); // buffer contains only "2", "3" now (LRU)
 
-      example: ReifiedList<Person> people = new ReifiedArrayList<Person>() {};
-               Person[] array = people.toArray(); // if using plain List<Person> this would have been: Object[] array = people.toArray();
 
-  - Concurrent collections
-      
-      example: // queue used for message passing between producers/consumers
-               SharedQueue<Object> queue = new SharedQueue<Object>();
-               queue.get(...);
+#CHANGELOG 0.1
+- Reified collections
 
-               // another thread
-               queue.put(...);  // this wakes the other waiting thread which can process the put item
+  example: ReifiedList<Person> people = new ReifiedArrayList<Person>() {};
+           -or- people = new ReifiedArrayList<Person>(Person.class);
+
+           // using plain List this would be: Object[] array = ... 
+           Person[] array = people.toArray(); 
+
+- Concurrent collections
+  example: // queue used for message passing (MPI) between producers/consumers
+           SharedQueue<Object> queue = new SharedQueue<Object>();
+           queue.get(...);
+
+           // another thread
+           queue.put(...);  // this signals the other waiting thread
                
 
 Summary of CORE Features
 -------------------------
-  - Reified collections, arrays and iterables, inheriting from a single interface, using the supertype token approach
-  - Linq-like functionality for Java, with anonymous classes, overloaded methods for arrays and iterables
-  - Parallel task-oriented library, supporting single & collection of tasks, time-expiring and cancellable tasks, blocking and background tasks, pipelining, thread re-use, etc.
-  - Support for functional programming e.g. actions, functions, predicates, etc.   
-  - Many collection types, e.g. concurrent collections, buffers and queues, support for producer/consumer message passing
-  - Further collection types include AVL hashtable, LRU buffer, time-expiring session, bi-map, circular buffer and other interesting collection implementations
-  - Tons of conversion helpers such as hex, binary, octal, byte array, string, UTF8, Base64, etc.
-  - Constants class, holding most common constants used e.g. letters, numbers, unicode symbols, newlines, OS-dependent stuff such as directory & path separators, etc.
-  - Validation framework, extensible and easy to use. Support of common types out of the box, e.g. date/time, string, numeric, etc.
-  - Tracing tools for automatic argument and return-type logging.
-  - Profiling helper classes with nanosecond precision
-  - Counters of all kinds, e.g. thread-safe, lock-free, single-threaded, etc.
-  - Observer pattern implementation with support for automatic de-registration upon failure
-  - Stack trace logging helper
-  - Convention over configuration, but highly configurable
-  - Much more
+- Reified collections, arrays and iterables, inheriting from a single
+  interface, using the super-type token approach
+- Linq-like functionality for Java, using anonymous classes, overloaded
+  methods for arrays and iterables
+- Parallel task-oriented library, supporting single & collection of tasks,
+  time-expiring and cancellable tasks, blocking and background tasks,
+  pipelining, thread re-use, etc.
+- Support for functional programming e.g. actions, functions, predicates   
+- Many collection types, e.g. concurrent collections, buffers and queues,
+  support for producer/consumer message passing
+- Further collection types include AVL hashtable, LRU buffer, time 
+  expiring session, bi-map, circular buffer and others
+- Tons of conversion helpers such as hex, binary, octal, byte array, 
+  string, UTF8, Base64, etc.
+- Constants class, holding most common constants used e.g. letters, 
+  numbers, unicode symbols, newlines, OS-dependent stuff such as 
+  directory & path separators, etc.
+- Validation framework, extensible and easy to use. Support of common 
+  types out of the box, e.g. date/time, string, numeric, etc.
+- Tracing tools for automatic argument and return-type logging.
+- Profiling helper classes with nanosecond precision
+- Counters of all kinds, e.g. thread-safe, lock-free, single-threaded
+- Observer pattern implementation with support for auto de-registration 
+  upon the event of notification failure
+- Stack trace logging helper
+- Convention over configuration, but highly configurable
 
 
 
