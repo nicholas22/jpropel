@@ -1539,6 +1539,16 @@ public final class StringUtils
    }
 
    /**
+    * Returns true if the given string is null or contains only whitespace chars (' ', '\t', '\r' and '\n').
+    * 
+    * @author Martin Lamparski
+    */
+   public static boolean isNullOrBlank(String value)
+   {
+      return value == null || trim(value).length() == 0;
+   }
+
+   /**
     * Finds the last index encountered of a particular character.
     * Returns -1 if not found.
     *
@@ -3311,6 +3321,16 @@ public final class StringUtils
          endIndex--;
 
       return value.substring(0, endIndex + 1);
+   }
+
+   /**
+    * Trims a value of all whitespace chars, i.e. ' ', '\t', '\r', '\n'. Does so repeatedly until no more matches are found.
+    *
+    * @throws NullPointerException When an argument is null.
+    */
+   public static String trim(String value)
+   {
+      return trim(value, CONSTANT.WHITESPACE_CHARS);
    }
 
    /**

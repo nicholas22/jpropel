@@ -104,7 +104,7 @@ public class ParsedStringPropertyMetadata
     */
    protected boolean isTrimmable(char ch)
    {
-      return ch == CONSTANT.WHITESPACE_CHAR || ch == CONSTANT.TAB_CHAR || ch == CONSTANT.CR_CHAR || ch == CONSTANT.LF_CHAR;
+      return StringUtils.contains(CONSTANT.WHITESPACE_CHARS, ch);
    }
 
    /**
