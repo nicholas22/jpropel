@@ -548,6 +548,34 @@ public final class ArrayUtils
    }
 
    /**
+    * Joins two arrays in the order they were provided.
+    *
+    * @throws NullPointerException  Array collection is null
+    * @throws IllegalStateException Component type cannot be determined.
+    */
+   public static <T> T[] join(T[] first, T[] second)
+   {
+      if (first == null)
+         throw new NullPointerException("first");
+      if (second == null)
+         throw new NullPointerException("second");
+
+      if (first.length == 0)
+         return first;
+      else
+         if (second.length == 0)
+            return second;
+
+      int firstLen = first.length;
+      int totalLen = first.length + second.length;
+      ArrayUtils.resize(first, totalLen);
+
+      System.arraycopy(second, 0, first, firstLen, second.length);
+
+      return first;
+   }
+
+   /**
     * Joins two or more arrays in the order they were provided.
     * Null arrays are ignored.
     *
