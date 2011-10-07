@@ -31,12 +31,20 @@ CHANGELOG 0.9.3
   // select distinct j* names, using LINQ-style statements
   new String[] { "james", "john", "john", "eddie" }.where(startsWith("j")).distinct();
 
-  (WARNING: if you use Eclipse or NetBeans, patch it by running lombok.jar
-  and selecting the executable. No patching required for javac / Ant)
+  NOTE: All of the methods documented in previous versions can be used as 
+  extension methods or as part of a function.
 
+  ** WARNING: **
+  If you use Eclipse or NetBeans, patch it by running lombok.jar
+  and selecting the executable. No patching required for javac / Ant
+  
+  Functional stuff don't work in NetBeans, yet.  
 
 - Added commonly used Predicates and Projections see
   propel.core.functional.Predicates, propel.core.functional.Projections
+
+  examples:
+  equal(), notEqual(), isNullOrEmpty(), startsWith(), etc.
 
 - Removed propel.core.threading.* as it has been superseded by
   JDK7 fork/join framework. 
