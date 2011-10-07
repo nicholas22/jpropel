@@ -5,12 +5,11 @@ WHY
 - Open source
 - Cross platform
 - Cross culture
-- Multi language (C# and Java ports)
 - Re-implementation of features found in modern environments, but
-  made available to legacy environments (e.g. JDK 1.5, .NET 2.0)
-- Single Responsibility Principles (SRP)
-- Don't Repeat Yourself (DRY) practices
-- Single JAR/DLL deployment
+  made available to legacy environments (e.g. JDK 1.5)
+- Single Responsibility Principle followed (SRP)
+- Don't Repeat Yourself (DRY) practice
+- Single JAR deployment
 
 
 CHANGE LOGS
@@ -31,14 +30,38 @@ CHANGELOG 0.9.3
   // select distinct j* names, using LINQ-style statements
   new String[] { "james", "john", "john", "eddie" }.where(startsWith("j")).distinct();
 
-  NOTE: All of the methods documented in previous versions can be used as 
-  extension methods or as part of a function.
+  NOTE: All of the methods documented in previous versions below, can be used as 
+  extension methods or as part of e.g. a function.
 
   ** WARNING: **
   If you use Eclipse or NetBeans, patch it by running lombok.jar
   and selecting the executable. No patching required for javac / Ant
-  
-  Functional stuff don't work in NetBeans, yet.  
+
+
+  Full example:
+
+import java.util.Arrays;
+import lombok.ExtensionMethod;
+import lombok.val;
+import propel.core.utils.Linq;
+import propel.core.utils.StringUtils;
+import static propel.core.functional.predicates.Predicates.*;
+import static propel.core.functional.projections.Projections.*;
+
+@ExtensionMethod({Arrays.class, Linq.class, StringUtils.class})
+public class Main
+{
+
+  /**
+   * @param args
+   */
+  public static void main(String[] args)
+  {
+    val names = new String[] { "john", "james", "john", "eddie" }.where(startsWith("j")).distinct();    
+    System.out.println(Arrays.toString(names));
+  }
+}
+
 
 - Added commonly used Predicates and Projections see
   propel.core.functional.Predicates, propel.core.functional.Projections
