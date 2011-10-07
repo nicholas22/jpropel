@@ -28,6 +28,9 @@ CHANGELOG 0.9.3
   // join two arrays and put in list 
   alphabet.join(numerics).toList(); 
 
+  // select distinct j* names, using LINQ-style statements
+  new String[] { "james", "john", "john", "eddie" }.where(startsWith("j")).distinct();
+
   (WARNING: if you use Eclipse or NetBeans, patch it by running lombok.jar
   and selecting the executable. No patching required for javac / Ant)
 
