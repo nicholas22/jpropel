@@ -396,15 +396,11 @@ CHANGELOG 0.7
            tm.commitWithRollback();
 
            // ... somewhere outside method scope ...
-           private ActionWithNoArgument moveFileAction(final String src,
-                                                       final String dest)
+           @Function
+           private Void moveFileAction(final String src, final String dest)
            {
-               return new ActionWithNoArgument() {
-                   public void execute() {
-                       File file = new File(src);
-                       file.moveTo(dest);
-                   }
-               }
+              File file = new File(src);
+              file.moveTo(dest);
            }
 
   others:  commit();
@@ -417,7 +413,7 @@ CHANGELOG 0.7
   
 
 #CHANGELOG 0.3
-- Parallel task library
+- Parallel task library 
   
   example: // declare a simple printing task
            ParallelAction<Integer> pa = new ParallelAction<Integer>(){
@@ -486,18 +482,13 @@ CHANGELOG 0.7
 
   example: // simulate: String[] names = people.select(p=>p.toString()).reverse()
            Person[] people = ...
-           String[] peopleNames = Linq.select(people, toStringSelector());
-           peopleNames = Linq.reverse(peopleNames);
+           String[] peopleNames = people.select(toStringSelector()).reverse();
 
            // ... somewhere else in code, declaration of method
-           private FunctionWithOneArgument<Person, String> toStringSelector(Person person) {
-               // return a new function, taking a person and returning its toString() result
-               return new FunctionWithOneArgument<Person, String>() {
-                   public String operateOn(Person person) {
-                       return person.toString();
-                   }
-               }
-           }              
+           @Function
+           private String toStringSelector(Person person) {
+              return person.toString();
+           }
      
       others:  aggregate();
                all();
@@ -583,8 +574,8 @@ Summary of CORE Features
 -------------------------
 - Reified collections, arrays and iterables, inheriting from a single
   interface, using the super-type token approach
-- Linq-like functionality for Java, using anonymous classes, overloaded
-  methods for arrays and iterables
+- Linq-like functionality for Java, overloaded methods for arrays and 
+  iterables, the latter using "yield" generators
 - Parallel task-oriented library, supporting single & collection of tasks,
   time-expiring and cancellable tasks, blocking and background tasks,
   pipelining, thread re-use, etc.
