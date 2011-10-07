@@ -7,8 +7,6 @@ WHY
 - Cross culture
 - Re-implementation of features found in modern environments, but
   made available to legacy environments (e.g. JDK 1.5)
-- Single Responsibility Principle followed (SRP)
-- Don't Repeat Yourself (DRY) practice
 - Single JAR deployment
 
 
@@ -16,7 +14,7 @@ CHANGE LOGS
 ------------
 
 CHANGELOG 0.9.3
-- Using Scala-like programming style library
+- Using Scala-like programming-style library
   (https://github.com/peichhorn/lombok-pg)
 
   examples: 
