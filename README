@@ -28,9 +28,6 @@ CHANGELOG 0.9.3
   // select distinct j* names, using LINQ-style statements
   new String[] { "james", "john", "john", "eddie" }.where(startsWith("j")).distinct();
 
-  NOTE: All of the methods documented in previous versions below, can be used as 
-  extension methods or as part of e.g. a function.
-
   ** WARNING: **
   If you use Eclipse or NetBeans, patch it by running lombok.jar
   and selecting the executable. No patching required for javac / Ant
@@ -90,10 +87,14 @@ CHANGELOG 0.9.2
 
 - Robust resource loading by classpath, supporting loading from within
   JARs, HTTP-based URLs as well as file-system, through the same API
+  (see FileUtils)
 
-  example: // this file could reside inside a JAR, or outside a JAR
-           URL url = FileUtils.getResourceUrl("/java/util/test.xml"); 
-           String xmlData = FileUtils.getResourceTextData(url); 
+  example: // this file could reside inside a JAR, or outside a JAR 
+           URL url = "/java/util/test.xml".getResourceUrl(); 
+           String xmlData = url.getResourceTextData(); 
+
+           // read entire file 
+           String xmlData = FileUtils.readFileToEnd(url.toUri().toUrl());
 
 
 - Tuples
@@ -119,34 +120,44 @@ CHANGELOG 0.8
 - CryptographicString class, allows for storing strings encrypted
   in memory. Accessing the string decrypts it, as char[] or byte[]
 
+  example: // stores in memory encrypted
+  CryptographicString cs = new CryptographicString("my precious secret");
+  
+  // access unencrypted version
+  byte[] ba = cs.asByteArray();
+  char[] ca = cs.asCharArray();
+  String st = cs.asString(); // not recommended
 
 CHANGELOG 0.7
-- Arrays utilities
+- Arrays utilities (ArrayUtils)
   example: // convert primitive array to the corresponding
            // wrapper type array e.g. int[] -> Integer[]
-           Integer[] ints = ArrayUtils.box(new int[] { 1,2,3});
+           Integer[] ints = new int[] { 1,2,3}.box();
 
            // inverse operation 
-           int[] intsCopy = ArrayUtils.unbox(ints);
+           int[] intsCopy = ints.unbox();
 
            // add/remove operations
-           String[] strVals = new String[] { "hello", "hello" };
-           strVals = ArrayUtils.add(strVals, "test");
-           strVals = ArrayUtils.remove(strVals, "test");
+           String[] strVals = new String[] { "hello", "hello2" };
+           strVals = strVals.add("test");
+           strVals = strVals.remove("test");
          
            // resize
-           ArrayUtils.resize(strVals, 1); // last element lost
-           ArrayUtils.resize(strVals, 2); // last element is null
+           strVals.resize(1); // last element lost
+           strVals.resize(strVals, 2); // last element is null
 
            // get part of array
-           ArrayUtils.subArray(strVals, 0, 1); // single element
+           strVals = strVals.subArray(strVals, 0, 1); // single element
+
+           // join and prepend 
+           strVals = strVals.join(strVals).prepend("test");
 
 - Byte array utilities
-  example:  // convert multi-byte arithmetic structures
-                ByteArrayUtils.getBytes(Long)
+  example: // convert multi-byte arithmetic structures
+           ByteArrayUtils.getBytes(Long)
 
-                // support for little and big endian
-                ByteArrayUtils.LITTLE_ENDIAN 
+           // support for little and big endian
+           ByteArrayUtils.LITTLE_ENDIAN 
 
 - Conversion utilities
   example: // convert various data types to BASE64
