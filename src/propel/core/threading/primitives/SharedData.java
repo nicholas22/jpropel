@@ -20,10 +20,10 @@
  */
 package propel.core.threading.primitives;
 
-import propel.core.functional.Predicate;
 import propel.core.model.IShared;
 
 import java.util.concurrent.locks.ReentrantLock;
+import lombok.Functions.Function1;
 
 /**
  * Generic class allowing for easy reader/writer access to an object.
@@ -145,13 +145,13 @@ public class SharedData<T>
 	 * Compares and replaces the encapsulated (old) value with the newValueif the given predicate returns true.
 	 * Returns the old value. For the duration of the predicate the object is locked, so you're advised to keep the predicate short.
 	 */
-	public T compareExchangePredicate(T newValue, Predicate<T> predicate)
+	public T compareExchangePredicate(T newValue, Function1<T, Boolean> predicate)
 	{
 		lock();
 		try
 		{
 			T result = obj;
-			if(predicate.test(obj))
+			if(predicate.apply(obj))
 				obj = newValue;
 
 			return result;

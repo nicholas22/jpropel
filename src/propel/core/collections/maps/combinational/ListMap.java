@@ -24,7 +24,6 @@ import propel.core.collections.KeyNotFoundException;
 import propel.core.collections.KeyValuePair;
 import propel.core.collections.lists.ReifiedArrayList;
 import propel.core.collections.maps.ReifiedMap;
-import propel.core.functional.FunctionWithOneArgument;
 import propel.core.utils.Linq;
 import propel.core.utils.SuperTypeToken;
 import propel.core.utils.SuperTypeTokenException;
@@ -32,6 +31,7 @@ import propel.core.utils.SuperTypeTokenException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import lombok.Functions.Function1;
 
 /**
  * A type-aware list-backed map holding values which are accessible by key as well as a list-style index.
@@ -100,20 +100,20 @@ public class ListMap<TKey extends Comparable<TKey>, TValue>
 			throw new NullPointerException("map");
 
 		keyStore = new ReifiedArrayList<TKey>(Linq.select(map,
-				new FunctionWithOneArgument<KeyValuePair<TKey, TValue>, TKey>()
+				new Function1<KeyValuePair<TKey, TValue>, TKey>()
 				{
 					@Override
-					public TKey operateOn(KeyValuePair<TKey, TValue> arg)
+					public TKey apply(KeyValuePair<TKey, TValue> arg)
 					{
 						return arg.getKey();
 					}
 				}), map.getGenericTypeParameterKey());
 
 		valueStore = new ReifiedArrayList<TValue>(Linq.select(map,
-				new FunctionWithOneArgument<KeyValuePair<TKey, TValue>, TValue>()
+				new Function1<KeyValuePair<TKey, TValue>, TValue>()
 				{
 					@Override
-					public TValue operateOn(KeyValuePair<TKey, TValue> arg)
+					public TValue apply(KeyValuePair<TKey, TValue> arg)
 					{
 						return arg.getValue();
 					}

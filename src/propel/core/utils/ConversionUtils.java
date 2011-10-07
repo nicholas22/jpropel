@@ -20,10 +20,9 @@
  */
 package propel.core.utils;
 
-import propel.core.collections.KeyValuePair;
+import lombok.Function;
 import propel.core.collections.maps.avl.AvlHashtable;
 import propel.core.common.CONSTANT;
-import propel.core.functional.Predicate;
 import propel.core.userTypes.*;
 
 import java.math.BigDecimal;
@@ -1596,15 +1595,15 @@ public final class ConversionUtils
 		values.add(1051200d, "about a year"); // 60 * 24 * 365 * 2
 		values.add(Double.MAX_VALUE, String.format("%d years", (int) totalYears));
 
-		return Linq.first(values, new Predicate<KeyValuePair<Double, String>>()
-		{
-			@Override
-			public boolean test(KeyValuePair<Double, String> element)
-			{
-				return totalMinutes < element.getKey();
-			}
-		}).getValue() + suffix;
+		Double key = Linq.first(values.getKeys(), keyGreaterThan(totalMinutes));
+		return values.get(key) + suffix;
 	}
+	
+	@Function
+	private static Boolean keyGreaterThan(Double key, final double _totalMinutes) {
+    return _totalMinutes < key;
+	}
+	
 	/*
 			/// <summary>
 			/// Returns the value of the given number in a human-readable form.

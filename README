@@ -16,6 +16,29 @@ WHY
 CHANGE LOGS
 ------------
 
+CHANGELOG 0.9.3
+- Using Scala-like programming style library
+  (https://github.com/peichhorn/lombok-pg)
+
+  examples: 
+  
+  // create alphabet char[]
+  new Character('A').to(new Character('Z')).unbox();
+ 
+  // join two arrays and put in list 
+  alphabet.join(numerics).toList(); 
+
+  (WARNING: if you use Eclipse or NetBeans, patch it by running lombok.jar
+  and selecting the executable. No patching required for javac / Ant)
+
+
+- Added commonly used Predicates and Projections see
+  propel.core.functional.Predicates, propel.core.functional.Projections
+
+- Removed propel.core.threading.* as it has been superseded by
+  JDK7 fork/join framework. 
+
+
 CHANGELOG 0.9.2
 - Annotation-based method-call tracing
 

@@ -20,6 +20,7 @@
  */
 package propel.core.utils;
 
+import lombok.Function;
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.*;
@@ -27,9 +28,7 @@ import propel.core.TryResult;
 import propel.core.collections.lists.ReifiedArrayList;
 import propel.core.collections.lists.ReifiedList;
 import propel.core.common.CONSTANT;
-import propel.core.functional.FunctionWithOneArgument;
-import propel.core.functional.Predicate;
-import propel.core.functional.predicates.NotNullOrEmptyStringSelector;
+import propel.core.functional.predicates.Predicates;
 import propel.core.userTypes.*;
 
 import java.math.BigDecimal;
@@ -86,7 +85,7 @@ public final class StringUtils
    }
 
    /**
-    * Returns an character range from start (inclusive) to end (exclusive).
+    * Returns a character range from start (inclusive) to end (exclusive).
     *
     * @throws IllegalArgumentException When the end is before start
     */
@@ -106,7 +105,7 @@ public final class StringUtils
    }
 
    /**
-    * Returns an character range from start (inclusive) to end (exclusive).
+    * Returns a character range from start (inclusive) to end (exclusive).
     *
     * @throws IllegalArgumentException When the end is before start
     */
@@ -3053,7 +3052,7 @@ public final class StringUtils
          case None:
             return result.toArray();
          case RemoveEmptyEntries:
-            return Linq.where(result.toArray(), new NotNullOrEmptyStringSelector());
+            return Linq.where(result.toArray(), Predicates.isNotNullOrEmpty());
          default:
             throw new IllegalArgumentException("stringSplitOptions has an unexpected value: " + options.toString());
       }
@@ -3102,7 +3101,7 @@ public final class StringUtils
          throw new NullPointerException("delimiters");
 
       // ignore null and empty delimiters
-      delimiters = Linq.where(delimiters, new NotNullOrEmptyStringSelector());
+      delimiters = Linq.where(delimiters, Predicates.isNotNullOrEmpty());
 
       // case where there are no delimiters
       ReifiedList<String> result = new ReifiedArrayList<String>(String.class);
@@ -3112,25 +3111,9 @@ public final class StringUtils
       }
 
       // simplify if all delimiters are chars, call character delimiter method
-      if (Linq.all(delimiters, new Predicate<String>()
-      {
-
-         @Override
-         public boolean test(String element)
-         {
-            return element.length() == 1;
-         }
-      }))
-         return split(text, ArrayUtils.unbox(Linq.select(delimiters, new FunctionWithOneArgument<String, Character>()
-         {
-
-            @Override
-            public Character operateOn(String arg)
-            {
-               return arg.charAt(0);
-            }
-         })), options);
-
+      if (Linq.all(delimiters, lengthEqualTo(1)))
+        return split(text, ArrayUtils.unbox(Linq.select(delimiters, getCharAt(0))), options);
+      
       // multiple delimiters, handled separately
       result.add(text);
       for (int i = 0; i < delimiters.length; i++) {
@@ -3149,11 +3132,22 @@ public final class StringUtils
          case None:
             return result.toArray();
          case RemoveEmptyEntries:
-            return Linq.where(result, new NotNullOrEmptyStringSelector()).toArray();
+            return Linq.toArray(Linq.where(result, Predicates.isNotNullOrEmpty()), String.class);
          default:
             throw new IllegalArgumentException("Unrecognized string split option: " + options);
       }
    }
+   
+   @Function
+   private static Boolean lengthEqualTo(String element, int _length) {
+     return element.length() == _length;
+   }
+   
+   @Function
+   private static Character getCharAt(String element, int _pos) {
+     return element.charAt(_pos);
+   }
+   
 
    /**
     * Splits a string by finding consecutive 'tags' i.e. delimiters.
@@ -3258,6 +3252,16 @@ public final class StringUtils
          throw new IndexOutOfBoundsException("length=" + length + " startIndex=" + startIndex + " valueLen=" + valueLen);
 
       return new String(value.toCharArray(), startIndex, length);
+   }
+   
+   /**
+    * Returns a character range from start to end (inclusive)
+    *
+    * @throws NullPointerException An argument is null
+    * @throws IllegalArgumentException When the end is before start
+    */   
+   public static Character[] to(Character start, Character end) {
+     return ArrayUtils.box(charRange(start.charValue(), end.charValue()+1));
    }
 
    /**
@@ -3918,6 +3922,16 @@ public final class StringUtils
       } catch (Throwable e) {
          return new TryResult<UUID>();
       }
+   }
+   
+   /**
+    * Returns a character range from start (inclusive) to end (exclusive)
+    *
+    * @throws NullPointerException An argument is null
+    * @throws IllegalArgumentException When the end is before start
+    */   
+   public static Character[] until(Character start, Character end) {
+     return ArrayUtils.box(charRange(start.charValue(), end.charValue()));
    }
 
    /**

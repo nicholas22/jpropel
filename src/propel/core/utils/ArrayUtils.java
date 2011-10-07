@@ -463,6 +463,36 @@ public final class ArrayUtils
       return result;
    }
 
+    /**
+     * Clones the given array, by invoking clone on all non-null elements of the array. The elements are responsible for performing a
+     * successful clone operation of themselves. If the element cloning operation faults, an IllegalArgumentException will be thrown,
+     * encapsulating the underlying exception.
+     *
+     * @throws IllegalArgumentException The underlying clone() method is inaccessible due to Java access control, or an invocation error occurred
+     * @throws NullPointerException Array is null.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T[] deepClone(T[] array)
+    {
+      if (array == null)
+        throw new NullPointerException("array");
+
+      try
+      {
+        T[] result = (T[]) Array.newInstance(array.getClass().getComponentType(), array.length);
+
+        for (int i = 0; i < array.length; i++)
+          if (array[i] != null)
+            result[i] = (T) ReflectionUtils.getMethod(array[i].getClass(), "clone", true).invoke(array[i], (Object[]) null);
+
+        return result;
+      }
+      catch(Exception e)
+      {
+        throw new IllegalArgumentException(e);
+      }
+    }
+
    /**
     * Creates an array from an Iterable.
     *
@@ -560,17 +590,17 @@ public final class ArrayUtils
       if (second == null)
          throw new NullPointerException("second");
 
-      if (first.length == 0)
-         return first;
-      else
-         if (second.length == 0)
-            return second;
+      if (second.length == 0)
+        return first;
+      else if (first.length == 0)
+        return second;
 
       int firstLen = first.length;
-      int totalLen = first.length + second.length;
-      ArrayUtils.resize(first, totalLen);
+      int secondLen = second.length;
+      int totalLen = firstLen + secondLen;
+      first = ArrayUtils.resize(first, totalLen);
 
-      System.arraycopy(second, 0, first, firstLen, second.length);
+      System.arraycopy(second, 0, first, firstLen, secondLen);
 
       return first;
    }
@@ -633,6 +663,22 @@ public final class ArrayUtils
       return list.toArray();
    }
 
+   /**
+    * Adds an element to the given array, at position 0
+    *
+    * @throws NullPointerException Array is null.
+    */
+   public static <T> T[] prepend(T[] array, T element)
+   {
+      if (array == null)
+         throw new NullPointerException("array");
+
+      T[] result = (T[]) Array.newInstance(array.getClass().getComponentType(), array.length + 1);
+      System.arraycopy(array, 0, result, 1, array.length);
+      result[0] = element;
+      return result;
+   }
+   
    /**
     * Removes all occurences of element from the given array, returning an new array if found.
     * Otherwise returns a copy of the array containing all original items.

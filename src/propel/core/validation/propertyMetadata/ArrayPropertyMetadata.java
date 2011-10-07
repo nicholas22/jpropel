@@ -40,7 +40,7 @@ public class ArrayPropertyMetadata
 	/**
 	 * Error message when a size is too low
 	 */
-	public static final String SHOULD_NOT_BE_LESS_THAN = "%s should not have a size smaller than than ";
+	public static final String SHOULD_NOT_BE_LESS_THAN = "%s should not have a size smaller than ";
 	/**
 	 * Error message when a size is negative
 	 */

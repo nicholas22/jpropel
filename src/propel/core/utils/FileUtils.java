@@ -44,10 +44,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import lombok.Function;
 import propel.core.collections.lists.ReifiedArrayList;
 import propel.core.collections.lists.ReifiedList;
 import propel.core.common.CONSTANT;
-import propel.core.functional.FunctionWithOneArgument;
 import propel.core.functional.tuples.Pair;
 
 /**
@@ -156,6 +156,26 @@ public final class FileUtils
    public static void cloneFile(String originatingPath, String destinationPath)
            throws IOException
    {
+      copy(originatingPath, destinationPath);
+
+      File source = new File(originatingPath);
+      File dest = new File(destinationPath);
+      
+      if (!dest.setLastModified(source.lastModified()))
+         throw new IOException("Could not set last modified date/time.");
+   }
+   
+   /**
+    * Copies a file from source to destination 
+    *
+    * @throws NullPointerException  An argument is null
+    * @throws IOException      An I/O error occurs
+    * @throws FileNotFoundException The file specified is a directory, it does not exist or cannot be read/created.
+    * @throws SecurityException  Access to filesystem is denied by a SecurityManager
+    */
+   public static void copy(String originatingPath, String destinationPath)
+           throws IOException
+   {
       if (originatingPath == null)
          throw new NullPointerException("originatingPath");
       if (destinationPath == null)
@@ -181,9 +201,6 @@ public final class FileUtils
          if (fos != null)
             fos.close();
       }
-
-      if (!dest.setLastModified(source.lastModified()))
-         throw new IOException("Could not set last modified date/time.");
    }
 
    /**
@@ -1067,7 +1084,7 @@ public final class FileUtils
     * @throws Throwable				An error occurs and the scan fail mode is immediate
     */
    public static List<String> scanPath(String path, ScanInclusionMode inclusionMode, ScanHiddenMode hiddenMode, ScanDepthMode depthMode, ScanSortMode sortMode, ScanFailMode failMode, List<ScanErrorEntry> collectedScanErrors)
-           throws Throwable
+       throws Throwable
    {
       if (path == null)
          throw new NullPointerException("path");
@@ -1119,15 +1136,7 @@ public final class FileUtils
 
       // check if we need to add self
       if (includeDirectories)
-         result.addAll(Linq.toList(Linq.select(hideScanned(new File[]{new File(path)}, hiddenMode, failMode, collectedScanErrors), new FunctionWithOneArgument<File, String>()
-         {
-
-            @Override
-            public String operateOn(File arg)
-            {
-               return arg.getAbsolutePath();
-            }
-         })));
+         result.addAll(Linq.toList(Linq.select(hideScanned(new File[]{new File(path)}, hiddenMode, failMode, collectedScanErrors), getAbsPath())));
 
       // While there are directories to process
       while (directoryQueue.size() > 0) {
@@ -1193,6 +1202,12 @@ public final class FileUtils
 
       return result;
    }
+   
+   @Function
+   private static String getAbsPath(final File arg)
+   {
+      return arg.getAbsolutePath();
+   }
 
    /**
     * Performs depth-first filesystem path scanning
@@ -1240,16 +1255,8 @@ public final class FileUtils
 
                // check if we need to include directories in results
                if (includeDirectories)
-                  result.addAll(Linq.toList(Linq.select(hideScanned(new File[]{currDir}, hiddenMode, failMode, collectedScanErrors), new FunctionWithOneArgument<File, String>()
-                  {
-
-                     @Override
-                     public String operateOn(File arg)
-                     {
-                        return arg.getAbsolutePath();
-                     }
-                  })));
-
+                  result.addAll(Linq.toList(Linq.select(hideScanned(new File[]{currDir}, hiddenMode, failMode, collectedScanErrors), getAbsPath())));
+               
                File[] dis = filterIn(currDir.listFiles(), new HashSet<FileAttribute>(Arrays.asList(new FileAttribute[]{FileAttribute.Directory})));
                dis = hideScanned(dis, hiddenMode, failMode, collectedScanErrors);
 
@@ -1269,15 +1276,7 @@ public final class FileUtils
 
                   // check if we need to include files in results
                   if (includeFiles)
-                     result.addAll(Linq.toList(Linq.select(hideScanned(new File[]{currFile}, hiddenMode, failMode, collectedScanErrors), new FunctionWithOneArgument<File, String>()
-                     {
-
-                        @Override
-                        public String operateOn(File arg)
-                        {
-                           return arg.getAbsolutePath();
-                        }
-                     })));
+                     result.addAll(Linq.toList(Linq.select(hideScanned(new File[]{currFile}, hiddenMode, failMode, collectedScanErrors), getAbsPath())));
                }
          } catch (Throwable e) {
             switch (failMode) {
@@ -1330,7 +1329,7 @@ public final class FileUtils
     * @throws Throwable			An error occurs during file attribute checking
     */
    private static File[] hideScanned(File[] fis, ScanHiddenMode hiddenMode, ScanFailMode failMode, List<ScanErrorEntry> collectedScanErrors)
-           throws Throwable
+       throws Throwable
    {
       if (fis == null)
          throw new NullPointerException("fis");

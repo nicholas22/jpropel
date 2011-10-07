@@ -21,11 +21,12 @@
 package propel.core.transactional;
 
 import propel.core.common.CONSTANT;
-import propel.core.functional.ActionWithNoArguments;
+import propel.core.functional.projections.Projections;
 import propel.core.utils.ExceptionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Functions.Function0;
 
 /**
  * Allows for actions to be executed in a transactional manner,
@@ -38,11 +39,11 @@ public class TransactionManager
 	 * A list of actions, executed in a way that
 	 * guarantees complete success or complete failure.
 	 */
-	private List<ActionWithNoArguments> actions;
+	private List<Function0<Void>> actions;
 	/**
 	 * If an action fails, the corresponding rollback actions are executed
 	 */
-	private List<ActionWithNoArguments> rollbackActions;
+	private List<Function0<Void>> rollbackActions;
 	/**
 	 * The index of the action that is executing. This is
 	 * useful for determining the index of any actions that fail.
@@ -63,15 +64,15 @@ public class TransactionManager
 	 */
 	public void clear()
 	{
-		actions = new ArrayList<ActionWithNoArguments>(32);
-		rollbackActions = new ArrayList<ActionWithNoArguments>(32);
+		actions = new ArrayList<Function0<Void>>(32);
+		rollbackActions = new ArrayList<Function0<Void>>(32);
 		executionIndex = 0;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void add(ActionWithNoArguments action)
+	public void add(Function0<Void> action)
 	{
 		add(action, null);
 	}
@@ -79,12 +80,12 @@ public class TransactionManager
 	/**
 	 * {@inheritDoc}
 	 */
-	public void add(ActionWithNoArguments action, ActionWithNoArguments rollbackAction)
+	public void add(Function0<Void> action, Function0<Void> rollbackAction)
 	{
 		if(action == null)
-			action = emptyAction();
+			action = Projections.doNothingFunc();
 		if(rollbackAction == null)
-			rollbackAction = emptyAction();
+			rollbackAction = Projections.doNothingFunc();
 
 		actions.add(action);
 		rollbackActions.add(rollbackAction);
@@ -97,7 +98,7 @@ public class TransactionManager
 	{
 		// execute all (from start)
 		for(executionIndex = 0; executionIndex < actions.size(); executionIndex++)
-			actions.get(executionIndex).execute();
+			actions.get(executionIndex).apply();
 	}
 
 	/**
@@ -107,7 +108,7 @@ public class TransactionManager
 	{
 		// execute in LIFO style
 		for(executionIndex--; executionIndex >= 0; executionIndex--)
-			rollbackActions.get(executionIndex).execute();
+			rollbackActions.get(executionIndex).apply();
 	}
 
 	/**
@@ -168,7 +169,7 @@ public class TransactionManager
 
 		// execute from ExecutionIndex
 		for(; executionIndex < actions.size(); executionIndex++)
-			actions.get(executionIndex).execute();
+			actions.get(executionIndex).apply();
 	}
 
 	/**
@@ -181,14 +182,14 @@ public class TransactionManager
 
 		// execute in LIFO style (from ExecutionIndex)
 		for(; executionIndex >= 0; executionIndex--)
-			rollbackActions.get(executionIndex).execute();
+			rollbackActions.get(executionIndex).apply();
 	}
 
 	/**
 	 * A list of actions, executed in a way that
 	 * guarantees complete success or complete failure.
 	 */
-	public List<ActionWithNoArguments> getActions()
+	public List<Function0<Void>> getActions()
 	{
 		return actions;
 	}
@@ -206,24 +207,9 @@ public class TransactionManager
 	/**
 	 * If an action fails, the corresponding rollback actions are executed
 	 */
-	public List<ActionWithNoArguments> getRollbackActions()
+	public List<Function0<Void>> getRollbackActions()
 	{
 		return rollbackActions;
-	}
-
-	/**
-	 * Returns an empty action or rollback action
-	 */
-	private ActionWithNoArguments emptyAction()
-	{
-		return new ActionWithNoArguments()
-		{
-			@Override
-			public void execute()
-			{
-				// does nothing
-			}
-		};
 	}
 
 }

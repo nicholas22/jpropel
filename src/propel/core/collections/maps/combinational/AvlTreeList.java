@@ -24,7 +24,6 @@ import propel.core.collections.KeyNotFoundException;
 import propel.core.collections.KeyValuePair;
 import propel.core.collections.maps.ReifiedMap;
 import propel.core.collections.maps.avl.AvlHashtable;
-import propel.core.functional.projections.ValueSelector;
 import propel.core.utils.Linq;
 import propel.core.utils.SuperTypeToken;
 import propel.core.utils.SuperTypeTokenException;
@@ -33,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import lombok.Functions.Function1;
 
 /**
  * A type-aware AVL-tree-backed map holding values which are accessible by key as well as a list-style index.
@@ -269,8 +269,13 @@ public class AvlTreeList<TKey extends Comparable<TKey>, TValue>
 	@Override
 	public Iterable<TValue> getValues()
 	{
-		return Linq.select(list, new ValueSelector<TKey, TValue>(getGenericTypeParameterKey(), getGenericTypeParameterValue())
-		{
+		return Linq.select(list, new Function1<KeyValuePair<TKey,TValue>,TValue>() {
+
+      @Override
+      public TValue apply(KeyValuePair<TKey,TValue> arg0)
+      {
+         return arg0.getValue();
+      }
 		});
 	}
 

@@ -25,12 +25,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import propel.core.utils.ReflectionUtils;
 
 /**
@@ -49,6 +47,26 @@ public class Tracer<T>
   // used for making actual calls
   private Object originalObject;
 
+  /**
+   * Initialises with a class (of which the simple name is used as logger name) and a default trace message generator
+   *
+   * @throws NullPointerException An argument is null
+   */
+  public Tracer(Class<?> clazz)
+  {
+    this(LoggerFactory.getLogger(clazz.getSimpleName()));
+  }
+
+  /**
+   * Initialises with a class (of which the simple name is used as logger name)
+   *
+   * @throws NullPointerException An argument is null
+   */
+  public Tracer(Class<?> clazz, ITraceMessageGenerator generator)
+  {
+    this(LoggerFactory.getLogger(clazz.getSimpleName()), generator);
+  } 
+  
   /**
    * Initialises with a logger and a default trace message generator
    */
