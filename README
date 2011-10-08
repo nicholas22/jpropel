@@ -13,7 +13,7 @@ NEWS
 2011/10/08
 Forked a much leaner version at -> https://github.com/nicholas22/jpropel-light
 (Contains only LINQ, reified generic collections and utilities)
-
+Highly recommended if you don't want extra dependencies in your libraries.
 
 CHANGE LOGS
 ------------
