@@ -1,13 +1,18 @@
+Description
+-------------
+Boilerplate busting framework with features found modern programming 
+environments, such as LINQ, reified collections and numerous one-liner
+type utility methods, e.g. loading a file into memory.
 
-WHY
-----
+Open source, cross platform, cross culture, compatible with legacy 
+environments (e.g. JDK 1.5) and single JAR deployment.
 
-- Open source
-- Cross platform
-- Cross culture
-- Re-implementation of features found in modern environments, but
-  made available to legacy environments (e.g. JDK 1.5)
-- Single JAR deployment
+
+NEWS
+------
+2011/10/08
+Forked a much leaner version at -> https://github.com/jpropel-light
+(Contains only LINQ, reified generic collections and utilities)
 
 
 CHANGE LOGS
@@ -599,6 +604,3 @@ Summary of CORE Features
 - Stack trace logging helper
 - Convention over configuration, but highly configurable
 
-
-
- 
