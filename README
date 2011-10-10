@@ -8,14 +8,15 @@ Open source, cross platform, cross culture, compatible with legacy
 environments (e.g. JDK 1.5) and single JAR deployment.
 
 
-NEWS
+News
 ------
-2011/10/08
 Forked a much leaner version at -> https://github.com/nicholas22/jpropel-light
-(Contains only LINQ, reified generic collections and utilities)
+Contains only LINQ, reified generic collections and utilities.
+Documented these features in the front page of that project.
+
 Highly recommended if you don't want extra dependencies in your libraries.
 
-CHANGE LOGS
+Change logs
 ------------
 
 CHANGELOG 0.9.3
