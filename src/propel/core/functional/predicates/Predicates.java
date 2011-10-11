@@ -189,4 +189,10 @@ public final class Predicates
   {
     return StringUtils.equal(element, _other, _comparison);
   }
+  
+  @Function
+  public static <T> boolean println(T element) {
+    System.out.println(element);
+    return true;
+  }
 }
