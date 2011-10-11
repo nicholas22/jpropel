@@ -26,7 +26,6 @@ import propel.core.utils.Linq;
 import propel.core.utils.SuperTypeToken;
 import propel.core.utils.SuperTypeTokenException;
 
-import javax.xml.transform.Templates;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Iterator;
@@ -34,7 +33,12 @@ import java.util.ListIterator;
 
 /**
  * A type-aware array-backed list that uses similar semantics and strategy to the java.util.ArrayList.
- * This collection allows nulls to be inserted.
+ * This collection allows nulls to be inserted. 
+ * 
+ * Instantiate using e.g.:
+ * new ReifiedArrayList&lt;String&gt;(){}; 
+ * -OR-
+ * new ReifiedArrayList&lt;String&gt;(String.class);
  */
 public class ReifiedArrayList<T>
 		implements ReifiedList<T>
@@ -70,7 +74,8 @@ public class ReifiedArrayList<T>
 	 * @throws SuperTypeTokenException  When called without using anonymous class semantics.
 	 * @throws IllegalArgumentException When the size is non positive.
 	 */
-	public ReifiedArrayList(int initialSize)
+	@SuppressWarnings("unchecked")
+  public ReifiedArrayList(int initialSize)
 	{
 		if(initialSize < 0)
 			throw new IllegalArgumentException("initialSize=" + initialSize);
@@ -88,6 +93,7 @@ public class ReifiedArrayList<T>
 	 * @throws IllegalArgumentException When the buffer size is non positive.
 	 * @throws NullPointerException	 When the generic type parameter is null.
 	 */
+  @SuppressWarnings("unchecked")
 	public ReifiedArrayList(int initialSize, Class<?> genericTypeParameter)
 	{
 		if(initialSize < 0)
@@ -105,6 +111,7 @@ public class ReifiedArrayList<T>
 	 *
 	 * @throws NullPointerException When the argument is null
 	 */
+  @SuppressWarnings("unchecked")
 	public ReifiedArrayList(ReifiedIterable<T> iterable)
 	{
 		if(iterable == null)
@@ -129,7 +136,8 @@ public class ReifiedArrayList<T>
 	 * @throws NullPointerException	When the argument is null
 	 * @throws SuperTypeTokenException When called without using anonymous class semantics.
 	 */
-	public ReifiedArrayList(Iterable<? extends T> iterable)
+	@SuppressWarnings("unchecked")
+  public ReifiedArrayList(Iterable<? extends T> iterable)
 	{
 		if(iterable == null)
 			throw new NullPointerException("iterable");
@@ -154,6 +162,7 @@ public class ReifiedArrayList<T>
 	 *
 	 * @throws NullPointerException When an argument is null
 	 */
+  @SuppressWarnings("unchecked")
 	public ReifiedArrayList(Iterable<? extends T> iterable, Class<?> genericTypeParameter)
 	{
 		if(iterable == null)
@@ -164,8 +173,6 @@ public class ReifiedArrayList<T>
 		int size = Linq.count(iterable);
 
 		// retrieves first generic parameter
-		if(genericTypeParameter == null)
-			throw new NullPointerException("genericTypeParameter");
 		this.genericTypeParameter = genericTypeParameter;
 
 		// init array
@@ -326,7 +333,8 @@ public class ReifiedArrayList<T>
 	 * Empties the list and re-creates the internal buffer with a default size.
 	 * This is an O(1) operation.
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
 	public void clear()
 	{
 		buffer = (T[]) Array.newInstance(getGenericTypeParameter(), DEFAULT_SIZE);
@@ -419,7 +427,7 @@ public class ReifiedArrayList<T>
 	@Override
 	public Iterator<T> iterator()
 	{
-		return new ReadOnlyArrayIterator(buffer, 0, realListSize);
+		return new ReadOnlyArrayIterator<T>(buffer, 0, realListSize);
 	}
 
 	/**
@@ -440,7 +448,7 @@ public class ReifiedArrayList<T>
 	@Override
 	public ListIterator<T> listIterator()
 	{
-		return new ReadOnlyArrayIterator(buffer);
+		return new ReadOnlyArrayIterator<T>(buffer);
 	}
 
 	/**
@@ -455,7 +463,7 @@ public class ReifiedArrayList<T>
 		if(index > realListSize)
 			throw new IndexOutOfBoundsException("index=" + index + " realListSize=" + realListSize);
 
-		return new ReadOnlyArrayIterator(buffer, index, realListSize);
+		return new ReadOnlyArrayIterator<T>(buffer, index, realListSize);
 
 	}
 
@@ -616,7 +624,8 @@ public class ReifiedArrayList<T>
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
 	public T[] toArray()
 	{
 		int size = size();
@@ -632,7 +641,8 @@ public class ReifiedArrayList<T>
 	 * Attempts to use the provided array, but creates a new one if the length of the given array is not sufficient to fit all elements (or if it is null).
 	 * This is an O(n) operation.
 	 */
-	@Override
+	@SuppressWarnings({"unchecked", "hiding"})
+  @Override
 	public <T> T[] toArray(T[] a)
 	{
 		int size = size();
@@ -647,7 +657,8 @@ public class ReifiedArrayList<T>
 	/**
 	 * Ensures that the buffer has enough places available for the number of required
 	 */
-	private void ensureCapacity(int positionsRequired)
+	@SuppressWarnings("unchecked")
+  private void ensureCapacity(int positionsRequired)
 	{
 		if(buffer.length < positionsRequired)
 		{

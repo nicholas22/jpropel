@@ -26,7 +26,9 @@ package propel.core.observer;
 public class ObserverNotificationException
 		extends RuntimeException
 {
-	public ObserverNotificationException()
+  private static final long serialVersionUID = 2327124438166471887L;
+
+  public ObserverNotificationException()
 	{
 		super();
 	}

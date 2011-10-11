@@ -29,7 +29,8 @@ public final class UnsignedShort
 		extends NumberType
 		implements Comparable<UnsignedShort>
 {
-	public static final UnsignedShort MIN_VALUE = new UnsignedShort(0, true);
+  private static final long serialVersionUID = 2058452473845076723L;
+  public static final UnsignedShort MIN_VALUE = new UnsignedShort(0, true);
 	public static final UnsignedShort MAX_VALUE = new UnsignedShort(65535, true);
 	private final int value;
 

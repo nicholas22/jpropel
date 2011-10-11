@@ -139,7 +139,7 @@ public final class SuperTypeToken
 	{
 		if(type instanceof Class)
 		{
-			return (Class) type;
+			return (Class<?>) type;
 		}
 		else if(type instanceof ParameterizedType)
 		{

@@ -29,6 +29,11 @@ import propel.core.utils.SuperTypeTokenException;
 /**
  * An type-aware array-backed thread-safe list.
  * This collection allows nulls to be inserted.
+ * 
+ * Instantiate using e.g.:
+ * new SharedList&lt;String&gt;(){}; 
+ * -OR-
+ * new SharedList&lt;String&gt;(String.class);
  */
 public class SharedList<T>
 		extends ReifiedArrayList<T>
@@ -460,7 +465,8 @@ public class SharedList<T>
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@SuppressWarnings("hiding")
+  @Override
 	public <T> T[] toArray(T[] a)
 	{
 		lock();

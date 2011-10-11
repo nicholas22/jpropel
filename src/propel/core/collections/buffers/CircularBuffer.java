@@ -35,6 +35,11 @@ import java.util.Iterator;
 /**
  * A type-aware circular buffer of limited size.
  * This collection does not allow nulls to be inserted.
+ * 
+ * Instantiate using e.g.:
+ * new CircularBuffer&lt;String&gt;(){}; 
+ * -OR-
+ * new CircularBuffer&lt;String&gt;(String.class);
  */
 public class CircularBuffer<T>
 		implements IBuffer<T>
@@ -336,7 +341,8 @@ public class CircularBuffer<T>
 	 *
 	 * @return All elements.
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
 	public T[] toArray()
 	{
 		T[] result = (T[]) Array.newInstance(getGenericTypeParameter(), buffer.length);
@@ -362,6 +368,7 @@ public class CircularBuffer<T>
 	 *
 	 * @param cb The buffer to clear.
 	 */
+  @SuppressWarnings("unchecked")
 	private static <T> void clearBufferInternal(CircularBuffer<T> cb)
 	{
 		cb.size = 0;

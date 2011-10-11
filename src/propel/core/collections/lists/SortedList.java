@@ -34,12 +34,18 @@ import java.util.PriorityQueue;
 /**
  * A type-aware sorted list of comparable elements.
  * This collection does not allow nulls to be inserted.
+ * 
+ * Instantiate using e.g.:
+ * new SortedList&lt;String&gt;(){}; 
+ * -OR-
+ * new SortedList&lt;String&gt;(String.class);
  */
 public class SortedList<T extends Comparable<T>>
 		extends PriorityQueue<T>
 		implements ReifiedIterable<T>
 {
-	private final Class<?> genericTypeParameter;
+  private static final long serialVersionUID = 4269411034127983747L;
+  private final Class<?> genericTypeParameter;
 
 	/**
 	 * Default constructor
@@ -154,7 +160,8 @@ public class SortedList<T extends Comparable<T>>
 	 * Note: The other toArray(T[]) method does not return ordered elements.
 	 * This is an O(n) operation.
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
 	public T[] toArray()
 	{
 		int size = size();

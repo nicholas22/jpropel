@@ -22,6 +22,7 @@ package propel.core.functional.predicates;
 
 import lombok.Function;
 import propel.core.utils.StringUtils;
+import propel.core.utils.StringComparison;
 
 /**
  * Some common, re-usable predicates
@@ -140,4 +141,52 @@ public final class Predicates
     return !StringUtils.isNullOrBlank(element);
   }
   
+
+  @Function
+  public static Boolean startsWith(String element, String _prefix)
+  {
+    return StringUtils.startsWith(element, _prefix, StringComparison.Ordinal);
+  }
+  
+  @Function
+  public static Boolean startsWith(String element, String _prefix, StringComparison _comparison)
+  {
+    return StringUtils.startsWith(element, _prefix, _comparison);
+  }
+
+  @Function
+  public static Boolean endsWith(String element, String _suffix)
+  {
+    return StringUtils.endsWith(element, _suffix, StringComparison.Ordinal);
+  }
+  
+  @Function
+  public static Boolean endsWith(String element, String _suffix, StringComparison _comparison)
+  {
+    return StringUtils.endsWith(element, _suffix, _comparison);
+  }
+  
+  @Function
+  public static Boolean contains(String element, String _part)
+  {
+    return StringUtils.contains(element, _part, StringComparison.Ordinal);
+  }
+  
+  @Function
+  public static Boolean contains(String element, String _part, StringComparison _comparison)
+  {
+    return StringUtils.contains(element, _part, _comparison);
+  }
+  
+  @Function
+  public static Boolean isEqual(String element, String _other)
+  {
+    return StringUtils.equal(element, _other, StringComparison.Ordinal);
+  }
+  
+  @Function
+  public static Boolean isEqual(String element, String _other, StringComparison _comparison)
+  {
+    return StringUtils.equal(element, _other, _comparison);
+  }
 }

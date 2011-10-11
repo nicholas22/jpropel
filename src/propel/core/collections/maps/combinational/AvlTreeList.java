@@ -37,6 +37,11 @@ import lombok.Functions.Function1;
 /**
  * A type-aware AVL-tree-backed map holding values which are accessible by key as well as a list-style index.
  * This map does not allow null keys to be inserted.
+ * 
+ * Instantiate using e.g.:
+ * new AvlTreeList&lt;String, Object&gt;(){}; 
+ * -OR-
+ * new AvlTreeList&lt;String, Object&gt;(String.class, Object.class);
  */
 public class AvlTreeList<TKey extends Comparable<TKey>, TValue>
 		implements IListMap<TKey, TValue>
@@ -105,7 +110,7 @@ public class AvlTreeList<TKey extends Comparable<TKey>, TValue>
 			TKey key = entry.getKey();
 			TValue value = entry.getValue();
 			if(hashtable.add(key, value))
-				list.add(new KeyValuePair(key, value));
+				list.add(new KeyValuePair<TKey, TValue>(key, value));
 		}
 	}
 
@@ -123,9 +128,6 @@ public class AvlTreeList<TKey extends Comparable<TKey>, TValue>
 		if(genericTypeParameterValue == null)
 			throw new NullPointerException("genericTypeParameterValue");
 
-		if(map == null)
-			throw new NullPointerException("map");
-
 		hashtable = new AvlHashtable<TKey, TValue>(genericTypeParameterKey, genericTypeParameterValue);
 		list = new ArrayList<KeyValuePair<TKey, TValue>>();
 
@@ -134,7 +136,7 @@ public class AvlTreeList<TKey extends Comparable<TKey>, TValue>
 			TKey key = entry.getKey();
 			TValue value = entry.getValue();
 			if(hashtable.add(key, value))
-				list.add(new KeyValuePair(key, value));
+				list.add(new KeyValuePair<TKey, TValue>(key, value));
 		}
 	}
 

@@ -26,7 +26,9 @@ package propel.core.utils;
 public class SuperTypeTokenException
 		extends RuntimeException
 {
-	public SuperTypeTokenException()
+  private static final long serialVersionUID = -3119546424790668807L;
+
+  public SuperTypeTokenException()
 	{
 		super();
 	}

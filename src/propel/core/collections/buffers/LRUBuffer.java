@@ -33,6 +33,11 @@ import java.util.Iterator;
 /**
  * A type-aware least recently used (LRU) buffer.
  * This collection does not allow nulls to be inserted.
+ * 
+ * Instantiate using e.g.:
+ * new LRUBuffer&lt;String&gt;(){}; 
+ * -OR-
+ * new LRUBuffer&lt;String&gt;(String.class);
  */
 public class LRUBuffer<T>
 		implements IBuffer<T>

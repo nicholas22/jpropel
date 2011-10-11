@@ -35,6 +35,11 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * A type-aware thread-safe session storage object that allows multiple threads to operate on a collection of time-expiring key/value pairs.
  * This map does not allow null keys to be inserted.
+ * 
+ * Instantiate using e.g.:
+ * new KeyValueSessionStore&lt;String, Object&gt;(1000*60, 5000){}; 
+ * -OR-
+ * new KeyValueSessionStore&lt;String, Object&gt;(1000*60, 5000, String.class, Object.class);
  */
 public class KeyValueSessionStore<TKey extends Comparable<TKey>, TValue>
 		implements ISessionStore<TKey>, IKeyValueStore<TKey, TValue>
@@ -450,7 +455,7 @@ public class KeyValueSessionStore<TKey extends Comparable<TKey>, TValue>
 		lock();
 		try
 		{
-			return new AvlHashtable(store).iterator();
+			return new AvlHashtable<TKey, TValue>(store).iterator();
 		}
 		finally
 		{

@@ -27,7 +27,9 @@ package propel.core.security.authentication;
 public class AuthenticationFailureException
 		extends Exception
 {
-	/**
+  private static final long serialVersionUID = 4211274557959013068L;
+
+  /**
 	 * Default constructor
 	 */
 	public AuthenticationFailureException()

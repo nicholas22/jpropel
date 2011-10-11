@@ -22,8 +22,6 @@ package propel.core.collections.lists;
 
 import propel.core.collections.ReifiedIterable;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**

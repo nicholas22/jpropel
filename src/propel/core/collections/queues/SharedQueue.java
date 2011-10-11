@@ -38,7 +38,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * A type-aware thread-safe queue implementation.
  * This collection allows null items to be inserted.
  *
- * @param <T> The component type of the queue.
+ * Instantiate using e.g.:
+ * new SharedQueue&lt;String&gt;(){}; 
+ * -OR-
+ * new SharedQueue&lt;String&gt;(String.class);
  */
 public class SharedQueue<T>
 		implements ISharedQueue<T>

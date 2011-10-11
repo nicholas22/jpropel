@@ -35,13 +35,15 @@ public final class EscapingUtils
 	/**
 	 * These are the XML escaping conversions performed
 	 */
-	private static final KeyValuePair<String, String>[] XML_PAIRS = Linq.cast(new Object[] {new KeyValuePair<String, String>("&", "&amp;"),
+	@SuppressWarnings("unchecked")
+  private static final KeyValuePair<String, String>[] XML_PAIRS = Linq.cast(new Object[] {new KeyValuePair<String, String>("&", "&amp;"),
 			new KeyValuePair<String, String>("<", "&lt;"), new KeyValuePair<String, String>(">", "&gt;"), new KeyValuePair<String, String>("\"", "&quot;"),
 			new KeyValuePair<String, String>("'", "&apos;"), new KeyValuePair<String, String>("\t", "&#009;"), new KeyValuePair<String, String>("\n", "&#010;"),
 			new KeyValuePair<String, String>("\r", "&#013;"), new KeyValuePair<String, String>(" ", "&#032;")}, KeyValuePair.class);
 	/**
 	 * These are the HTML escaping conversions performed
 	 */
+  @SuppressWarnings("unchecked")
 	private static final KeyValuePair<String, String>[] HTML_PAIRS = Linq.cast( new Object[] {new KeyValuePair<String, String>("#", "&#035;"),
 			XML_PAIRS[0], XML_PAIRS[1], XML_PAIRS[2], XML_PAIRS[3], XML_PAIRS[4], XML_PAIRS[5], XML_PAIRS[6], XML_PAIRS[7], XML_PAIRS[8],
 			new KeyValuePair<String, String>("!", "&#033;"), new KeyValuePair<String, String>("$", "&#036;"), new KeyValuePair<String, String>("%", "&#037;"),
@@ -56,6 +58,7 @@ public final class EscapingUtils
 	/**
 	 * These are the URL escaping conversions performed
 	 */
+  @SuppressWarnings("unchecked")
 	private static final KeyValuePair<String, String>[] URL_PAIRS = Linq.cast(new Object[] {new KeyValuePair<String, String>("%", "%25"), // do this first to avoid e.g. %2520 for %20
 			new KeyValuePair<String, String>("\t", "%09"), new KeyValuePair<String, String>("\n", "%0A"), new KeyValuePair<String, String>("\r", "%0D"), new KeyValuePair<String, String>(" ", "%20"),
 			new KeyValuePair<String, String>("!", "%21"), new KeyValuePair<String, String>("\"", "%22"), new KeyValuePair<String, String>("#", "%23"), new KeyValuePair<String, String>("$", "%24"),

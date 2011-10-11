@@ -60,7 +60,8 @@ public class CollectionPropertyMetadata<T>
 	protected void checkBounds(Object obj)
 			throws ValidationException
 	{
-		Iterable<T> value = (Iterable<T>) obj;
+		@SuppressWarnings("unchecked")
+    Iterable<T> value = (Iterable<T>) obj;
 
 		int size = Linq.count(value);
 

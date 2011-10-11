@@ -29,7 +29,8 @@ public final class SignedByte
 		extends NumberType
 		implements Comparable<SignedByte>
 {
-	public static final SignedByte MIN_VALUE = new SignedByte((short) -128, true);
+  private static final long serialVersionUID = 6663014082448975251L;
+  public static final SignedByte MIN_VALUE = new SignedByte((short) -128, true);
 	public static final SignedByte MAX_VALUE = new SignedByte((short) 127, true);
 	private final short value;
 

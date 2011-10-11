@@ -48,6 +48,7 @@ import java.util.UUID;
  * Allows for the application configuration file to be probed for the presence of key/value pairs.
  * It is used for setting constant values in a way that can be configurable from the config file.
  */
+@SuppressWarnings("unchecked")
 public final class ConfigurableParameters
 {
    // file of similar functionality to app.config in .NET
@@ -527,7 +528,7 @@ public final class ConfigurableParameters
 	 *
 	 * @throws ConfigurationErrorsException There was a problem in successfully parsing or re-configuring an Iterable value
 	 */
-	public static <T> Iterable<T> getIterable(KeyValuePair<String, ReifiedIterable<T>> kvp)
+  public static <T> Iterable<T> getIterable(KeyValuePair<String, ReifiedIterable<T>> kvp)
 			throws ConfigurationErrorsException
 	{
 		if(StringUtils.contains(lookup.getKeys(), kvp.getKey(), StringComparison.Ordinal))

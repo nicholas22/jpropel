@@ -60,6 +60,7 @@ public class ReifiedArray<T>
 	 * @throws IndexOutOfBoundsException An index is out of bounds.
 	 * @throws ClassCastException		The encapsulated array is not of specified generic type, hence casting fails.
 	 */
+  @SuppressWarnings("unchecked")
 	public T get(int index)
 	{
 		if(index < 0 || index >= length)
@@ -118,9 +119,9 @@ public class ReifiedArray<T>
 	/**
 	 * {@inheritDoc}
 	 */
-	public Iterator iterator()
+	public Iterator<T> iterator()
 	{
-		return new ReifiedArrayIterator(originalArray, length);
+		return new ReifiedArrayIterator<T>(originalArray, length);
 	}
 
 	/**

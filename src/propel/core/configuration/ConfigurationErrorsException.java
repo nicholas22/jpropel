@@ -23,7 +23,9 @@ package propel.core.configuration;
 public class ConfigurationErrorsException
 		extends Exception
 {
-	/**
+  private static final long serialVersionUID = -4261451327628437870L;
+
+  /**
 	 * Default constructor
 	 */
 	public ConfigurationErrorsException()

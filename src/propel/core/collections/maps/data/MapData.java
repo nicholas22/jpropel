@@ -126,17 +126,17 @@ public class MapData<TKey, TValue>
 	/**
 	 * Iterates over a MapData key/value pair collection
 	 */
-	private class MapDataIterator<TKey, TValue>
-			implements Iterator<KeyValuePair<TKey, TValue>>
+	private class MapDataIterator<MDTKey, MDTValue>
+			implements Iterator<KeyValuePair<MDTKey,MDTValue>>
 	{
-		private ReifiedList<TKey> keys;
-		private ReifiedList<TValue> values;
+		private ReifiedList<MDTKey> keys;
+		private ReifiedList<MDTValue> values;
 		private int index;
 
 		/**
 		 * Constructor initializes with the map key/value pairs
 		 */
-		public MapDataIterator(ReifiedList<TKey> keys, ReifiedList<TValue> values)
+		public MapDataIterator(ReifiedList<MDTKey> keys, ReifiedList<MDTValue> values)
 		{
 			index = 0;
 			this.keys = keys;
@@ -150,9 +150,9 @@ public class MapData<TKey, TValue>
 		}
 
 		@Override
-		public KeyValuePair<TKey, TValue> next()
+		public KeyValuePair<MDTKey, MDTValue> next()
 		{
-			KeyValuePair<TKey, TValue> kvp = new KeyValuePair<TKey, TValue>(keys.get(index), values.get(index));
+			KeyValuePair<MDTKey, MDTValue> kvp = new KeyValuePair<MDTKey, MDTValue>(keys.get(index), values.get(index));
 			index++;
 
 			return kvp;

@@ -53,7 +53,8 @@ public final class KeyCollection<TKey extends Comparable<TKey>, TValue>
 	 * @throws ClassCastException   The item is not of correct type.
 	 * @throws NullPointerException The specified element is null.
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
 	public boolean contains(Object item)
 	{
 		if(item == null)
@@ -183,7 +184,8 @@ public final class KeyCollection<TKey extends Comparable<TKey>, TValue>
 	 * Returns the key of all key/value pairs, in ascending key order.
 	 * This is an O(n) operation.
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
 	public TKey[] toArray()
 	{
 		int size = size();

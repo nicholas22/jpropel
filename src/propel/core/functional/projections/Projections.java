@@ -20,6 +20,8 @@
  */
 package propel.core.functional.projections;
 
+import java.util.Arrays;
+import lombok.Action;
 import lombok.Actions.Action0;
 import lombok.Function;
 import lombok.Functions.Function0;
@@ -45,7 +47,13 @@ public final class Projections
   {
     return object.toString();
   }
-
+  
+  @Function
+  public static <T> String toStringln(T[] array)
+  {
+    return Arrays.toString(array);
+  }
+  
   @Function
   public static <T> T orElse(T value, T _elseValue)
   {
@@ -77,6 +85,17 @@ public final class Projections
   public static <K, V> V valueSelector(KeyValuePair<K, V> kvp)
   {
     return kvp.getValue();
+  }
+  
+  @Action
+  public static void println(Object obj) {
+    System.out.println(obj);
+  }
+  
+  @Action
+  public static <T> void printlns(T[] array) {
+    for(T element : array)
+      System.out.println(element);
   }
 
   public static Action0 doNothing()

@@ -32,8 +32,6 @@ import java.util.UUID;
  */
 public final class HashingUtils
 {
-	private static final BigInteger HASH_CONSTANT = new BigInteger("5381");
-
 	/**
 	 * Private constructor
 	 */

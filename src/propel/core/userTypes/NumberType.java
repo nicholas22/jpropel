@@ -29,7 +29,9 @@ public abstract class NumberType
 		extends Number
 		implements Cloneable
 {
-	/**
+  private static final long serialVersionUID = 224451754577433146L;
+
+  /**
 	 * Returns a BigInteger representation
 	 */
 	public abstract BigInteger bigIntegerValue();

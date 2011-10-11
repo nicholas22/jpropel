@@ -33,7 +33,10 @@ import java.util.Set;
  * A type-aware AVL-tree-backed set.
  * This collection does not allow null items to be inserted.
  *
- * @param <T> The component type
+ * Instantiate using e.g.:
+ * new AvlTreeSet&lt;String&gt;(){}; 
+ * -OR-
+ * new AvlTreeSet&lt;String&gt;(String.class);
  */
 public class AvlTreeSet<T extends Comparable<T>>
 		implements ReifiedSet<T>

@@ -24,8 +24,9 @@ package propel.core.common;
 public class NotImplementedException
         extends RuntimeException
 {
+  private static final long serialVersionUID = 4671314057021829168L;
 
-   public NotImplementedException()
+  public NotImplementedException()
    {
       super("TODO:");
    }

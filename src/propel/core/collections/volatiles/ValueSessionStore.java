@@ -34,6 +34,11 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * A type-aware thread-safe Session object that allows multiple threads to operate on a collection of time-expiring objects.
  * This collection does not allow null keys to be inserted.
+ * 
+ * Instantiate using e.g.:
+ * new ValueSessionStore&lt;String&gt;(1000*60, 5000){}; 
+ * -OR-
+ * new ValueSessionStore&lt;String&gt;(1000*60, 5000, String.class);
  */
 public class ValueSessionStore<T extends Comparable<T>>
 		implements ISessionStore<T>, IValueStore<T>

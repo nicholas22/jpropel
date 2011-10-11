@@ -92,6 +92,7 @@ public class Tracer<T>
    * @throws NullPointerException An argument is null
    * @throws IllegalStateException This method has already been called
    */
+  @SuppressWarnings("unchecked")
   public T proxy(T objToProxy)
   {
     if (objToProxy == null)

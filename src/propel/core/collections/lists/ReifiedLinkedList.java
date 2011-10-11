@@ -35,12 +35,18 @@ import java.util.LinkedList;
  * such a way that would prevent the iterable-initialization constructors from adding
  * elements in the linked list in a correct way. Overridden method calls from constructors
  * can be quite dangerous if you're not aware of the execution order.
+ * 
+ * Instantiate using e.g.:
+ * new ReifiedLinkedList&lt;String&gt;(){}; 
+ * -OR-
+ * new ReifiedLinkedList&lt;String&gt;(String.class);
  */
 public class ReifiedLinkedList<T>
 		extends LinkedList<T>
 		implements ReifiedList<T>
 {
-	private final Class<?> genericTypeParameter;
+  private static final long serialVersionUID = 3034006258243537794L;
+  private final Class<?> genericTypeParameter;
 
 	/**
 	 * Default constructor.

@@ -37,7 +37,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * A shared stack for use by multiple threads.
  * This collection allows null items to be inserted.
  *
- * @param <T> The component type
+ * Instantiate using e.g.:
+ * new SharedStack&lt;String&gt;(){}; 
+ * -OR-
+ * new SharedStack&lt;String&gt;(String.class);
  */
 public class SharedStack<T>
 		implements ISharedStack<T>

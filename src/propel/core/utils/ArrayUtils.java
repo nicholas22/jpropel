@@ -52,6 +52,7 @@ public final class ArrayUtils
     *
     * @throws NullPointerException Array is null.
     */
+   @SuppressWarnings("unchecked")
    public static <T> T[] add(T[] array, T element)
    {
       if (array == null)
@@ -419,6 +420,7 @@ public final class ArrayUtils
     * @throws IllegalArgumentException Value is null, or length is out of range.
     * @throws OutOfMemoryError		 No enough memory to allocate array
     */
+   @SuppressWarnings("unchecked")
    public static <T> T[] create(T value, int length)
    {
       if (value == null)
@@ -441,7 +443,8 @@ public final class ArrayUtils
     * @throws IllegalArgumentException A dimension is out of range.
     * @throws OutOfMemoryError		 No enough memory to allocate array
     */
-   public static <T> T[][] create(T value, int lengthX, int lengthY)
+   @SuppressWarnings("unchecked")
+  public static <T> T[][] create(T value, int lengthX, int lengthY)
    {
       if (value == null)
          throw new NullPointerException("value");
@@ -612,12 +615,13 @@ public final class ArrayUtils
     * @throws NullPointerException  Array collection is null
     * @throws IllegalStateException Component type cannot be determined.
     */
+   @SuppressWarnings("unchecked")
    public static <T> T[] join(Iterable<T[]> arrays)
    {
       if (arrays == null)
          throw new NullPointerException("arrays");
 
-      Class componentType = null;
+      Class<?> componentType = null;
 
       // determine full length
       int length = 0;
@@ -668,6 +672,7 @@ public final class ArrayUtils
     *
     * @throws NullPointerException Array is null.
     */
+   @SuppressWarnings("unchecked")
    public static <T> T[] prepend(T[] array, T element)
    {
       if (array == null)
@@ -737,6 +742,7 @@ public final class ArrayUtils
     * @throws NullPointerException	 Array is null
     * @throws IllegalArgumentException Length is out of range
     */
+   @SuppressWarnings("unchecked")
    public static <T> T[] resize(T[] array, int length)
    {
       if (array == null)
@@ -793,6 +799,7 @@ public final class ArrayUtils
     *
     * @throws NullPointerException Array is null.
     */
+   @SuppressWarnings("unchecked")
    public static <T> T[] reverseCopy(T[] array)
    {
       if (array == null)
@@ -860,6 +867,7 @@ public final class ArrayUtils
     * @throws NullPointerException	  Array is null.
     * @throws IndexOutOfBoundsException Start index / end index are out of range.
     */
+   @SuppressWarnings("unchecked")
    public static <T> T[] subArray(T[] array, int startIndex, int endIndex)
    {
       if (array == null)

@@ -24,7 +24,9 @@ package propel.core.validation;
 public class ValidationException
 		extends Exception
 {
-	/**
+  private static final long serialVersionUID = 205295795934256268L;
+
+  /**
 	 * Default constructor
 	 */
 	public ValidationException()

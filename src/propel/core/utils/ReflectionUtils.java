@@ -78,6 +78,7 @@ public final class ReflectionUtils
     * @throws InvocationTargetException When the constructor called throws an exception.
     * @throws IllegalArgumentException  When no constructor accepting this many arguments is found, or there are more than 1 constructors found accepting the arguments given.
     */
+   @SuppressWarnings("unchecked")
    public static <T> T activate(Class<T> clazz, Object[] constructorArgs)
            throws InstantiationException, IllegalAccessException, InvocationTargetException
    {
@@ -1414,6 +1415,7 @@ public final class ReflectionUtils
     * @throws NullPointerException   An argument is null.
     * @throws ClassNotFoundException The class was not found.
     */
+   @SuppressWarnings("unchecked")
    public static <T> Class<T> parse(String value, Class<T> baseType)
            throws ClassNotFoundException
    {
@@ -1437,7 +1439,8 @@ public final class ReflectionUtils
     * @throws NullPointerException An argument is null
     * @throws IllegalArgumentException The interface class type is not an actual interface type
     */
-   public static <T> T proxy(final Object obj, Class<T> interfaceType)
+   @SuppressWarnings("unchecked")
+  public static <T> T proxy(final Object obj, Class<T> interfaceType)
    {
       if (obj == null)
          throw new NullPointerException("obj");

@@ -79,7 +79,8 @@ public final class KeyValuePair<TKey, TValue>
 	 *
 	 * @return True if the key and values match.
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
 	public boolean equals(Object other)
 	{
 		if(other == null)

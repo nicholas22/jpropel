@@ -528,7 +528,8 @@ public class AvlHashtable<TKey extends Comparable<TKey>, TValue>
 	 *
 	 * @throws NullPointerException If the key is null.
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
 	public boolean remove(TKey key)
 	{
 		if(key == null)

@@ -26,7 +26,9 @@ package propel.core.security.hashing;
 public class DataIntegrityException
 		extends Exception
 {
-	/**
+  private static final long serialVersionUID = -1596645255103014043L;
+
+  /**
 	 * Default constructor
 	 */
 	public DataIntegrityException()

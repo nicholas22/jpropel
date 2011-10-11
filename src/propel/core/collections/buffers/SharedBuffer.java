@@ -33,6 +33,11 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * A type-aware thread-safe limited size circular buffer.
  * This collection does not allow nulls to be inserted.
+ * 
+ * Instantiate using e.g.:
+ * new SharedBuffer&lt;String&gt;(){}; 
+ * -OR-
+ * new SharedBuffer&lt;String&gt;(String.class);
  */
 public class SharedBuffer<T>
 		extends CircularBuffer<T>

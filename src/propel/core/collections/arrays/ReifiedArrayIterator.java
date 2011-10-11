@@ -53,7 +53,8 @@ public class ReifiedArrayIterator<T>
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
 	public T next()
 	{
 		return (T) Array.get(array, index++);

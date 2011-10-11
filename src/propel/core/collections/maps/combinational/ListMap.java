@@ -36,6 +36,11 @@ import lombok.Functions.Function1;
 /**
  * A type-aware list-backed map holding values which are accessible by key as well as a list-style index.
  * This map does not allow null keys to be inserted.
+ * 
+ * Instantiate using e.g.:
+ * new ListMap&lt;String, Object&gt;(){}; 
+ * -OR-
+ * new ListMap&lt;String, Object&gt;(String.class, Object.class);
  */
 public class ListMap<TKey extends Comparable<TKey>, TValue>
 		implements IListMap<TKey, TValue>
@@ -443,14 +448,14 @@ public class ListMap<TKey extends Comparable<TKey>, TValue>
 	/**
 	 * Iterates over the two backing lists
 	 */
-	private class ListMapIterator<TKey, TValue>
-			implements Iterator<KeyValuePair<TKey, TValue>>
+	private class ListMapIterator<LMTKey, LMTValue>
+			implements Iterator<KeyValuePair<LMTKey, LMTValue>>
 	{
-		private final List<TKey> keys;
-		private final List<TValue> values;
+		private final List<LMTKey> keys;
+		private final List<LMTValue> values;
 		private int index;
 
-		public ListMapIterator(List<TKey> keys, List<TValue> values)
+		public ListMapIterator(List<LMTKey> keys, List<LMTValue> values)
 		{
 			this.keys = keys;
 			this.values = values;
@@ -469,9 +474,9 @@ public class ListMap<TKey extends Comparable<TKey>, TValue>
 		 * {@inheritDoc}
 		 */
 		@Override
-		public KeyValuePair<TKey, TValue> next()
+		public KeyValuePair<LMTKey, LMTValue> next()
 		{
-			KeyValuePair<TKey, TValue> kvp = new KeyValuePair<TKey, TValue>(keys.get(index), values.get(index));
+			KeyValuePair<LMTKey, LMTValue> kvp = new KeyValuePair<LMTKey, LMTValue>(keys.get(index), values.get(index));
 			index++;
 			return kvp;
 		}

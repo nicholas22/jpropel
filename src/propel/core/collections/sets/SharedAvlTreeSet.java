@@ -32,7 +32,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * A thread-safe type-aware AVL-tree-backed set.
  * This collection does not allow null items to be inserted.
  *
- * @param <T> The component type
+ * Instantiate using e.g.:
+ * new SharedAvlTreeSet&lt;String&gt;(){}; 
+ * -OR-
+ * new SharedAvlTreeSet&lt;String&gt;(String.class);
  */
 public class SharedAvlTreeSet<T extends Comparable<T>>
 		extends AvlTreeSet<T>

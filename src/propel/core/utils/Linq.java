@@ -33,7 +33,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import lombok.Function;
 import lombok.Functions.Function1;
 import lombok.Functions.Function2;
 import lombok.Validate;
@@ -44,12 +43,9 @@ import propel.core.collections.lists.ReifiedArrayList;
 import propel.core.collections.lists.ReifiedList;
 import propel.core.collections.maps.ReifiedMap;
 import propel.core.collections.maps.avl.AvlHashtable;
-import propel.core.configuration.ConfigurableConsts;
-import propel.core.configuration.ConfigurableParameters;
-import propel.core.functional.projections.Projections;
+import java.lang.SuppressWarnings;
 import static lombok.Yield.yield;
 
-// TODO: test unused methods
 
 /**
  * Provides similar functionality to .NET language integrated queries (LINQ).
@@ -61,7 +57,7 @@ public final class Linq
 	/**
 	 * The default list size to use for collecting results when the result size is unknown
 	 */
-	public static final int DEFAULT_LIST_SIZE = ConfigurableParameters.getInt32(ConfigurableConsts.LINQ_DEFAULT_LIST_SIZE);
+	public static final int DEFAULT_LIST_SIZE = 64;
 
 	/**
 	 * Private constructor prevents instantiation.
@@ -295,10 +291,9 @@ public final class Linq
 	 * @throws NullPointerException When the values or one of its (Iterable&lt;T&gt;) elements is null.
 	 */
 	@Validate
+	@SuppressWarnings("unchecked")
 	public static <T> Iterable<T> concat(@NotNull final Iterable<? extends T>... values)
 	{
-	  List<T> result = new ArrayList<T>(DEFAULT_LIST_SIZE);
-	   
 	  ReifiedArray<? extends T> array = new ReifiedArray<T>(values);
 
 		for(Iterable<? extends T> vals : array)
@@ -1518,7 +1513,6 @@ public final class Linq
 	@Validate
 	public static <TOuter, TInner, TKey extends Comparable<TKey>, TResult> Iterable<TResult> join(@NotNull final Iterable<TOuter> outerValues, @NotNull final Iterable<TInner> innerValues, @NotNull final Function1<TOuter, TKey> outerKeySelector, @NotNull final Function1<TInner, TKey> innerKeySelector, @NotNull final Function2<TOuter, TInner, TResult> resultSelector)
 	{
-		ReifiedList<TResult> result = new ReifiedArrayList<TResult>(DEFAULT_LIST_SIZE, resultSelector.getReturnType());
 		AvlHashtable<TKey, TOuter> lookup = new AvlHashtable<TKey, TOuter>(outerKeySelector.getReturnType(), outerKeySelector.getParameterType1());
 
 		for(TOuter value : outerValues)
@@ -2025,8 +2019,6 @@ public final class Linq
 	@Validate
 	public static <TSource, TResult> Iterable<TResult> select(@NotNull final Iterable<TSource> values, @NotNull final Function1<TSource, TResult> selector)
 	{
-		List<TResult> result = new ArrayList<TResult>(DEFAULT_LIST_SIZE);
-
 		for(TSource item : values)
 			yield(selector.apply(item));
 	}
@@ -2056,8 +2048,6 @@ public final class Linq
   @Validate
 	public static <TSource, TResult> Iterable<TResult> selectMany(@NotNull final Iterable<TSource> values, @NotNull final Function1<TSource, ReifiedList<TResult>> selector)
 	{
-		Class<?> resultClass = null;
-
 		for(TSource item : values)
 		{
 			ReifiedList<TResult> subItems = selector.apply(item);
@@ -2239,7 +2229,6 @@ public final class Linq
 	@Validate
 	public static <T> Iterable<T> skipWhile(@NotNull final Iterable<T> values, @NotNull final Function1<? super T, Boolean> predicate)
 	{
-		List<T> result = new ArrayList<T>(DEFAULT_LIST_SIZE);
 		boolean skipping = true;
 
 		for(T item : values)
@@ -2469,8 +2458,6 @@ public final class Linq
 	@Validate
 	public static <T> Iterable<T> take(@NotNull final Iterable<T> values, final int count)
 	{
-		List<T> result = new ArrayList<T>(DEFAULT_LIST_SIZE);
-
 		Iterator<T> iterator = values.iterator();
 
 		int index = 0;
@@ -2503,8 +2490,6 @@ public final class Linq
 	@Validate
 	public static <T> Iterable<T> takeWhile(@NotNull final Iterable<T> values, @NotNull final  Function1<? super T, Boolean> predicate)
 	{
-		List<T> result = new ArrayList<T>(DEFAULT_LIST_SIZE);
-
 		for(T item : values)
 			if(predicate.apply(item))
 				yield(item);
@@ -2767,8 +2752,6 @@ public final class Linq
   @Validate
 	public static <T> Iterable<T> where(@NotNull final Iterable<T> values, @NotNull final Function1<? super T, Boolean> predicate)
 	{
-		List<T> result = new ArrayList<T>(DEFAULT_LIST_SIZE);
-
 		for(T element : values)
 			if(predicate.apply(element))
 				yield(element);
@@ -2843,6 +2826,7 @@ public final class Linq
 	 * Casts a sequence of values of a certain type to an array of values of another type,
 	 * throwing an InvalidCastException if any elements are not cast successfully.
 	 */
+  @SuppressWarnings("unchecked")
 	private static <TSource, TDest> void castThrow(TSource[] values, ReifiedList<TDest> list)
 	{
 		Class<?> destinationClass = list.getGenericTypeParameter();
@@ -2880,6 +2864,7 @@ public final class Linq
 	 * Casts a sequence of values of a certain type to an array of values of another type,
 	 * discarding elements that are not cast successfully.
 	 */
+  @SuppressWarnings("unchecked")
 	private static <TSource, TDest> void castRemove(final TSource[] values, final ReifiedList<TDest> list)
 	{
 		Class<?> destinationClass = list.getGenericTypeParameter();
@@ -2927,7 +2912,8 @@ public final class Linq
 	 *
 	 * @throws NullPointerException An argument is null.
 	 */
-	private static <TSource, TDest> void castUseDefault(final TSource[] values, final ReifiedList<TDest> list)
+	@SuppressWarnings("unchecked")
+  private static <TSource, TDest> void castUseDefault(final TSource[] values, final ReifiedList<TDest> list)
 	{
 		Class<?> destinationClass = list.getGenericTypeParameter();
 
@@ -3347,9 +3333,13 @@ public final class Linq
 		return -1;
 	}
 	
-	// TODO: https://github.com/peichhorn/lombok-pg/issues/2 (is there a workaround for typed list yet?)
-  @Function 
-  private static Boolean elementsExist(final List list){
-    return list.size() > 0;
+  @SuppressWarnings("rawtypes")
+  private static <T> Function1<List, Boolean> elementsExist(){
+    return new Function1<List, Boolean>() {
+      public Boolean apply(List list) {
+        return list.size() > 0;
+      }
+    };
   }
+	
 }

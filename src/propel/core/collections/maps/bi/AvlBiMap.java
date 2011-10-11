@@ -33,9 +33,11 @@ import java.util.Map;
 /**
  * A type-aware AVL-tree-backed bi-directional map.
  * This map does not allow null keys or values to be inserted.
- *
- * @param <TKey>   The key type
- * @param <TValue> The value type
+ * 
+ * Instantiate using e.g.:
+ * new AvlBiMap&lt;String, Object&gt;(){}; 
+ * -OR-
+ * new AvlBiMap&lt;String, Object&gt;(String.class, Object.class);
  */
 public class AvlBiMap<TKey extends Comparable<TKey>, TValue extends Comparable<TValue>>
 		implements IBiMap<TKey, TValue>

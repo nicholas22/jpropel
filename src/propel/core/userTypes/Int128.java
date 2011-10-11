@@ -27,7 +27,8 @@ public class Int128
 		extends NumberType
 		implements Comparable<Int128>
 {
-	public static final Int128 MIN_VALUE = new Int128(new java.math.BigInteger("-170141183460469231731687303715884105728"), true);
+  private static final long serialVersionUID = -7970478545846258719L;
+  public static final Int128 MIN_VALUE = new Int128(new java.math.BigInteger("-170141183460469231731687303715884105728"), true);
 	public static final Int128 MAX_VALUE = new Int128(new java.math.BigInteger("170141183460469231731687303715884105727"), true);
 	private java.math.BigInteger value;
 

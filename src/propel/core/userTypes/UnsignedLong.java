@@ -29,7 +29,8 @@ public final class UnsignedLong
 		extends NumberType
 		implements Comparable<UnsignedLong>
 {
-	public static final UnsignedLong MIN_VALUE = new UnsignedLong(new BigInteger("0"), true);
+  private static final long serialVersionUID = -5620866038306834473L;
+  public static final UnsignedLong MIN_VALUE = new UnsignedLong(new BigInteger("0"), true);
 	public static final UnsignedLong MAX_VALUE = new UnsignedLong(new BigInteger("18446744073709551615"), true);
 	private final BigInteger value;
 

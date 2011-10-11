@@ -24,7 +24,9 @@ package propel.core.collections;
 public final class KeyNotFoundException
 		extends RuntimeException
 {
-	/**
+  private static final long serialVersionUID = -541804579843337545L;
+
+  /**
 	 * Default constructor
 	 */
 	public KeyNotFoundException()

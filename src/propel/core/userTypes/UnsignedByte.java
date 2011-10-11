@@ -29,7 +29,8 @@ public final class UnsignedByte
 		extends NumberType
 		implements Comparable<UnsignedByte>
 {
-	public static final UnsignedByte MIN_VALUE = new UnsignedByte((short) 0, true);
+  private static final long serialVersionUID = -4996773900759875703L;
+  public static final UnsignedByte MIN_VALUE = new UnsignedByte((short) 0, true);
 	public static final UnsignedByte MAX_VALUE = new UnsignedByte((short) 255, true);
 	private final short value;
 

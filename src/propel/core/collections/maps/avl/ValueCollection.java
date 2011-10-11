@@ -73,8 +73,6 @@ public final class ValueCollection<TKey extends Comparable<TKey>, TValue>
 		while(p.left != null)
 			p = p.left;
 
-		if(item != null)
-		{
 			while(true)
 			{
 				if(item.equals(p.item.getValue()))
@@ -103,37 +101,36 @@ public final class ValueCollection<TKey extends Comparable<TKey>, TValue>
 						p = p.left;
 				}
 			}
-		}
 
-		// item == null
-		while(true)
-		{
-			if(p.item.getValue() == null)
-				return true;
-
-			if(p.right == null)
-			{
-				while(true)
-				{
-					if(p.parent == null)
-						return false;
-
-					if(p != p.parent.right)
-						break;
-
-					p = p.parent;
-				}
-
-				p = p.parent;
-			}
-			else
-			{
-				p = p.right;
-
-				while(p.left != null)
-					p = p.left;
-			}
-		}
+//		// item == null
+//		while(true)
+//		{
+//			if(p.item.getValue() == null)
+//				return true;
+//
+//			if(p.right == null)
+//			{
+//				while(true)
+//				{
+//					if(p.parent == null)
+//						return false;
+//
+//					if(p != p.parent.right)
+//						break;
+//
+//					p = p.parent;
+//				}
+//
+//				p = p.parent;
+//			}
+//			else
+//			{
+//				p = p.right;
+//
+//				while(p.left != null)
+//					p = p.left;
+//			}
+//		}
 	}
 
 	/**
@@ -188,7 +185,8 @@ public final class ValueCollection<TKey extends Comparable<TKey>, TValue>
 	 * Returns the key of all key/value pairs, in ascending key order.
 	 * This is an O(n) operation.
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
 	public TValue[] toArray()
 	{
 		int size = size();

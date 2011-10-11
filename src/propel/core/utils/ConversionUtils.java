@@ -87,7 +87,8 @@ public final class ConversionUtils
 	 * @throws NumberFormatException	An invalid input value was given that does not parse to the specified target type
 	 * @throws ClassCastException	   A class cast failed
 	 */
-	public static <T> T changeType(Object value, Class<T> targetType)
+	@SuppressWarnings("unchecked")
+  public static <T> T changeType(Object value, Class<T> targetType)
 			throws InstantiationException, IllegalAccessException
 	{
 		if(value == null)

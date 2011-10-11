@@ -65,7 +65,8 @@ public class IpAnyAddressPropertyMetadata
 	 *
 	 * @throws IllegalArgumentException An argument is invalid
 	 */
-	public IpAnyAddressPropertyMetadata(String name, boolean notNull, boolean notEmpty)
+	@SuppressWarnings("unchecked")
+  public IpAnyAddressPropertyMetadata(String name, boolean notNull, boolean notEmpty)
 	{
 		this(name, Linq.distinct(Linq.concat(ConfigurableParameters.tryGetIterable(ConfigurableConsts.VALIDATION_ALLOWED_IPV4_CHARS), ConfigurableParameters.tryGetIterable(ConfigurableConsts.VALIDATION_ALLOWED_IPV6_CHARS))), DEFAULT_MIN_IPANY_LENGTH, DEFAULT_MAX_IPANY_LENGTH, notNull, notEmpty);
 	}

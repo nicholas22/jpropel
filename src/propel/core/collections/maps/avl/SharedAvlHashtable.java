@@ -38,9 +38,11 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * A type-aware thread-safe AVL-tree-backed hashtable.
  * This map does not allow null keys to be inserted.
- *
- * @param <TKey>   The key type
- * @param <TValue> The value type
+ * 
+ * Instantiate using e.g.:
+ * new SharedAvlHashtable&lt;String, Object&gt;(){}; 
+ * -OR-
+ * new SharedAvlHashtable&lt;String, Object&gt;(String.class, Object.class);
  */
 public class SharedAvlHashtable<TKey extends Comparable<TKey>, TValue>
 		implements ISharedHashtable<TKey, TValue>
