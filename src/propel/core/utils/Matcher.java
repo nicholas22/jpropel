@@ -1,23 +1,21 @@
-/*
- ///////////////////////////////////////////////////////////
- //  This file is part of Propel.
- //
- //  Propel is free software: you can redistribute it and/or modify
- //  it under the terms of the GNU Lesser General Public License as published by
- //  the Free Software Foundation, either version 3 of the License, or
- //  (at your option) any later version.
- //
- //  Propel is distributed in the hope that it will be useful,
- //  but WITHOUT ANY WARRANTY; without even the implied warranty of
- //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- //  GNU Lesser General Public License for more details.
- //
- //  You should have received a copy of the GNU Lesser General Public License
- //  along with Propel.  If not, see <http://www.gnu.org/licenses/>.
- ///////////////////////////////////////////////////////////
- //  Authored by: Nikolaos Tountas -> salam.kaser-at-gmail.com
- ///////////////////////////////////////////////////////////
- */
+// /////////////////////////////////////////////////////////
+// This file is part of Propel.
+//
+// Propel is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Propel is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Propel. If not, see <http://www.gnu.org/licenses/>.
+// /////////////////////////////////////////////////////////
+// Authored by: Nikolaos Tountas -> salam.kaser-at-gmail.com
+// /////////////////////////////////////////////////////////
 package propel.core.utils;
 
 import java.util.ArrayList;
@@ -58,6 +56,27 @@ public class Matcher<T, TResult>
   }
 
   /**
+   * Adds a predicate and a function. If the predicate is true for the element being matched by match(), the an identity function (F(x)=>x)
+   * with TResult cast to T will execute and its result will be returned by the match() method, effectively matching and returning the
+   * argument.
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  public void addFunction(final Function1<T, Boolean> predicate)
+  {
+    if (predicate == null)
+      throw new NullPointerException("predicate");
+
+    cases.add(new Pair<Function1<T, Boolean>, Function1<T, ?>>(predicate, new Function1<T, TResult>() {
+      @SuppressWarnings("unchecked")
+      public TResult apply(T arg)
+      {
+        return (TResult) arg;
+      }
+    }));
+  }
+
+  /**
    * Adds a predicate and a function. If the predicate is true for the element being matched by match(), the given function will execute and
    * its result will be returned by the match() method, effectively matching the input to this given function's result.
    * 
@@ -72,6 +91,20 @@ public class Matcher<T, TResult>
 
     cases.add(new Pair<Function1<T, Boolean>, Function1<T, ?>>(predicate, func));
   }
+
+  /**
+   * Adds a predicate and a function. If the predicate is true for the element being matched by match(), the an identity function (F(x)=>x)
+   * with TResult cast to T will execute and its result will be returned by the match() method, effectively matching and returning the
+   * argument.
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  /*
+   * public void addAction(final Function1<Object, Boolean> predicate) { if (predicate == null) throw new NullPointerException("predicate");
+   * 
+   * cases.add(new Pair<Function1<Object, Boolean>, Function1<T, ?>>(predicate, new Function1<T, Void>() { public Void apply(T arg) { return
+   * null; } })); }
+   */
 
   /**
    * Sets the action that generates a default result, if there are no matches. Since this is an action, null is returned, but there is a

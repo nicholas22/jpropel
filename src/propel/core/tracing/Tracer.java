@@ -1,23 +1,21 @@
-/*
- ///////////////////////////////////////////////////////////
- //  This file is part of Propel.
- //
- //  Propel is free software: you can redistribute it and/or modify
- //  it under the terms of the GNU Lesser General Public License as published by
- //  the Free Software Foundation, either version 3 of the License, or
- //  (at your option) any later version.
- //
- //  Propel is distributed in the hope that it will be useful,
- //  but WITHOUT ANY WARRANTY; without even the implied warranty of
- //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- //  GNU Lesser General Public License for more details.
- //
- //  You should have received a copy of the GNU Lesser General Public License
- //  along with Propel.  If not, see <http://www.gnu.org/licenses/>.
- ///////////////////////////////////////////////////////////
- //  Authored by: Nikolaos Tountas -> salam.kaser-at-gmail.com
- ///////////////////////////////////////////////////////////
- */
+// /////////////////////////////////////////////////////////
+// This file is part of Propel.
+//
+// Propel is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Propel is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Propel. If not, see <http://www.gnu.org/licenses/>.
+// /////////////////////////////////////////////////////////
+// Authored by: Nikolaos Tountas -> salam.kaser-at-gmail.com
+// /////////////////////////////////////////////////////////
 package propel.core.tracing;
 
 import java.lang.annotation.Annotation;
@@ -49,7 +47,7 @@ public class Tracer<T>
 
   /**
    * Initialises with a class (of which the simple name is used as logger name) and a default trace message generator
-   *
+   * 
    * @throws NullPointerException An argument is null
    */
   public Tracer(Class<?> clazz)
@@ -59,14 +57,14 @@ public class Tracer<T>
 
   /**
    * Initialises with a class (of which the simple name is used as logger name)
-   *
+   * 
    * @throws NullPointerException An argument is null
    */
   public Tracer(Class<?> clazz, ITraceMessageGenerator generator)
   {
     this(LoggerFactory.getLogger(clazz.getSimpleName()), generator);
-  } 
-  
+  }
+
   /**
    * Initialises with a logger and a default trace message generator
    */
@@ -115,7 +113,8 @@ public class Tracer<T>
         }
 
     // proxy and return
-    Object result = Proxy.newProxyInstance(objToProxy.getClass().getClassLoader(), ReflectionUtils.getInterfaces(objToProxy.getClass(), true), this);
+    Object result = Proxy.newProxyInstance(objToProxy.getClass().getClassLoader(),
+        ReflectionUtils.getInterfaces(objToProxy.getClass(), true), this);
     try
     {
       return (T) result;
