@@ -19,6 +19,18 @@ Highly recommended if you don't want extra dependencies in your libraries.
 Change logs
 ------------
 
+CHANGELOG 0.9.5
+- MapMultimap data structure
+- Better java.io.File extension methods
+
+  new File("myFile.txt").readFileToEnd().split("\r\n");
+
+
+CHANGELOG 0.9.4
+- Added a lot of new predicates and projections.
+  e.g. instanceOf(), appendToFile(), copyFile(), deleteFile(), etc.
+
+
 CHANGELOG 0.9.3
 - Using Scala-like programming-style library
   (https://github.com/peichhorn/lombok-pg)
