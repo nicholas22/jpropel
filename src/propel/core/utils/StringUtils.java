@@ -19,6 +19,7 @@
 package propel.core.utils;
 
 import lombok.Function;
+import lombok.Predicate;
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.*;
@@ -3205,8 +3206,8 @@ public final class StringUtils
     }
   }
 
-  @Function
-  private static Boolean lengthEqualTo(String element, int _length)
+  @Predicate
+  private static boolean lengthEqualTo(String element, int _length)
   {
     return element.length() == _length;
   }

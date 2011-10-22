@@ -19,6 +19,7 @@
 package propel.core.utils;
 
 import lombok.Function;
+import lombok.Predicate;
 import java.util.Arrays;
 import propel.core.collections.KeyValuePair;
 import propel.core.collections.lists.ReifiedArrayList;
@@ -96,8 +97,8 @@ public final class ReflectionUtils
     return (T) constructor.newInstance(constructorArgs);
   }
 
-  @Function
-  private static Boolean constructorParametersEqual(final Constructor<?> element, final int _len)
+  @Predicate
+  private static boolean constructorParametersEqual(final Constructor<?> element, final int _len)
   {
     return element.getParameterTypes().length == _len;
   }
@@ -144,7 +145,7 @@ public final class ReflectionUtils
     return obj.toString();
   }
 
-  @Function
+  @Predicate
   private static boolean isParameterAssignable(final KeyValuePair<Class<?>, Class<?>> element)
   {
     Class<?> argType = element.getKey();
@@ -794,7 +795,7 @@ public final class ReflectionUtils
     return Linq.firstOrDefault(getFields(type, includeInherited), fieldNameEquals(name));
   }
 
-  @Function
+  @Predicate
   private static boolean fieldNameEquals(final Field element, final String _name)
   {
     return element.getName().equals(_name);
@@ -906,7 +907,7 @@ public final class ReflectionUtils
     return Linq.firstOrDefault(getProperties(type, includeInherited), propertyNameEquals(name));
   }
 
-  @Function
+  @Predicate
   private static boolean propertyNameEquals(final PropertyInfo element, final String _name)
   {
     return element.getName().equals(_name);
@@ -924,7 +925,7 @@ public final class ReflectionUtils
     return Linq.where(methods, methodIsGetter());
   }
 
-  @Function
+  @Predicate
   private static boolean methodIsGetter(final Method element)
   {
     return isGetter(element);
@@ -942,7 +943,7 @@ public final class ReflectionUtils
     return Linq.where(methods, methodIsSetter());
   }
 
-  @Function
+  @Predicate
   private static boolean methodIsSetter(final Method element)
   {
     return isSetter(element);
@@ -1003,7 +1004,7 @@ public final class ReflectionUtils
     return Linq.firstOrDefault(getMethods(type, includeInherited), methodNameEquals(name));
   }
 
-  @Function
+  @Predicate
   private static boolean methodNameEquals(final Method element, final String _name)
   {
     return element.getName().equals(_name);
@@ -1086,8 +1087,8 @@ public final class ReflectionUtils
     return Linq.firstOrDefault(getMembers(type, includeInherited), memberNameEquals(name));
   }
 
-  @Function
-  private static <T> Boolean memberNameEquals(MemberInfo element, String _name)
+  @Predicate
+  private static <T> boolean memberNameEquals(MemberInfo element, String _name)
   {
     return element.getName().equals(_name);
   }
@@ -1107,7 +1108,7 @@ public final class ReflectionUtils
     return Linq.firstOrDefault(getMethods(type, includeInherited), methodsAreEqual(method)) != null;
   }
 
-  @Function
+  @Predicate
   private static boolean methodsAreEqual(final Method element, final Method _method)
   {
     return equal(element, _method);
@@ -1128,7 +1129,7 @@ public final class ReflectionUtils
     return Linq.firstOrDefault(getProperties(type, includeInherited), propertiesAreEqual(property)) != null;
   }
 
-  @Function
+  @Predicate
   private static boolean propertiesAreEqual(final PropertyInfo element, final PropertyInfo _pi)
   {
     return equal(element, _pi);
@@ -1149,7 +1150,7 @@ public final class ReflectionUtils
     return Linq.firstOrDefault(getFields(type, includeInherited), fieldsAreEqual(field)) != null;
   }
 
-  @Function
+  @Predicate
   private static boolean fieldsAreEqual(final Field element, final Field _field)
   {
     return equal(element, _field);
@@ -1170,7 +1171,7 @@ public final class ReflectionUtils
     return Linq.firstOrDefault(getMembers(type, includeInherited), membersAreEqual(member)) != null;
   }
 
-  @Function
+  @Predicate
   private static boolean membersAreEqual(final MemberInfo element, final MemberInfo _member)
   {
     return equal(element, _member);
@@ -1358,7 +1359,7 @@ public final class ReflectionUtils
     return Linq.all(methods, methodHasMethod(type, includeTypeInherited));
   }
 
-  @Function
+  @Predicate
   private static boolean methodHasMethod(final Method element, final Class<?> _type, final boolean _includeTypeInherited)
   {
     return hasMethod(_type, element, _includeTypeInherited);
