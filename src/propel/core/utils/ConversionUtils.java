@@ -18,7 +18,6 @@
 // /////////////////////////////////////////////////////////
 package propel.core.utils;
 
-import lombok.Function;
 import lombok.Predicate;
 import propel.core.collections.maps.avl.AvlHashtable;
 import propel.core.common.CONSTANT;
