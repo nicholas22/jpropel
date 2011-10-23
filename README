@@ -20,6 +20,8 @@ Change logs
 ------------
 
 CHANGELOG 0.9.6
+- Split up Predicates class into Objects, Strings, Arrays and Iterables
+  for modularization
 - Function1<?, Boolean> -> Predicate1<?> 
   Breaking change using the more appropriate annotation @Predicate instead
   of having to specify the return type for predicate-style functions
@@ -64,8 +66,8 @@ import lombok.ExtensionMethod;
 import lombok.val;
 import propel.core.utils.Linq;
 import propel.core.utils.StringUtils;
-import static propel.core.functional.predicates.Predicates.*;
-import static propel.core.functional.projections.Projections.*;
+import static propel.core.functional.predicates.Strings.*;
+//import static propel.core.functional.projections.Projections.*;
 
 @ExtensionMethod({Arrays.class, Linq.class, StringUtils.class})
 public class Main
@@ -76,8 +78,7 @@ public class Main
    */
   public static void main(String[] args)
   {
-    val names = new String[] { "john", "james", "john", "eddie" }.where(startsWith("j")).distinct();    
-    System.out.println(Arrays.toString(names));
+    val names = new String[] { "john", "james", "john", "eddie" }.where(startsWith("j")).distinct().all(println());    
   }
 }
 
