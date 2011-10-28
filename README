@@ -26,6 +26,7 @@ CHANGELOG 0.9.6
   Breaking change using the more appropriate annotation @Predicate instead
   of having to specify the return type for predicate-style functions
 - MapMultimap uses yield() when iterating
+- SharedMapMultimap: thread-safe version of MapMultimap
 
 CHANGELOG 0.9.5
 - MapMultimap data structure
