@@ -21,6 +21,7 @@ propel.core.functional.closure
 propel.core.functional.predicates
 propel.core.functional.projections
 propel.core.functional.tuples
+propel.core.initialisation
 propel.core.model
 propel.core.observer
 propel.core.security.authentication
