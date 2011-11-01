@@ -22,6 +22,15 @@ CHANGELOG 0.9.7
 - Added lock-free thread-safe initialisation guards, for preventing classes
   from being used without being initialised first (MultiInitGuard) and for
   preventing classes from being initialised multiple times (SingleInitGuard)
+- String crop() trim-like function allows for strings to be cropped of
+  one or more specified characters. Example:
+  
+val result = StringUtils.crop("abc123abc", new char[] {'a','c'});
+System.out.println(result); // => "bc123ab"  
+
+- Linq.single() get a single element of a collection, throwing an exception
+  if zero, two or more elements exist in the collection.
+
 
 CHANGELOG 0.9.6
 - Split up Predicates class into Objects, Strings, Arrays and Iterables
@@ -31,6 +40,7 @@ CHANGELOG 0.9.6
   of having to specify the return type for predicate-style functions
 - MapMultimap uses yield() when iterating
 - SharedMapMultimap: thread-safe version of MapMultimap
+
 
 CHANGELOG 0.9.5
 - MapMultimap data structure

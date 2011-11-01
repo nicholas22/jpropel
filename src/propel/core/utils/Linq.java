@@ -2153,6 +2153,38 @@ public final class Linq
   }
 
   /**
+   * Throws an exception if the given Iterable does not have a single element (e.g. none, 2, 3, etc.) If a single element exists, this is
+   * returned.
+   * 
+   * @throws NullPointerException When the values argument is null
+   * @throws IllegalArgumentException When count is out of range.
+   */
+  @Validate
+  public static <T> T single(@NotNull final T[] values)
+  {
+    if (values.length != 1)
+      throw new IllegalArgumentException("The given array should contain a single element");
+
+    return values[0];
+  }
+
+  /**
+   * Throws an exception if the given Iterable does not have a single element (e.g. none, 2, 3, etc.) If a single element exists, this is
+   * returned.
+   * 
+   * @throws NullPointerException When the values argument is null
+   * @throws IllegalArgumentException When count is out of range.
+   */
+  @Validate
+  public static <T> T single(@NotNull final Iterable<T> values)
+  {
+    if (firstOrDefault(values) == null)
+      throw new IllegalArgumentException("The given iterable should contain a single element");
+
+    return first(values);
+  }
+
+  /**
    * Skips up to the specified number of elements in the given sequence.
    * 
    * @throws NullPointerException When the values argument is null
