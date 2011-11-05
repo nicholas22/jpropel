@@ -30,6 +30,7 @@ System.out.println(result); // => "bc123ab"
 
 - Linq.single() get a single element of a collection, throwing an exception
   if zero, two or more elements exist in the collection.
+- Cleaner functional invocation with InvokeOneArg and InvokeNoArgs classes.
 
 
 CHANGELOG 0.9.6
