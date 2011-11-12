@@ -18,6 +18,10 @@ Highly recommended if you don't want extra dependencies in your libraries.
 
 Change logs
 ------------
+CHANGELOG 0.9.8
+- BouncyCastle support removed, without compromising AES, XTEA and Blowfish
+  algorithms (although Rijndael was renamed to AES)
+
 CHANGELOG 0.9.7
 - Added lock-free thread-safe initialisation guards, for preventing classes
   from being used without being initialised first (MultiInitGuard) and for
