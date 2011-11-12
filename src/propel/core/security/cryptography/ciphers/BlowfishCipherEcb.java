@@ -19,9 +19,6 @@
 package propel.core.security.cryptography.ciphers;
 
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import javax.crypto.NoSuchPaddingException;
 
 /**
  * Blowfish ECB implementation
@@ -43,19 +40,22 @@ public class BlowfishCipherEcb
    */
   private static final int[] KEY_SIZES = {4, 8, 12, RECOMMENDED_KEY_SIZE, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56};
 
+  // cipher
+  private final Blowfish blowfish;
+
   /**
    * Initializes with the secret key
    * 
    * @throws NullPointerException An argument is null
-   * @throws NoSuchAlgorithmException Algorithm is not supported. Usually due to lack of security provider (register BouncyCastle first)
-   * @throws NoSuchProviderException Provided not supported. Usually due to lack of security provider (register BouncyCastle first)
-   * @throws NoSuchPaddingException This will not be thrown, unless the padding type has changed
    * @throws InvalidKeyException Key length is not supported by this cipher
    */
   public BlowfishCipherEcb(byte[] key)
-      throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException
+      throws InvalidKeyException
   {
     super(key);
+
+    blowfish = new Blowfish();
+    blowfish.setKey(key);
   }
 
   /**
@@ -75,22 +75,35 @@ public class BlowfishCipherEcb
   {
     return KEY_SIZES;
   }
-
+  
   /**
    * {@inheritDoc}
    */
   @Override
-  public String getCipherDescription()
+  public int getRecommendedKeySize()
   {
-    return "Blowfish/ECB/ZeroBytePadding";
+    return RECOMMENDED_KEY_SIZE;
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public String getCipherKeySpecName()
+  public void encrypt(byte[] dataIn, byte[] dataOut, int offset, int count)
   {
-    return "Blowfish";
+    checkArguments(dataIn, dataOut, offset, count);
+
+    blowfish.encrypt(dataIn, dataOut, offset, count);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void decrypt(byte[] dataIn, byte[] dataOut, int offset, int count)
+  {
+    checkArguments(dataIn, dataOut, offset, count);
+
+    blowfish.decrypt(dataIn, dataOut, offset, count);
   }
 }

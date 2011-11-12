@@ -19,9 +19,6 @@
 package propel.core.security.cryptography.ciphers;
 
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import javax.crypto.NoSuchPaddingException;
 
 /**
  * XTEA ECB implementation
@@ -43,25 +40,27 @@ public class XTEACipherEcb
    */
   private static final int[] KEY_SIZES = {RECOMMENDED_KEY_SIZE};
 
+  // cipher
+  private final XTEA xtea;
+
   /**
    * Initializes with the secret key
    * 
    * @throws NullPointerException An argument is null
-   * @throws NoSuchAlgorithmException Algorithm is not supported. Usually due to lack of security provider (register BouncyCastle first)
-   * @throws NoSuchProviderException Provided not supported. Usually due to lack of security provider (register BouncyCastle first)
-   * @throws NoSuchPaddingException This will not be thrown, unless the padding type has changed
    * @throws InvalidKeyException Key length is not supported by this cipher
    */
   public XTEACipherEcb(byte[] key)
-      throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException
+      throws InvalidKeyException
   {
     super(key);
+
+    xtea = new XTEA();
+    xtea.setKey(key);
   }
 
   /**
    * {@inheritDoc}
    */
-  @Override
   public int getBlockSize()
   {
     return BLOCK_SIZE;
@@ -70,7 +69,6 @@ public class XTEACipherEcb
   /**
    * {@inheritDoc}
    */
-  @Override
   public int[] getKeySizes()
   {
     return KEY_SIZES;
@@ -80,17 +78,31 @@ public class XTEACipherEcb
    * {@inheritDoc}
    */
   @Override
-  public String getCipherDescription()
+  public int getRecommendedKeySize()
   {
-    return "XTEA/ECB/ZeroBytePadding";
+    return RECOMMENDED_KEY_SIZE;
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public String getCipherKeySpecName()
+  public void encrypt(byte[] dataIn, byte[] dataOut, int offset, int count)
   {
-    return "XTEA";
+    checkArguments(dataIn, dataOut, offset, count);
+
+    xtea.encrypt(dataIn, dataOut, offset, count);
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void decrypt(byte[] dataIn, byte[] dataOut, int offset, int count)
+  {
+    checkArguments(dataIn, dataOut, offset, count);
+
+    xtea.decrypt(dataIn, dataOut, offset, count);
+  }
+
 }

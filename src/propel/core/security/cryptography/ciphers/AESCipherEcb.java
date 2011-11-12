@@ -19,14 +19,11 @@
 package propel.core.security.cryptography.ciphers;
 
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import javax.crypto.NoSuchPaddingException;
 
 /**
- * Serpent ECB implementation
+ * Rijndael ECB implementation
  */
-public class SerpentCipherEcb
+public class AESCipherEcb
     extends AbstractCipherEcb
 {
 
@@ -41,22 +38,27 @@ public class SerpentCipherEcb
   /**
    * Supported key sizes
    */
-  // TODO: fix 196 and 256 bit key support
-  private static final int[] KEY_SIZES = {RECOMMENDED_KEY_SIZE};
+  private static final int[] KEY_SIZES = {RECOMMENDED_KEY_SIZE, 24, 32};
+
+  // cipher
+  private final AES aesEncryptor;
+  private final AES aesDecryptor;
 
   /**
    * Initializes with the secret key
    * 
    * @throws NullPointerException An argument is null
-   * @throws NoSuchAlgorithmException Algorithm is not supported. Usually due to lack of security provider (register BouncyCastle first)
-   * @throws NoSuchProviderException Provided not supported. Usually due to lack of security provider (register BouncyCastle first)
-   * @throws NoSuchPaddingException This will not be thrown, unless the padding type has changed
    * @throws InvalidKeyException Key length is not supported by this cipher
    */
-  public SerpentCipherEcb(byte[] key)
-      throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException
+  public AESCipherEcb(byte[] key)
+      throws InvalidKeyException
   {
     super(key);
+
+    aesEncryptor = new AES();
+    aesDecryptor = new AES();
+    aesEncryptor.setKey(key, true);
+    aesDecryptor.setKey(key, false);
   }
 
   /**
@@ -76,22 +78,36 @@ public class SerpentCipherEcb
   {
     return KEY_SIZES;
   }
-
+  
   /**
    * {@inheritDoc}
    */
   @Override
-  public String getCipherDescription()
+  public int getRecommendedKeySize()
   {
-    return "Serpent/ECB/ZeroBytePadding";
+    return RECOMMENDED_KEY_SIZE;
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public String getCipherKeySpecName()
+  public void encrypt(byte[] dataIn, byte[] dataOut, int offset, int count)
   {
-    return "Serpent";
+    checkArguments(dataIn, dataOut, offset, count);
+
+    aesEncryptor.encrypt(dataIn, dataOut, offset, count);
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void decrypt(byte[] dataIn, byte[] dataOut, int offset, int count)
+  {
+    checkArguments(dataIn, dataOut, offset, count);
+
+    aesDecryptor.decrypt(dataIn, dataOut, offset, count);
+  }
+
 }

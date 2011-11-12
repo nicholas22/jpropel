@@ -18,8 +18,7 @@
 // /////////////////////////////////////////////////////////
 package propel.core.security.cryptography;
 
-import java.security.Security;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import java.security.InvalidKeyException;
 import propel.core.security.cryptography.ciphers.ICipher;
 import propel.core.security.cryptography.ciphers.XTEACipherEcb;
 import propel.core.utils.ArrayUtils;
@@ -31,7 +30,7 @@ import propel.core.utils.RandomUtils;
  */
 public final class CryptographicString
 {
-  // XTEA cipher
+  // cipher
   private ICipher cipher;
 
   /**
@@ -58,7 +57,7 @@ public final class CryptographicString
    * Initialize with some byte[] payload. The array is zero-ed once this is done.
    * 
    * @throws NullPointerException An argument is null
-   * @throws RuntimeException An exception has occurred by the security provider (BouncyCastle)
+   * @throws RuntimeException An exception has occurred
    */
   public CryptographicString(byte[] payload)
   {
@@ -71,17 +70,9 @@ public final class CryptographicString
     {
       cipher = new XTEACipherEcb(key);
     }
-    catch(Exception e)
+    catch(InvalidKeyException e)
     {
-      Security.addProvider(new BouncyCastleProvider());
-      try
-      {
-        cipher = new XTEACipherEcb(key);
-      }
-      catch(Exception ex)
-      {
-        throw new RuntimeException(ex);
-      }
+      throw new RuntimeException(e);
     }
 
     // set payload sizes to match cipher block size
@@ -94,7 +85,7 @@ public final class CryptographicString
     payload = ArrayUtils.unbox(ArrayUtils.resize(ArrayUtils.box(payload), encryptedPayloadSize));
 
     encryptedPayload = new byte[encryptedPayloadSize];
-    cipher.encrypt(payload, 0, encryptedPayload, 0, encryptedPayloadSize);
+    cipher.encrypt(payload, encryptedPayload, 0, encryptedPayloadSize);
     for (int i = 0; i < payload.length; i++)
       payload[i] = 0;
   }
@@ -106,7 +97,7 @@ public final class CryptographicString
   {
     // decrypt
     byte[] originalPayload = new byte[encryptedPayload.length];
-    cipher.decrypt(encryptedPayload, 0, originalPayload, 0, encryptedPayload.length);
+    cipher.decrypt(encryptedPayload, originalPayload, 0, encryptedPayload.length);
 
     // trim to original size
     originalPayload = ArrayUtils.unbox(ArrayUtils.resize(ArrayUtils.box(originalPayload), originalPayloadSize));

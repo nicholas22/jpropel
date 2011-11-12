@@ -32,26 +32,29 @@ public interface ICipher
    * Returns the supported key sizes of the cipher
    */
   int[] getKeySizes();
+  
+  /**
+   * Returns the recommended key size of the cipher 
+   */
+  int getRecommendedKeySize();
 
   /**
-   * Encrypts the provided in data from the in start position, puts it in the out data array starting at the out position. Does this for a
-   * specified byte count, which must be a multiple of the cipher's block size.
+   * Encrypts the provided in data from the offset and puts it in the out data array at the offset. Does this for a specified byte count,
+   * which must be a multiple of the cipher's block size.
    * 
    * @throws NullPointerException An argument is null
    * @throws IndexOutOfBoundsException An index is out of range
    * @throws IllegalArgumentException An argument is out of range, or the output array is not large enough
-   * @throws RuntimeException An unexpected error has occurred
    */
-  void encrypt(byte[] dataIn, int posIn, byte[] dataOut, int posOut, int count);
+  void encrypt(byte[] dataIn, byte[] dataOut, int offset, int count);
 
   /**
-   * Decrypts the provided in data from the in start position, puts it in the out data array starting at the out position. Does this for a
-   * specified byte count, which must be a multiple of the cipher's block size.
+   * Decrypts the provided in data from the offset and puts it in the out data array at the offset. Does this for a specified byte count,
+   * which must be a multiple of the cipher's block size.
    * 
    * @throws NullPointerException An argument is null
    * @throws IndexOutOfBoundsException An index is out of range
    * @throws IllegalArgumentException An argument is out of range, or the output array is not large enough
-   * @throws RuntimeException An unexpected error has occurred
    */
-  void decrypt(byte[] dataIn, int posIn, byte[] dataOut, int posOut, int count);
+  void decrypt(byte[] dataIn, byte[] dataOut, int offset, int count);
 }
