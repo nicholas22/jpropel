@@ -20,6 +20,7 @@ package propel.core.functional.projections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import lombok.Actions.Action0;
 import lombok.Function;
 import lombok.Functions.Function0;
@@ -55,7 +56,7 @@ public final class Projections
   {
     return object != null ? object.toString() : _nullReplacementValue;
   }
-  
+
   /**
    * Calls toString() on function arguments
    * 
@@ -102,7 +103,29 @@ public final class Projections
   }
 
   /**
-   * Calls getKey() on key/value pair function arguments
+   * Calls getKey() on map entries specified
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  @Function
+  public static <K, V> K mapKeySelector(Map.Entry<K, V> entry)
+  {
+    return entry.getKey();
+  }
+  
+  /**
+   * Calls getKey() on map entries specified
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  @Function
+  public static <K, V> V mapValueSelector(Map.Entry<K, V> entry)
+  {
+    return entry.getValue();
+  }
+
+  /**
+   * Calls getValue() on map entries specified
    * 
    * @throws NullPointerException An argument is null
    */

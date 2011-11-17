@@ -16,11 +16,14 @@ Documented these features in the front page of that project.
 
 Highly recommended if you don't want extra dependencies in your libraries.
 
+
 Change logs
 ------------
 CHANGELOG 0.9.8
 - BouncyCastle support removed, without compromising AES, XTEA and Blowfish
   algorithms (although Rijndael was renamed to AES)
+- lombok-pg 0.10.2 support
+- Joda Period validation (see PeriodPropertyMetadata)
 
 CHANGELOG 0.9.7
 - Added lock-free thread-safe initialisation guards, for preventing classes
