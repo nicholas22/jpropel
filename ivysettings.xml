@@ -1,0 +1,18 @@
+<ivysettings>
+	<properties file="${ivy.settings.dir}/ivysettings.properties" />
+	<settings caches="${ivy.settings.dir}/ivy-cache" defaultResolver="libraries" />
+
+	<resolvers>
+		<!-- Maven Central v2 repository resolver -->
+		<ibiblio name="libraries" m2compatible="true" usepoms="false" />
+	    
+		<!-- Github resolver -->
+		<url name="jpropel-github">
+			<artifact pattern="https://github.com/nicholas22/jpropel/raw/master/lib/[module]-[revision].[ext]"/>
+		</url> 
+	</resolvers>
+	
+	<modules>		
+		<module name="lombok-pg" resolver="jpropel-github" /> 
+	</modules>
+</ivysettings>
