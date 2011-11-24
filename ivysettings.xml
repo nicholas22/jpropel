@@ -13,6 +13,6 @@
 	</resolvers>
 	
 	<modules>		
-		<module name="lombok-pg" resolver="jpropel-github" /> 
+		<module name="lombok-pg" resolver="jpropel-github" />
 	</modules>
 </ivysettings>
