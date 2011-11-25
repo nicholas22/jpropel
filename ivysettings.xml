@@ -5,14 +5,12 @@
 	<resolvers>
 		<!-- Maven Central v2 repository resolver -->
 		<ibiblio name="libraries" m2compatible="true" usepoms="false" />
-	    
-		<!-- Github resolver -->
-		<url name="jpropel-github">
-			<artifact pattern="https://github.com/nicholas22/jpropel/raw/master/lib/[module]-[revision].[ext]"/>
-		</url> 
+		
+		<!-- Snapshot repository -->
+        	<ibiblio name="sonatype-snapshots" m2compatible="true" usepoms="true" pattern="[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]" root="https://oss.sonatype.org/content/repositories/snapshots/"/>
 	</resolvers>
-	
-	<modules>		
-		<module name="lombok-pg" resolver="jpropel-github" />
+
+	<modules>
+		<module name="lombok-pg" resolver="sonatype-snapshots" />
 	</modules>
 </ivysettings>
