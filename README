@@ -20,9 +20,18 @@ Highly recommended if you don't want extra dependencies in your libraries.
 Change logs
 ------------
 CHANGELOG 0.9.8
+- Ivy support
+  You can now resolve the jpropel dependency by using in ivysettings.xml:
+
+  <resolvers>
+    <url name="jpropel-github">
+      <ivy pattern="https://github.com/nicholas22/jpropel/raw/master/ivy-[revision].xml"/>
+      <artifact pattern="https://github.com/nicholas22/jpropel/raw/master/[module]-[revision].[ext]"/>
+    </url>
+  </resolvers>
 - BouncyCastle support removed, without compromising AES, XTEA and Blowfish
   algorithms (although Rijndael was renamed to AES)
-- lombok-pg 0.10.2 support
+- lombok-pg 0.10.4-SNAPSHOT support
 - Joda Period validation (see PeriodPropertyMetadata)
 
 CHANGELOG 0.9.7
