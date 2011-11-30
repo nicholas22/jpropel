@@ -10,7 +10,7 @@
  
 	<dependencies>
 	   <dependency org="joda-time" name="joda-time" rev="1.6.2"/>
-	   <dependency org="org.slf4j" name="slf4j-api" rev="1.6.1"/>
-	   <dependency org="com.github.peichhorn" name="lombok-pg" rev="0.10.4-SNAPSHOT" changing="true" />
+	   <dependency org="org.slf4j" name="slf4j-api" rev="1.6.1"/> 
+	   <dependency org="com.github.peichhorn" name="lombok-pg" rev="0.10.4" /> 
 	</dependencies>
 </ivy-module>
