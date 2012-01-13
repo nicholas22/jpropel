@@ -21,6 +21,8 @@ Change logs
 ------------
 CHANGELOG 0.9.9
 
+- Generic Frozen object container, can only be set once
+- StringUtils.replace() bugfix
 - Validation error message improvement when min & max length are equal
 - Replaced usages of StringBuffer with StringBuilder instead
 - Fixed StringUtils padLeft/padRight comments
@@ -31,6 +33,7 @@ CHANGELOG 0.9.9
 - Added min() and max() to Linq
 - Added minOccurring() and maxOccurring() to Linq
   (using non-parallel map/reduce which needs to be optimised in a next version)
+- LocalDatePropertyMetadata
 
 CHANGELOG 0.9.8
 - Ivy support
