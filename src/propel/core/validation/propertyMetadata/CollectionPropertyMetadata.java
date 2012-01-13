@@ -62,6 +62,10 @@ public class CollectionPropertyMetadata<T>
     Iterable<T> value = (Iterable<T>) obj;
 
     int size = Linq.count(value);
+    
+    if (getMaxSize() == getMinSize())
+      if (size != getMaxSize())
+        throw new ValidationException(String.format(SHOULD_BE_EXACTLY, getName()) + getMaxSize());
 
     // check conditions
     if (size > getMaxSize())

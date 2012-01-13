@@ -147,6 +147,40 @@ public final class Projections
   }
 
   /**
+   * Calls getClass() on the function argument
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  @Function
+  public static Class<?> getClassType(Object obj)
+  {
+    return obj.getClass();
+  }
+
+  /**
+   * Calls getClass().getName() on the function argument
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  @Function
+  public static String getClassName(Object obj)
+  {
+    return obj.getClass().getName();
+  }
+
+  /**
+   * Calls getClass().getSimpleName() on the function argument
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  @Function
+  public static String getClassNameSimple(Object obj)
+  {
+    return obj.getClass().getSimpleName();
+  }
+
+
+  /**
    * Action that appends some text data to a file. No EOL character is appended, just the given text.
    * 
    * @throws NullPointerException An argument is null

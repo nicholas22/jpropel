@@ -1960,7 +1960,7 @@ public final class StringUtils
   }
 
   /**
-   * Right-aligns the characters in this instance, padding on the left with a specified Unicode string for a specified total length.
+   * Right-aligns the characters in this instance, padding on the left a specified character
    * 
    * @throws NullPointerException An argument is null.
    * @throws IllegalArgumentException An invalid argument was given.
@@ -1977,7 +1977,7 @@ public final class StringUtils
     if (add < 0)
       throw new IllegalArgumentException("totalLength=" + totalLength + " len=" + value.length());
 
-    StringBuffer str = new StringBuffer(value);
+    StringBuilder str = new StringBuilder(value);
     char[] ch = new char[add];
     Arrays.fill(ch, pad);
     str.append(ch);
@@ -1986,7 +1986,7 @@ public final class StringUtils
   }
 
   /**
-   * Left-aligns the characters in this instance, padding on the right with a specified Unicode string for a specified total length.
+   * Left-aligns the characters in this instance, padding on the right a specified character
    * 
    * @throws NullPointerException An argument is null.
    * @throws IllegalArgumentException An invalid argument was given.
@@ -2003,7 +2003,7 @@ public final class StringUtils
     if (add < 0)
       throw new IllegalArgumentException("totalLength=" + totalLength + " len=" + value.length());
 
-    StringBuffer str = new StringBuffer(value);
+    StringBuilder str = new StringBuilder(value);
     char[] ch = new char[add];
     Arrays.fill(ch, pad);
     str.insert(0, ch);

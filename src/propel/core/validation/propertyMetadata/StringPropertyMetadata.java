@@ -41,6 +41,10 @@ public class StringPropertyMetadata
    */
   public static final String PROPERTY_ERROR_MAX_LEN_LESS_THAN_MIN_LEN = "%s length maximum cannot be less than allowed minimum!";
   /**
+   * Error message when sequence is too long
+   */
+  public static final String SHOULD_BE_EXACTLY = "%s should be %d characters in length.";
+  /**
    * Error message when sequence is too short
    */
   public static final String SHOULD_BE_LONGER = "%s should be %d or more characters in length.";
@@ -182,6 +186,9 @@ public class StringPropertyMetadata
     // check lengths
     int length = value.length();
 
+    if (getMinLength() == getMaxLength())
+      if (length != getMinLength())
+        throw new ValidationException(String.format(SHOULD_BE_EXACTLY, getName(), getMaxLength()));
     if (length < getMinLength())
       throw new ValidationException(String.format(SHOULD_BE_LONGER, getName(), getMinLength()));
     if (length > getMaxLength())

@@ -32,6 +32,10 @@ public class ArrayPropertyMetadata
    */
   public static final String PROPERTY_ERROR_MAX_LESS_THAN_MIN = "%s maximum size cannot be less than the allowed minimum size!";
   /**
+   * Error message when the size is set
+   */
+  public static final String SHOULD_BE_EXACTLY = "%s should have a size of ";
+  /**
    * Error message when a size is too high
    */
   public static final String SHOULD_NOT_BE_GREATER_THAN = "%s should not have a size larger than ";
@@ -131,6 +135,10 @@ public class ArrayPropertyMetadata
     ReifiedArray<Object> value = new ReifiedArray<Object>(obj);
 
     // check conditions
+    if (getMaxSize() == getMinSize())
+      if (value.length() != getMaxSize())
+        throw new ValidationException(String.format(SHOULD_BE_EXACTLY, getName()) + getMaxSize());
+
     if (value.length() > getMaxSize())
       throw new ValidationException(String.format(SHOULD_NOT_BE_GREATER_THAN, getName()) + getMaxSize());
 
