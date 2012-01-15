@@ -21,6 +21,7 @@ Change logs
 ------------
 CHANGELOG 0.9.9
 
+- Support for primitive (long-based) collections (buffers, maps)
 - Generic Frozen object container, can only be set once
 - StringUtils.replace() bugfix
 - Validation error message improvement when min & max length are equal
