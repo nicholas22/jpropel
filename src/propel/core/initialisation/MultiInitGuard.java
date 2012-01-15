@@ -44,6 +44,18 @@ public final class MultiInitGuard
     this.className = owner.getSimpleName();
     this.flag = new SharedFlag();
   }
+  
+  /**
+   * Constructor initialises with the owner of this guard
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  @Validate
+  public MultiInitGuard(@NotNull final String className)
+  {
+    this.className = className;
+    this.flag = new SharedFlag();
+  }
 
   /**
    * Call to initialise, can be called multiple times

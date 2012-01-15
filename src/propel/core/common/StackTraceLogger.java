@@ -18,9 +18,10 @@
 // /////////////////////////////////////////////////////////
 package propel.core.common;
 
-import propel.core.utils.ConversionUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+import lombok.val;
+import propel.core.utils.ConversionUtils;
 
 /**
  * Wraps around a Throwable and can retrieve its stacktrace, use the toString() method for this.
@@ -29,15 +30,21 @@ public final class StackTraceLogger
 {
   private String stackTrace;
 
+  /**
+   * Constructor, initialises with a Throwable
+   */
   public StackTraceLogger(Throwable e)
   {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    PrintWriter pw = new PrintWriter(baos);
+    val baos = new ByteArrayOutputStream();
+    val pw = new PrintWriter(baos);
     e.printStackTrace(pw);
     pw.flush();
     stackTrace = ConversionUtils.toString(baos.toByteArray(), CONSTANT.UTF8);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String toString()
   {

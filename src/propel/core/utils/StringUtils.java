@@ -2857,7 +2857,7 @@ public final class StringUtils
     if (textToReplace.length() == 0)
       return value;
 
-    int index;
+    int index = 0;
 
     switch(stringComparison)
     {
@@ -2866,7 +2866,7 @@ public final class StringUtils
       case InvariantLocale:
       case InvariantLocaleIgnoreCase:
         // for these we must not assume that the length is the same as textToReplace.length()
-        while ((index = indexOf(value, textToReplace, stringComparison)) >= 0)
+        while ((index = indexOf(value, textToReplace, index, value.length() - index, stringComparison)) >= 0)
         {
           String prefix = value.substring(0, index);
           for (int i = index + 1; i <= value.length(); i++)
@@ -2880,12 +2880,16 @@ public final class StringUtils
               break;
             }
           }
+          index += replaceWithText.length();
         }
         break;
       case Ordinal:
       case OrdinalIgnoreCase:
-        while ((index = indexOf(value, textToReplace, stringComparison)) >= 0)
+        while ((index = indexOf(value, textToReplace, index, value.length() - index, stringComparison)) >= 0)
+        {
           value = value.substring(0, index) + replaceWithText + value.substring(index + textToReplace.length());
+          index += replaceWithText.length();
+        }
         break;
       default:
         throw new IllegalArgumentException("Unrecognized string comparison type: " + stringComparison);
@@ -2912,10 +2916,10 @@ public final class StringUtils
     if (textToReplace.length() == 0)
       return value;
 
-    int index;
+    int index = 0;
 
     // for these we must not assume that the length is the same as textToReplace.length()
-    while ((index = indexOf(value, textToReplace, locale, collator, caseSensitive)) >= 0)
+    while ((index = indexOf(value, textToReplace, index, value.length() - index, locale, collator, caseSensitive)) >= 0)
     {
       String prefix = value.substring(0, index);
       for (int i = index + 1; i <= value.length(); i++)
@@ -2929,6 +2933,7 @@ public final class StringUtils
           break;
         }
       }
+      index += replaceWithText.length();
     }
 
     return value;
