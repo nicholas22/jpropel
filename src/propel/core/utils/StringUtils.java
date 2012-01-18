@@ -20,6 +20,9 @@ package propel.core.utils;
 
 import lombok.Function;
 import lombok.Predicate;
+import lombok.Validate;
+import lombok.val;
+import lombok.Validate.NotNull;
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.*;
@@ -869,6 +872,84 @@ public final class StringUtils
     }
 
     return result;
+  }
+
+  /**
+   * Performs a stripStart and stripEnd, returning the result
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  public static String crop(String value, char except)
+  {
+    return cropStart(cropEnd(value, except), except);
+  }
+
+  /**
+   * Performs a stripStart and stripEnd, returning the result
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  public static String crop(String value, char[] except)
+  {
+    return cropStart(cropEnd(value, except), except);
+  }
+
+  /**
+   * Strips all characters from the start of the given string, until the except character is encountered
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  public static String cropStart(String value, char except)
+  {
+    return cropStart(value, new char[] {except});
+  }
+
+  /**
+   * Strips all characters from the start of the given string, until a character is encountered which exists in the given exception array
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  public static String cropStart(String value, char[] except)
+  {
+    if (value == null)
+      throw new NullPointerException("value");
+    if (except == null)
+      throw new NullPointerException("except");
+
+    int startIndex = 0;
+    while (startIndex <= value.length() - 1 && !contains(except, value.charAt(startIndex)))
+      startIndex++;
+
+    return value.substring(startIndex);
+  }
+
+  /**
+   * Strips all characters from the end of the given string, until the except character is encountered
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  public static String cropEnd(String value, char except)
+  {
+    return cropEnd(value, new char[] {except});
+  }
+
+  /**
+   * Strips all characters from the end of the given string, until a character is encountered which exists in the given exception array
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  public static String cropEnd(String value, char[] except)
+  {
+    if (value == null)
+      throw new NullPointerException("value");
+    if (except == null)
+      throw new NullPointerException("except");
+
+    int endIndex = value.length() - 1;
+    while (endIndex > 0 && !contains(except, value.charAt(endIndex)))
+      endIndex--;
+
+    return value.substring(0, endIndex + 1);
   }
 
   /**
@@ -3358,81 +3439,19 @@ public final class StringUtils
   }
 
   /**
-   * Performs a stripStart and stripEnd, returning the result
+   * Title-cases a string
    * 
    * @throws NullPointerException An argument is null
    */
-  public static String crop(String value, char except)
+  @Validate
+  public static String titleCase(@NotNull final String value)
   {
-    return cropStart(cropEnd(value, except), except);
-  }
+    val parts = split(value, CONSTANT.WHITESPACE_CHAR, StringSplitOptions.None);
+    for (int i = 0; i < parts.length; i++)
+      if (parts[i].length() > 0)
+        parts[i] = parts[i].substring(0, 1).toUpperCase() + parts[i].substring(1).toLowerCase();
 
-  /**
-   * Performs a stripStart and stripEnd, returning the result
-   * 
-   * @throws NullPointerException An argument is null
-   */
-  public static String crop(String value, char[] except)
-  {
-    return cropStart(cropEnd(value, except), except);
-  }
-
-  /**
-   * Strips all characters from the start of the given string, until the except character is encountered
-   * 
-   * @throws NullPointerException An argument is null
-   */
-  public static String cropStart(String value, char except)
-  {
-    return cropStart(value, new char[] {except});
-  }
-
-  /**
-   * Strips all characters from the start of the given string, until a character is encountered which exists in the given exception array
-   * 
-   * @throws NullPointerException An argument is null
-   */
-  public static String cropStart(String value, char[] except)
-  {
-    if (value == null)
-      throw new NullPointerException("value");
-    if (except == null)
-      throw new NullPointerException("except");
-
-    int startIndex = 0;
-    while (startIndex <= value.length() - 1 && !contains(except, value.charAt(startIndex)))
-      startIndex++;
-
-    return value.substring(startIndex);
-  }
-
-  /**
-   * Strips all characters from the end of the given string, until the except character is encountered
-   * 
-   * @throws NullPointerException An argument is null
-   */
-  public static String cropEnd(String value, char except)
-  {
-    return cropEnd(value, new char[] {except});
-  }
-
-  /**
-   * Strips all characters from the end of the given string, until a character is encountered which exists in the given exception array
-   * 
-   * @throws NullPointerException An argument is null
-   */
-  public static String cropEnd(String value, char[] except)
-  {
-    if (value == null)
-      throw new NullPointerException("value");
-    if (except == null)
-      throw new NullPointerException("except");
-
-    int endIndex = value.length() - 1;
-    while (endIndex > 0 && !contains(except, value.charAt(endIndex)))
-      endIndex--;
-
-    return value.substring(0, endIndex + 1);
+    return delimit(parts, CONSTANT.WHITESPACE);
   }
 
   /**
