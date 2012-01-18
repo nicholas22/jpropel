@@ -19,8 +19,16 @@ Highly recommended if you don't want extra dependencies in your libraries.
 
 Change logs
 ------------
-CHANGELOG 0.9.9
+CHANGELOG 1.0.0
+- LongHashMap now has *very* fast lookup performance and smaller memory footprint
+- Added ReflectionUtils.proxy() overload allowing you to "seal" certain class methods
+  (via proxying) and as such guaranteeing immutability for things like collections.
+- Using these two features together (i.e. a long->T map and immutability), you can 
+  create a hash map that is ~500% faster than ConcurrentHashMap (during lookups).
+  This is due to absence of locking.
+- Also, removed SharedLongHashMap implementation.
 
+CHANGELOG 0.9.9
 - Support for primitive (long-based) collections (buffers, maps)
 - Generic Frozen object container, can only be set once
 - StringUtils.replace() bugfix
