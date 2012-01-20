@@ -25,8 +25,10 @@ CHANGELOG 1.0.0
   (via proxying) and as such guaranteeing immutability for things like collections.
 - Using these two features together (i.e. a long->T map and immutability), you can 
   create a hash map that is ~500% faster than ConcurrentHashMap (during lookups).
-  This is due to absence of locking.
-- Also, removed SharedLongHashMap implementation.
+  This is due to absence of locking. See ImmutableUtils.toReadOnly().  
+- Improved InitGuard interface / comments.
+- Extracted interface for MapMultimaps
+- Removed SharedLongHashMap implementation.
 
 CHANGELOG 0.9.9
 - Support for primitive (long-based) collections (buffers, maps)
