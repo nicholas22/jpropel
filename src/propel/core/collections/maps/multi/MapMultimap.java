@@ -36,7 +36,7 @@ import static lombok.Yield.yield;
  * implementation does not allow null keys/subkeys to be inserted.
  */
 public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<? super K>, V>
-    implements ReifiedMultimap<T, K, V>
+    implements IMapMultimap<T, K, V>
 {
   private final Map<T, Map<K, V>> map;
   private final Class<?> keyType;
@@ -72,18 +72,32 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Returns true if the map is empty, false otherwise
+   * {@inheritDoc}
    */
+  @Override
+  @Validate
+  public int size(@NotNull final T key)
+  {
+    Map<K, V> m = map.get(key);
+    if (m != null)
+      return m.size();
+
+    return 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public boolean isEmpty()
   {
     return map.isEmpty();
   }
 
   /**
-   * Returns true if the map contains a key
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public boolean contains(@NotNull final T key, @NotNull final K subkey)
   {
@@ -91,10 +105,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Returns true if the map contains a key
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public boolean containsKey(@NotNull final T key)
   {
@@ -102,10 +115,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Returns true if the map contains a sub-key
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public boolean containsSubkey(@NotNull final K key)
   {
@@ -117,10 +129,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Returns true if the map contains a value
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public boolean containsValue(@NotNull final V value)
   {
@@ -132,10 +143,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Returns the first occurrence of a key/sub-key tuple. If no such key/sub-key tuple is found, null is returned.
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public V get(@NotNull final T key, @NotNull final K subkey)
   {
@@ -146,10 +156,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Returns the sub-map of a key which stores sub-keys -> values. If no such key is found, null is returned.
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public Map<K, V> getKey(@NotNull final T key)
   {
@@ -157,10 +166,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Returns all values held under a key's sub-keys. If no such key is found, an empty iterable is returned.
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public Iterable<V> getAllValues(@NotNull final T key)
   {
@@ -171,10 +179,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Returns the first value of a key's sub-key. If no such sub-key is found, null is returned.
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public V getValueBySubkey(@NotNull final K subkey)
   {
@@ -186,10 +193,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Returns all values under a key's sub-key. If no such sub-key is found, an empty iterable is returned.
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public Iterable<V> getValuesBySubkey(@NotNull final K subkey)
   {
@@ -199,10 +205,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Inserts a key/subkey/value tuple. Returns the old value. If no old value existed, null is returned.
-   * 
-   * @throws NullPointerException A key or sub-key is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public V put(@NotNull final T key, @NotNull final K subKey, V value)
   {
@@ -213,10 +218,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Removes a key/sub-key tuple value. Returns the removed value, or null if no such key/sub-key tuple existed.
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public V remove(@NotNull final T key, @NotNull final K subkey)
   {
@@ -227,10 +231,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Removes a key's sub-key->value map. Returns the removed value, or null if no such key existed.
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public Map<K, V> removeKey(@NotNull final T key)
   {
@@ -238,10 +241,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Removes the first occurrence of a sub-key. Returns the removed value, or null if no such sub-key existed.
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public V removeSubKey(@NotNull final K subkey)
   {
@@ -253,10 +255,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Removes all occurrences of a sub-key. Returns the removed values, or null if no such sub-key existed.
-   * 
-   * @throws NullPointerException An argument is null
+   * {@inheritDoc}
    */
+  @Override
   @Validate
   public V[] removeSubKeys(@NotNull final K subkey)
   {
@@ -273,24 +274,27 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Clears the entire multimap
+   * {@inheritDoc}
    */
+  @Override
   public void clear()
   {
     map.clear();
   }
 
   /**
-   * Returns the key set
+   * {@inheritDoc}
    */
+  @Override
   public Set<T> keySet()
   {
     return map.keySet();
   }
 
   /**
-   * Returns all sub-keys, or an empty iterable if no sub-keys exist
+   * {@inheritDoc}
    */
+  @Override
   public Iterable<K> subkeys()
   {
     for (Map<K, V> m : map.values())
@@ -299,8 +303,9 @@ public class MapMultimap<T extends Comparable<? super T>, K extends Comparable<?
   }
 
   /**
-   * Returns all values, or an empty iterable if no values exist
+   * {@inheritDoc}
    */
+  @Override
   public Iterable<V> values()
   {
     for (T key : map.keySet())

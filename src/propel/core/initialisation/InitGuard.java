@@ -25,11 +25,18 @@ package propel.core.initialisation;
 public interface InitGuard
 {
   /**
-   * Call to initialise. Depending no the implementation this may be a call-once method.
+   * Call to set the state to initialised. Depending no the implementation this may be a call-once method.
    * 
-   * @throws IllegalStateException The class has already been initialised and multiple initialisations are not allowed
+   * @throws IllegalStateException If the class has already been initialised and multiple initialisations are not allowed
    */
   void initialise();
+
+  /**
+   * Call to un-initialise this object
+   * 
+   * @throws IllegalStateException The class has not been initialised yet
+   */
+  void uninitialise();
 
   /**
    * Call to assert that initialisation has taken place prior to this call
@@ -39,7 +46,15 @@ public interface InitGuard
   void assertInitialised();
 
   /**
-   * Call to un-initialise this object e.g. when cleaning up.
+   * Call to assert that initialisation has NOT taken place prior to this call
+   * 
+   * @throws IllegalStateException The class has already been initialised
    */
-  void uninitialise();
+  void assertNotInitialised();
+
+  /**
+   * Returns true if the state is initialised
+   */
+  boolean isInitialised();
+
 }

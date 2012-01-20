@@ -44,7 +44,7 @@ public final class MultiInitGuard
     this.className = owner.getSimpleName();
     this.flag = new SharedFlag();
   }
-  
+
   /**
    * Constructor initialises with the owner of this guard
    * 
@@ -60,6 +60,7 @@ public final class MultiInitGuard
   /**
    * Call to initialise, can be called multiple times
    */
+  @Override
   public void initialise()
   {
     flag.set();
@@ -68,18 +69,41 @@ public final class MultiInitGuard
   /**
    * {@inheritDoc}
    */
-  public void assertInitialised()
+  @Override
+  public void uninitialise()
   {
-    if (flag.isNotSet())
-      throw new IllegalStateException("Cannot proceed with program execution without previously initialising the class " + className);
+    if (!flag.unSet())
+      throw new IllegalStateException("Cannot proceed with un-initialisation of " + className
+          + " instance as it is not in an initialised state");
   }
 
   /**
    * {@inheritDoc}
    */
-  public void uninitialise()
+  @Override
+  public void assertInitialised()
   {
-    flag.unSet();
+    if (flag.isNotSet())
+      throw new IllegalStateException("Instance of " + className + " is not in an initialised state");
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void assertNotInitialised()
+  {
+    if (flag.isSet())
+      throw new IllegalStateException("Instance of " + className + " is in an initialised state");
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isInitialised()
+  {
+    return flag.isSet();
   }
 
 }

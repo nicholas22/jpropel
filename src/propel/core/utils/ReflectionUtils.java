@@ -50,6 +50,9 @@ import propel.core.collections.maps.avl.AvlHashtable;
 import propel.core.collections.sets.AvlTreeSet;
 import propel.core.common.CONSTANT;
 
+/**
+ * Provides utility functionality for reflective manipulations
+ */
 public final class ReflectionUtils
 {
 

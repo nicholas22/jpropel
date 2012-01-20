@@ -18,9 +18,9 @@
 // /////////////////////////////////////////////////////////
 package propel.core.initialisation;
 
-import propel.core.threading.primitives.SharedFlag;
 import lombok.Validate;
 import lombok.Validate.NotNull;
+import propel.core.threading.primitives.SharedFlag;
 
 /**
  * Thread-safe lock-free guard, allows components to check whether they have initialised prior to being used. Also prevents multiple
@@ -45,7 +45,7 @@ public final class SingleInitGuard
     this.className = owner.getSimpleName();
     this.flag = new SharedFlag();
   }
-  
+
   /**
    * Constructor initialises with the owner of this guard
    * 
@@ -61,27 +61,51 @@ public final class SingleInitGuard
   /**
    * Call to initialise, can be called once
    */
+  @Override
   public void initialise()
   {
     if (!flag.set())
-      throw new IllegalStateException("This method is to be called exactly once per program execution");
+      throw new IllegalStateException("Cannot proceed with initialisation of " + className + " instance as it is in an initialised state");
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
+  public void uninitialise()
+  {
+    if (!flag.unSet())
+      throw new IllegalStateException("Cannot proceed with un-initialisation of " + className
+          + " instance as it is not in an initialised state");
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public void assertInitialised()
   {
     if (flag.isNotSet())
-      throw new IllegalStateException("Cannot proceed with program execution without previously initialising the class " + className);
+      throw new IllegalStateException("Instance of " + className + " is not in an initialised state");
   }
 
   /**
    * {@inheritDoc}
    */
-  public void uninitialise()
+  @Override
+  public void assertNotInitialised()
   {
-    flag.unSet();
+    if (flag.isSet())
+      throw new IllegalStateException("Instance of " + className + " is in an initialised state");
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isInitialised()
+  {
+    return flag.isSet();
   }
 
 }
