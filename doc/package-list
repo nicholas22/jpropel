@@ -2,6 +2,7 @@ propel.core
 propel.core.collections
 propel.core.collections.arrays
 propel.core.collections.buffers
+propel.core.collections.buffers.primitive
 propel.core.collections.lists
 propel.core.collections.maps
 propel.core.collections.maps.avl
@@ -9,6 +10,7 @@ propel.core.collections.maps.bi
 propel.core.collections.maps.combinational
 propel.core.collections.maps.data
 propel.core.collections.maps.multi
+propel.core.collections.maps.primitive
 propel.core.collections.queues
 propel.core.collections.sets
 propel.core.collections.stacks
@@ -28,6 +30,7 @@ propel.core.security.compression.LZF
 propel.core.security.cryptography
 propel.core.security.cryptography.ciphers
 propel.core.security.hashing
+propel.core.strategy
 propel.core.threading.primitives
 propel.core.tracing
 propel.core.transactional
