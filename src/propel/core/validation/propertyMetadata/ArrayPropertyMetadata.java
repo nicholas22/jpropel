@@ -18,6 +18,9 @@
 // /////////////////////////////////////////////////////////
 package propel.core.validation.propertyMetadata;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.val;
 import propel.core.collections.arrays.ReifiedArray;
 import propel.core.validation.ValidationException;
 
@@ -48,13 +51,27 @@ public class ArrayPropertyMetadata
    */
   public static final String SHOULD_NOT_BE_NEGATIVE = "%s bound cannot be negative!";
   /**
+   * Error message when a null element exists
+   */
+  public static final String SHOULD_NOT_CONTAIN_NULL_ELEMENTS = "%s should not contain null elements!";
+  /**
    * The minimum inclusive value allowed
    */
+  @Getter
+  @Setter
   private int minSize;
   /**
    * The maximum inclusive value allowed
    */
+  @Getter
+  @Setter
   private int maxSize;
+  /**
+   * Whether empty elements are allowed
+   */
+  @Getter
+  @Setter
+  private boolean noNullElements;
 
   /**
    * Default constructor
@@ -68,17 +85,7 @@ public class ArrayPropertyMetadata
    * 
    * @throws IllegalArgumentException An argument is invalid
    */
-  public ArrayPropertyMetadata(String name, int minSize, int maxSize)
-  {
-    this(name, minSize, maxSize, true);
-  }
-
-  /**
-   * Initializes with the property name and a pair of a min and max sizes (inclusive)
-   * 
-   * @throws IllegalArgumentException An argument is invalid
-   */
-  public ArrayPropertyMetadata(String name, int minSize, int maxSize, boolean notNull)
+  public ArrayPropertyMetadata(String name, int minSize, int maxSize, boolean notNull, boolean noNullElements)
   {
     super(name, notNull);
 
@@ -89,28 +96,9 @@ public class ArrayPropertyMetadata
 
     this.minSize = minSize;
     this.maxSize = maxSize;
+    this.noNullElements = noNullElements;
     if (minSize > maxSize)
       throw new IllegalArgumentException(String.format(PROPERTY_ERROR_MAX_LESS_THAN_MIN, name));
-  }
-
-  public int getMinSize()
-  {
-    return minSize;
-  }
-
-  public void setMinSize(int minSize)
-  {
-    this.minSize = minSize;
-  }
-
-  public int getMaxSize()
-  {
-    return maxSize;
-  }
-
-  public void setMaxSize(int maxSize)
-  {
-    this.maxSize = maxSize;
   }
 
   /**
@@ -122,27 +110,43 @@ public class ArrayPropertyMetadata
   {
     super.validate(value);
 
-    // only check bounds if not null
+    // only check further properties if not null
     if (value != null)
-      checkBounds(value);
+    {
+      ReifiedArray<Object> array = new ReifiedArray<Object>(value);
+
+      checkBounds(array);
+      if (noNullElements)
+        checkNoNullElements(array);
+    }
 
     return value;
   }
 
-  protected void checkBounds(Object obj)
+  protected void checkBounds(ReifiedArray<Object> array)
       throws ValidationException
   {
-    ReifiedArray<Object> value = new ReifiedArray<Object>(obj);
-
     // check conditions
     if (getMaxSize() == getMinSize())
-      if (value.length() != getMaxSize())
+      if (array.length() != getMaxSize())
         throw new ValidationException(String.format(SHOULD_BE_EXACTLY, getName()) + getMaxSize());
 
-    if (value.length() > getMaxSize())
+    if (array.length() > getMaxSize())
       throw new ValidationException(String.format(SHOULD_NOT_BE_GREATER_THAN, getName()) + getMaxSize());
 
-    if (value.length() < getMinSize())
+    if (array.length() < getMinSize())
       throw new ValidationException(String.format(SHOULD_NOT_BE_LESS_THAN, getName()) + getMinSize());
+  }
+
+  protected void checkNoNullElements(ReifiedArray<Object> array)
+      throws ValidationException
+  {
+    val iterator = array.iterator();
+    while (iterator.hasNext())
+    {
+      val elem = iterator.next();
+      if (elem == null)
+        throw new ValidationException(String.format(SHOULD_NOT_CONTAIN_NULL_ELEMENTS, getName()));
+    }
   }
 }

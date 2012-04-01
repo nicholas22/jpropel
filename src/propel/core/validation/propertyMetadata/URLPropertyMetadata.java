@@ -16,18 +16,31 @@
 // /////////////////////////////////////////////////////////
 // Authored by: Nikolaos Tountas -> salam.kaser-at-gmail.com
 // /////////////////////////////////////////////////////////
-package propel.core.collections.maps.multi;
+package propel.core.validation.propertyMetadata;
+
+import java.net.URL;
 
 /**
- * Interface of a MapMultimap (a map of maps). TODO: MapMultimap to inherit from this and use @Override on overridden methods!
+ * Class aiding in validation of URL classes
  */
-public interface ISharedMapMultimap<T extends Comparable<? super T>, K extends Comparable<? super K>, V>
-    extends IMapMultimap<T, K, V>
+public class URLPropertyMetadata
+    extends NullablePropertyMetadata<URL>
 {
   /**
-   * Inserts a key/subkey/value tuple, if it is absent, returning null. Otherwise returns the existing value, without altering it.
-   * 
-   * @throws NullPointerException A key or sub-key is null
+   * Default constructor
    */
-  V putIfAbsent(T key, K subkey, V value);
+  protected URLPropertyMetadata()
+  {
+  }
+
+  /**
+   * Initializes with the property name and whether null values are not allowed
+   * 
+   * @throws IllegalArgumentException Property metadata name cannot be null or empty!
+   */
+  public URLPropertyMetadata(String name, boolean notNull)
+  {
+    super(name, notNull);
+  }
+
 }

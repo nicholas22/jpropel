@@ -35,7 +35,7 @@ public final class SingleInitGuard
   private final String className;
 
   /**
-   * Constructor
+   * Constructor initialises with the owner of this guard
    * 
    * @throws NullPointerException An argument is null
    */
@@ -47,7 +47,7 @@ public final class SingleInitGuard
   }
 
   /**
-   * Constructor initialises with the owner of this guard
+   * Constructor initialises with the name of the owner of this guard
    * 
    * @throws NullPointerException An argument is null
    */

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivy-module version="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+	
+	<info organisation="nt" module="propel-core" revision="1.0.1" status="release" />
+
+	<dependencies>
+		<dependency org="joda-time" name="joda-time" rev="1.6.2" />
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" />
+		<!-- TODO: uncomment when 0.10.8 becomes available in Maven Central, added library locally for now. Alternatively you may use v0.10.4
+		     Also please uncomment lib in POM file.
+		<dependency org="com.github.peichhorn" name="lombok-pg" rev="0.10.8" />
+		-->
+	</dependencies>
+</ivy-module>

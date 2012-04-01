@@ -34,7 +34,7 @@ public final class Frozen<T>
   // the protected object
   private T object;
   // whether the object has been set
-  private SharedFlag flag;
+  private final SharedFlag flag;
 
   /**
    * Default constructor, if using this then the object must be set explicitly before getting.
