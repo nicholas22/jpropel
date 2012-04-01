@@ -1,4 +1,4 @@
-Description
+﻿Description
 -------------
 Boilerplate busting framework with features found modern programming 
 environments, such as LINQ, reified collections and numerous one-liner
@@ -19,6 +19,16 @@ Highly recommended if you don't want extra dependencies in your libraries.
 
 Change logs
 ------------
+CHANGELOG 1.0.1
+- Environment variable utility class (EnvironmentUtils) allows for altering env variables at run-time
+- Added Stopwatch restart() convenience method
+- Added Iterable validator (IterablePropertyMetadata)
+- Added URL validator (URLPropertyMetadata)
+- StackTraceLogger has configurable level, showing minimal, abbreviated or full stacktrace
+- Fixed inaccurate comments in NumericUtils, StringUtils, Linq, etc.
+- Linq unzip() and partition() methods added. Bug-fixing other methods (ofType, orderByThenBy, skip)
+- Using lombok-pg 0.10.8-SNAPSHOT dependency
+
 CHANGELOG 1.0.0
 - LongHashMap now has *very* fast lookup performance and smaller memory footprint
 - Added ReflectionUtils.proxy() overload allowing you to "seal" certain class methods
