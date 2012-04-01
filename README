@@ -20,13 +20,14 @@ Highly recommended if you don't want extra dependencies in your libraries.
 Change logs
 ------------
 CHANGELOG 1.0.1
-- Environment variable utility class (EnvironmentUtils) allows for altering env variables at run-time
-- Added Stopwatch restart() convenience method
+- Included Eclipse project in sources JAR
+- Added EnvironmentUtils utility class, allows for altering JVM env. vars at run-time
+- Added Stopwatch.restart() convenience method
 - Added Iterable validator (IterablePropertyMetadata)
 - Added URL validator (URLPropertyMetadata)
-- StackTraceLogger has configurable level, showing minimal, abbreviated or full stacktrace
+- StackTraceLogger now has configurable level, showing minimal, abbreviated or full trace
 - Fixed inaccurate comments in NumericUtils, StringUtils, Linq, etc.
-- Linq unzip() and partition() methods added. Bug-fixing other methods (ofType, orderByThenBy, skip)
+- Linq unzip() and partition() methods added. Bug-fixing (ofType, orderByThenBy, skip)
 - Using lombok-pg 0.10.8-SNAPSHOT dependency
 
 CHANGELOG 1.0.0
