@@ -629,8 +629,7 @@ public final class Linq
       return countNulls(values);
     else
       return countNonNull(values, item, comparer);
-  } 
-  
+  }
 
   /**
    * Returns the number of occurrences that satisfy the given condition.
@@ -1549,7 +1548,6 @@ public final class Linq
   {
     return element == null ? lastIndexOfNull(values) : lastIndexOfNotNull(values, element, comparer);
   }
-  
 
   /**
    * Returns the maximum of the given values. If not values are given, null is returned.
@@ -1863,7 +1861,7 @@ public final class Linq
       }
       catch(ClassCastException e)
       {
-        
+
       }
     }
   }
@@ -1887,8 +1885,7 @@ public final class Linq
         result.add(temp);
       }
       catch(ClassCastException e)
-      {
-      }
+      {}
     }
 
     return result.toArray();
@@ -2131,6 +2128,44 @@ public final class Linq
         result.addAll(list);
 
     return result.toArray();
+  }
+
+  /**
+   * Partitions the given values based on a predicate. Matching values are first, non-matching second.
+   * 
+   * @throws NullPointerException The values argument is null.
+   */
+  public static <T> Pair<Iterable<T>, Iterable<T>> partition(@NotNull final Iterable<T> values, @NotNull final Predicate1<T> predicate)
+  {
+    List<T> matching = new ArrayList<T>(DEFAULT_LIST_SIZE);
+    List<T> nonMatching = new ArrayList<T>(DEFAULT_LIST_SIZE);
+
+    for (T item : values)
+      if (predicate.evaluate(item))
+        matching.add(item);
+      else
+        nonMatching.add(item);
+
+    return new Pair<Iterable<T>, Iterable<T>>(matching, nonMatching);
+  }
+
+  /**
+   * Partitions the given values based on a predicate. Matching values are first, non-matching second.
+   * 
+   * @throws NullPointerException The values argument is null.
+   */
+  public static <T> Pair<T[], T[]> partition(@NotNull final T[] values, @NotNull final Predicate1<T> predicate)
+  {
+    ReifiedList<T> matching = new ReifiedArrayList<T>(DEFAULT_LIST_SIZE, values.getClass().getComponentType());
+    ReifiedList<T> nonMatching = new ReifiedArrayList<T>(DEFAULT_LIST_SIZE, values.getClass().getComponentType());
+
+    for (T item : values)
+      if (predicate.evaluate(item))
+        matching.add(item);
+      else
+        nonMatching.add(item);
+
+    return new Pair<T[], T[]>(matching.toArray(), nonMatching.toArray());
   }
 
   /**
@@ -2448,23 +2483,23 @@ public final class Linq
       return true;
     }
   }
-  
+
   /**
-   * Throws an exception if the given Iterable does not have a single element (e.g. none, 2, 3, etc.)
-   * If a single element exists, this is returned.
+   * Throws an exception if the given Iterable does not have a single element (e.g. none, 2, 3, etc.) If a single element exists, this is
+   * returned.
    * 
    * @throws NullPointerException When the values argument is null
    * @throws IllegalArgumentException When count is out of range.
    */
   @Validate
-  public static <T> T single(@NotNull final T[] values) 
+  public static <T> T single(@NotNull final T[] values)
   {
-    if(values.length != 1)
+    if (values.length != 1)
       throw new IllegalArgumentException("The given array should contain a single element");
-    
+
     return values[0];
   }
-  
+
   /**
    * Throws an exception if the given Iterable does not have a single element (e.g. none, 2, etc.) If onr element exists, it's returned.
    * 
@@ -2506,10 +2541,10 @@ public final class Linq
     // skip phase
     int skipped = 0;
     Iterator<T> iterator = values.iterator();
-    while(iterator.hasNext() && skipped < count)
+    while (iterator.hasNext() && skipped < count)
     {
-        iterator.next();
-        skipped++;
+      iterator.next();
+      skipped++;
     }
 
     // return remaining phase
@@ -2833,13 +2868,13 @@ public final class Linq
   @Validate
   public static <T> T[] toArray(@NotNull final Enumeration<T> enumeration, @NotNull final Class<?> componentType)
   {
-    ReifiedList<T> result = new ReifiedArrayList<T>(componentType); 
-    while(enumeration.hasMoreElements())
+    ReifiedList<T> result = new ReifiedArrayList<T>(componentType);
+    while (enumeration.hasMoreElements())
       result.add(enumeration.nextElement());
-    
+
     return result.toArray();
   }
-  
+
   /**
    * Converts a list to an array.
    * 
@@ -2948,13 +2983,13 @@ public final class Linq
   @Validate
   public static <T> List<T> toList(@NotNull final Enumeration<? extends T> enumeration)
   {
-    List<T> result = new ArrayList<T>(); 
-    while(enumeration.hasMoreElements())
+    List<T> result = new ArrayList<T>();
+    while (enumeration.hasMoreElements())
       result.add(enumeration.nextElement());
-    
+
     return result;
   }
-  
+
   /**
    * Converts an enumeration to a list
    * 
@@ -2963,13 +2998,13 @@ public final class Linq
   @Validate
   public static <T> ReifiedList<T> toList(@NotNull final Enumeration<T> enumeration, @NotNull final Class<?> genericTypeParameter)
   {
-    ReifiedList<T> result = new ReifiedArrayList<T>(genericTypeParameter); 
-    while(enumeration.hasMoreElements())
+    ReifiedList<T> result = new ReifiedArrayList<T>(genericTypeParameter);
+    while (enumeration.hasMoreElements())
       result.add(enumeration.nextElement());
-    
+
     return result;
   }
-  
+
   /**
    * Converts an Iterable to a list
    * 
@@ -3093,33 +3128,35 @@ public final class Linq
 
   /**
    * Performs the reverse operation to zip()
-   *
+   * 
    * @throws NullPointerException When an argument is null
    */
   @Validate
-  public static <T, TResult1, TResult2> Iterable<Pair<TResult1, TResult2>> unzip(@NotNull final Iterable<T> values, @NotNull final Function1<T, Pair<TResult1, TResult2>> func)
+  public static <T, TResult1, TResult2> Iterable<Pair<TResult1, TResult2>>
+      unzip(@NotNull final Iterable<T> values, @NotNull final Function1<T, Pair<TResult1, TResult2>> func)
   {
-  List<Pair<TResult1, TResult2>> result = new ArrayList<Pair<TResult1, TResult2>>(DEFAULT_LIST_SIZE);
-    
-  for (T item : values)
-    result.add(func.apply(item));
-      
+    List<Pair<TResult1, TResult2>> result = new ArrayList<Pair<TResult1, TResult2>>(DEFAULT_LIST_SIZE);
+
+    for (T item : values)
+      result.add(func.apply(item));
+
     return result;
   }
-  
+
   /**
    * Performs the reverse operation to zip()
-   *
+   * 
    * @throws NullPointerException When an argument is null
    */
   @Validate
-  public static <T, TResult1, TResult2> Pair<TResult1, TResult2>[] unzip(@NotNull final T[] values, @NotNull final Function1<T, Pair<TResult1, TResult2>> func)
+  public static <T, TResult1, TResult2> Pair<TResult1, TResult2>[] unzip(@NotNull final T[] values,
+                                                                         @NotNull final Function1<T, Pair<TResult1, TResult2>> func)
   {
-  ReifiedList<Pair<TResult1, TResult2>> result = new ReifiedArrayList<Pair<TResult1, TResult2>>(DEFAULT_LIST_SIZE, values.getClass().getComponentType());
-    
-  for (T item : values)
-    result.add(func.apply(item));
-      
+    ReifiedList<Pair<TResult1, TResult2>> result = new ReifiedArrayList<Pair<TResult1, TResult2>>(DEFAULT_LIST_SIZE, Pair.class);
+
+    for (T item : values)
+      result.add(func.apply(item));
+
     return result.toArray();
   }
 

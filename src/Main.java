@@ -8,22 +8,20 @@ import propel.core.utils.Linq;
 public class Main
 {
 
-  /**
-   * @param args
-   */
   public static void main(String[] args)
       throws Exception
   {
     val names = new String[] {"john", "james", "john", "eddie"}.where(startsWith("j")).distinct().all(println());
     
     // Note: if you get compilation errors, make sure you've installed "lombok-pg"
-    // Simply copy the lombok-pg-10.8.jar (from lib) to your $ECLIPSE_HOME and edit eclipse.ini, add at the end the following:
+    // Simply copy the lombok-pg-10.8-SNAPSHOT.jar (from lib) to your $ECLIPSE_HOME and edit eclipse.ini, add the following at the end of the file:
     //
-    // -javaagent:lombok-pg-10.8.jar
-    // -Xbootclasspath/a:lombok-pg-10.8.jar
+    // -javaagent:lombok-pg-10.8-SNAPSHOT.jar
+    // -Xbootclasspath/a:lombok-pg-10.8-SNAPSHOT.jar
     //
-    // If you already have a -Xbootclasspath configured in your eclipse.ini, append lombok-pg to it, rather than adding another entry
+    // Note: If you already have a -Xbootclasspath configured in your eclipse.ini, append lombok-pg to it, rather than adding another entry
     // If you don't use Eclipse, look for the "lombok project" installation instructions online.
-        
+
   }
+
 }
