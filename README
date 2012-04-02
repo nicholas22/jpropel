@@ -30,6 +30,7 @@ CHANGELOG 1.0.1
 - Fixed inaccurate comments in NumericUtils, StringUtils, Linq, etc.
 - Linq unzip() and partition() methods added. Bug-fixing (ofType, orderByThenBy, skip)
 - Using lombok-pg 0.10.8-SNAPSHOT dependency
+- Using slf4j-api 1.6.4 dependency
 
 CHANGELOG 1.0.0
 - LongHashMap now has *very* fast lookup performance and smaller memory footprint
