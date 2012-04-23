@@ -67,8 +67,8 @@ public class StringListPropertyMetadata
   public StringListPropertyMetadata(String name, String[] allowedValues, StringComparison comparison,
                                     boolean includeAllowedStringsInErrorMessage)
   {
-    super(name, detectShortest(allowedValues), detectLengthiest(allowedValues), containsNull(allowedValues), containsEmpty(allowedValues),
-        containsNullCharStrings(allowedValues));
+    super(name, detectShortest(allowedValues), detectLengthiest(allowedValues), !containsNull(allowedValues),
+        !containsEmpty(allowedValues), !containsNullCharStrings(allowedValues));
 
     this.allowedValues = allowedValues;
     this.comparison = comparison;

@@ -1,0 +1,49 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.github.nicholas22</groupId>
+  <artifactId>propel-core</artifactId>
+  <packaging>jar</packaging>
+  <name>propel</name>
+  <version>1.0.2</version>
+  <description>The core project of the JPropel library</description>
+  <url>https://github.com/nicholas22/jpropel</url>
+  <licenses>
+    <license>
+      <name>GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0</name>
+      <url>http://www.gnu.org/copyleft/lesser.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>git://github.com/nicholas22/jpropel.git</connection>
+    <url>https://github.com/nicholas22/jpropel</url>
+  </scm>
+  <developers>
+    <developer>
+      <id>nicholas22</id>
+      <name>Nick Tountas</name>
+      <email>salam.kaser@gmail.com</email>
+    </developer>
+  </developers>
+  <dependencies>
+  
+    <!-- TODO: uncomment when 0.10.8 becomes available in Maven Central, added library locally for now.  Alternatively you may use v0.10.4
+         Also please uncomment lib in IVY.xml file.
+    <dependency>
+      <groupId>com.github.peichhorn</groupId>
+      <artifactId>lombok-pg</artifactId>
+      <version>0.10.8</version>
+    </dependency>
+    -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>1.6.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.6.4</version>
+    </dependency>
+  </dependencies>
+</project>

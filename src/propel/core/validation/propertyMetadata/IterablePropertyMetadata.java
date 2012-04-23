@@ -18,7 +18,7 @@
 // /////////////////////////////////////////////////////////
 package propel.core.validation.propertyMetadata;
 
-import propel.core.collections.arrays.ReifiedArray;
+import lombok.val;
 import propel.core.utils.Linq;
 import propel.core.validation.ValidationException;
 
@@ -26,13 +26,14 @@ import propel.core.validation.ValidationException;
  * Class aiding in validation of Iterables.
  */
 public class IterablePropertyMetadata<T>
-    extends ArrayPropertyMetadata
+    extends EnumerablePropertyMetadata
 {
   /**
    * Default constructor
    */
   protected IterablePropertyMetadata()
   {
+    super();
   }
 
   /**
@@ -42,27 +43,68 @@ public class IterablePropertyMetadata<T>
    */
   public IterablePropertyMetadata(String name, int minSize, int maxSize, boolean notNull, boolean noNullElements)
   {
-    super(name, minSize, maxSize, notNull, noNullElements);
+    super(name, notNull);
+
+    if (minSize < 0)
+      throw new IllegalArgumentException(String.format(SHOULD_NOT_BE_NEGATIVE, "minSize"));
+    if (maxSize < 0)
+      throw new IllegalArgumentException(String.format(SHOULD_NOT_BE_NEGATIVE, "maxSize"));
+
+    this.minSize = minSize;
+    this.maxSize = maxSize;
+    this.noNullElements = noNullElements;
+    if (minSize > maxSize)
+      throw new IllegalArgumentException(String.format(PROPERTY_ERROR_MAX_LESS_THAN_MIN, name));
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  protected void checkBounds(ReifiedArray<Object> array)
+  @SuppressWarnings("unchecked")
+  public Object validate(Object value)
       throws ValidationException
   {
-    @SuppressWarnings("unchecked")
-    Iterable<T> value = (Iterable<T>) array;
+    super.validate(value);
 
-    int size = Linq.count(value);
+    // only check further properties if not null
+    if (value != null)
+    {
+      val iterable = (Iterable<T>) value;
 
+      checkBounds(iterable);
+      if (noNullElements)
+        checkNoNullElements(iterable);
+    }
+
+    return value;
+  }
+
+  protected void checkBounds(Iterable<T> iterable)
+      throws ValidationException
+  {
+    // check conditions
+    int size = Linq.count(iterable);
     if (getMaxSize() == getMinSize())
       if (size != getMaxSize())
         throw new ValidationException(String.format(SHOULD_BE_EXACTLY, getName()) + getMaxSize());
 
-    // check conditions
     if (size > getMaxSize())
       throw new ValidationException(String.format(SHOULD_NOT_BE_GREATER_THAN, getName()) + getMaxSize());
 
     if (size < getMinSize())
       throw new ValidationException(String.format(SHOULD_NOT_BE_LESS_THAN, getName()) + getMinSize());
+  }
+
+  protected void checkNoNullElements(Iterable<T> iterable)
+      throws ValidationException
+  {
+    val iterator = iterable.iterator();
+    while (iterator.hasNext())
+    {
+      val elem = iterator.next();
+      if (elem == null)
+        throw new ValidationException(String.format(SHOULD_NOT_CONTAIN_NULL_ELEMENTS, getName()));
+    }
   }
 }
