@@ -49,7 +49,7 @@ import java.util.UUID;
 public final class ConfigurableParameters
 {
   // file of similar functionality to app.config in .NET
-  private static final String FILENAME = "appSettings.xml";
+  private static final String FILENAME = ConfigurableParamsInput.FILENAME;
   // multi-element separator header
   private static final String SEP_PREFIX = "(sep=";
   // type casting header
@@ -71,7 +71,7 @@ public final class ConfigurableParameters
     }
     catch(FileNotFoundException e)
     {
-      // there is no configurable parameters file found, proceeding with default values
+      // there is no configurable parameters file found, hence proceeding with default values
     }
     catch(Throwable e)
     {

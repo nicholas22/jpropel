@@ -1,3 +1,4 @@
+// /////////////////////////////////////////////////////////
 // This file is part of Propel.
 //
 // Propel is free software: you can redistribute it and/or modify
@@ -15,36 +16,17 @@
 // /////////////////////////////////////////////////////////
 // Authored by: Nikolaos Tountas -> salam.kaser-at-gmail.com
 // /////////////////////////////////////////////////////////
-package propel.core.utils;
+package propel.core.configuration;
 
 /**
- * Class with null value related utilities
+ * Contains the input file name for configurable parameters, stored separately from ConfigurableParameters class to avoid static block
+ * invocation ahead of the file name being changed by user code.
  */
-public final class Nullable
+public final class ConfigurableParamsInput
 {
-  /**
-   * Null coalescing extension method, similar to the ?? operator of C#
-   */
-  public static <T> T orElse(T value, T _elseValue)
-  {
-    if (value != null)
-      return value;
+  public static String FILENAME = "appSettings.xml";
 
-    return _elseValue;
-  }
-
-  /**
-   * Null coalescing extension method, similar to the ?? operator of C#
-   */
-  public static Object orElseObj(Object value, Object _elseValue)
-  {
-    if (value != null)
-      return value;
-
-    return _elseValue;
-  }
-
-  private Nullable()
+  private ConfigurableParamsInput()
   {
   }
 }

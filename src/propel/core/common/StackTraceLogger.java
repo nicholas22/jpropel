@@ -23,6 +23,8 @@ import java.io.PrintWriter;
 import lombok.Validate;
 import lombok.Validate.NotNull;
 import lombok.val;
+import propel.core.configuration.ConfigurableConsts;
+import propel.core.configuration.ConfigurableParameters;
 import propel.core.utils.ConversionUtils;
 import propel.core.utils.ExceptionUtils;
 import propel.core.utils.StringComparison;
@@ -34,7 +36,7 @@ import propel.core.utils.StringUtils;
 public class StackTraceLogger
 {
   protected String stackTrace;
-  protected int maxStackFrames = 5;
+  protected int maxStackFrames = ConfigurableParameters.getInt32(ConfigurableConsts.STACKTRACE_LOGGER_MAX_STACKFRAMES);
 
   /**
    * Constructor, initialises with a Throwable
@@ -43,7 +45,7 @@ public class StackTraceLogger
   {
     this(e, StackTraceLevel.FULL);
   }
-
+  
   /**
    * Constructor, initialises with a Throwable
    * 
@@ -141,10 +143,10 @@ public class StackTraceLogger
   private String getSimpleClassName(String fullClassName)
   {
     int lastIndex = fullClassName.lastIndexOf(CONSTANT.DOT_CHAR);
-    if (lastIndex < 0)
+    if (lastIndex < 0 || lastIndex >= fullClassName.length())
       return fullClassName;
 
-    return fullClassName.substring(lastIndex);
+    return fullClassName.substring(lastIndex+1);
   }
 
   /**

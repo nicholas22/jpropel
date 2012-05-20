@@ -18,6 +18,7 @@
 // /////////////////////////////////////////////////////////
 package propel.core.utils;
 
+import static propel.core.functional.projections.Objects.toStringify;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -55,14 +56,6 @@ import propel.core.common.CONSTANT;
  */
 public final class ReflectionUtils
 {
-
-  /**
-   * Private constructor
-   */
-  private ReflectionUtils()
-  {
-  }
-
   /**
    * Activates an object from the type.
    * 
@@ -137,8 +130,8 @@ public final class ReflectionUtils
     }
 
     // failed to find match, log an informative message
-    String[] constructorSignatures = Linq.select(constructors, callToString());
-    String[] argTypeNames = Linq.select(argTypes, callToString());
+    String[] constructorSignatures = Linq.select(constructors, toStringify());
+    String[] argTypeNames = Linq.select(argTypes, toStringify());
 
     throw new IllegalArgumentException("There are " + constructorSignatures.length + " constructors ("
         + StringUtils.delimit(constructorSignatures, CONSTANT.COMMA) + ") accepting the arguments given: "
@@ -149,12 +142,6 @@ public final class ReflectionUtils
   static String getSimpleNameIfNotNull(final Class<?> arg)
   {
     return arg != null ? arg.getSimpleName() : "[NULL]";
-  }
-
-  @Function
-  private static String callToString(final Object obj)
-  {
-    return obj.toString();
   }
 
   @Predicate
@@ -937,6 +924,17 @@ public final class ReflectionUtils
     return Linq.where(methods, methodIsGetter());
   }
 
+  /**
+   * Returns the first encountered getter with the given name, or null if not found
+   * 
+   * @throws NullPointerException An argument is null.
+   * @throws SecurityException Cannot perform reflection operations in this context.
+   */
+  public static Method getGetter(Class<?> type, String name, boolean includeInherited)
+  {
+    return Linq.firstOrDefault(Linq.where(getGetters(type, includeInherited), methodNameEquals(name)));
+  }
+
   @Predicate
   private static boolean methodIsGetter(final Method element)
   {
@@ -953,6 +951,17 @@ public final class ReflectionUtils
   {
     Method[] methods = getMethods(type, includeInherited);
     return Linq.where(methods, methodIsSetter());
+  }
+
+  /**
+   * Returns the first encountered setter with the given name, or null if not found
+   * 
+   * @throws NullPointerException An argument is null.
+   * @throws SecurityException Cannot perform reflection operations in this context.
+   */
+  public static Method getSetter(Class<?> type, String name, boolean includeInherited)
+  {
+    return Linq.firstOrDefault(Linq.where(getSetters(type, includeInherited), methodNameEquals(name)));
   }
 
   @Predicate
@@ -1218,11 +1227,11 @@ public final class ReflectionUtils
 
     String methodName = method.getName();
     // bean syntax for getters
-    if (((methodName.length() >= 4) && methodName.startsWith("get")) || ((methodName.length() >= 3) && methodName.startsWith("is"))) 
-        // must have non-void return type and no arguments
-        if (!isReturnTypeVoid(method))
-          if (method.getParameterTypes().length == 0)
-            return true;
+    if (((methodName.length() >= 4) && methodName.startsWith("get")) || ((methodName.length() >= 3) && methodName.startsWith("is")))
+      // must have non-void return type and no arguments
+      if (!isReturnTypeVoid(method))
+        if (method.getParameterTypes().length == 0)
+          return true;
 
     return false;
   }
@@ -1659,5 +1668,9 @@ public final class ReflectionUtils
         return m;
 
     return null;
+  }
+
+  private ReflectionUtils()
+  {
   }
 }

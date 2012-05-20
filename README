@@ -1,4 +1,4 @@
-﻿Description
+Description
 -------------
 Boilerplate busting framework with features found modern programming 
 environments, such as LINQ, reified collections and numerous one-liner
@@ -19,6 +19,20 @@ Highly recommended if you don't want extra dependencies in your libraries.
 
 Change logs
 ------------
+CHANGELOG 1.0.3
+- Upgraded dependency lombok-pg to v0.11.0
+- Upgraded dependency slf4j-api to v1.6.4
+- ThreadUtils methods for sleep, busy-spin, yield waiting
+- Added methods getSetter and getGetter in ReflectionUtils
+- Added FileUtils directory methods accepting File as arg
+- NPE cleanup, using Validate.NotNull in most Util classes
+- Bugfixing Linq (type constraints)
+- Bugfixing in ArrayUtils (reverse method)
+- Breaking changes:
+  - Moved some ArrayUtils methods to Linq for consistency
+  - Projections organised as Arrays, Objects, Files, etc.
+  - Removed duplicates
+
 CHANGELOG 1.0.2
 - Bugfixing validators and logger
 
@@ -413,7 +427,7 @@ CHANGELOG 0.7
 
            // String comparison implementations:
            // e.g. this returns true for German locale
-           equal("straße", "strasse", StringComparison.CurrentCulture)
+           equal("stra�e", "strasse", StringComparison.CurrentCulture)
            // and this returns true
            startsWith("str", "STR", StringComparison.OrdinalIgnoreCase) 
          

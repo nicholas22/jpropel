@@ -177,20 +177,34 @@ public class StringListPropertyMetadata
   public String validate(final String value)
       throws ValidationException
   {
-    // perform null, empty and length checks
-    String result = super.validate(value);
+    String result = value;
 
-    // ensure one of allowed values is used
-    if (!StringUtils.contains(allowedValues, value, comparison))
-    {
-      // decide whether to include allowed values in error message
-      if (includeAllowedStringsInErrorMessage)
-        throw new ValidationException(getName() + " specified ('" + value + "') is not one of the following: "
-            + StringUtils.delimit(allowedValues, ", "));
+    // perform null checks
+    checkNotNull(value);
 
-      // do not include
-      throw new ValidationException(getName() + " specified a value which is not allowed: " + value);
-    }
+    // only check further if not null
+    if (value != null)
+      // check if empty first
+      if (!checkEmpty(value))
+      {
+        // do not check length
+        // checkLength(value);
+
+        // check no null chars
+        checkNoNullChars(value);
+
+        // ensure one of allowed values is used
+        if (!StringUtils.contains(allowedValues, value, comparison))
+        {
+          // decide whether to include allowed values in error message
+          if (includeAllowedStringsInErrorMessage)
+            throw new ValidationException(getName() + " specified ('" + value + "') is not one of the following: "
+                + StringUtils.delimit(allowedValues, ", "));
+
+          // do not include
+          throw new ValidationException(getName() + " specified a value which is not an allowed value: " + value);
+        }
+      }
 
     return result;
   }

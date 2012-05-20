@@ -35,6 +35,13 @@ public final class ConfigurableConsts
   {
   }
 
+  // Common
+  /**
+   * The number of stack frames to show when ABBREVIATED stack trace logging is used
+   */
+  public static final KeyValuePair<String, Integer> STACKTRACE_LOGGER_MAX_STACKFRAMES = new KeyValuePair<String, Integer>(
+      "StackTraceLogger.MAX_STACKFRAMES", 5);
+
   // DbC
   /**
    * The full type name of the DbC contracts engine used
@@ -57,7 +64,7 @@ public final class ConfigurableConsts
    * When Linq needs to create a list for storing a collection of items, it will set the initial size to this.
    */
   public static final KeyValuePair<String, Integer> LINQ_DEFAULT_LIST_SIZE = new KeyValuePair<String, Integer>("Linq.DEFAULT_LIST_SIZE",
-      512);
+      128);
 
   // Network
   /**

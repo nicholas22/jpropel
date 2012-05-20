@@ -18,21 +18,25 @@
 // /////////////////////////////////////////////////////////
 package propel.core.utils;
 
-import propel.core.common.CONSTANT;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.CharArrayWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
+import lombok.Validate;
+import lombok.Validate.NotNull;
+import lombok.val;
+import propel.core.common.CONSTANT;
 
 /**
  * Provides utility functionality for Stream-related classes
  */
 public final class StreamUtils
 {
-  private StreamUtils()
-  {
-  }
-
   /**
    * Message used in thrown exception when a stream end is encountered prematurely.
    */
@@ -52,13 +56,10 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static void copy(InputStream from, OutputStream to, long length)
+  @Validate
+  public static void copy(@NotNull final InputStream from, @NotNull final OutputStream to, final long length)
       throws IOException
   {
-    if (from == null)
-      throw new NullPointerException("from");
-    if (to == null)
-      throw new NullPointerException("to");
     if (length < 0)
       throw new IllegalArgumentException("length=" + length);
     if (length == 0)
@@ -73,14 +74,10 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static void writeFully(OutputStream stream, byte[] data)
+  @Validate
+  public static void writeFully(@NotNull final OutputStream stream, @NotNull final byte[] data)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-    if (data == null)
-      throw new NullPointerException("data");
-
     stream.write(data, 0, data.length);
     stream.flush();
   }
@@ -93,17 +90,14 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static void writeFully(OutputStream stream, byte[] data, int maxChunkSize)
+  @Validate
+  public static void writeFully(@NotNull final OutputStream stream, @NotNull final byte[] data, final int maxChunkSize)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-    if (data == null)
-      throw new NullPointerException("data");
     if (maxChunkSize <= 0)
       throw new IllegalArgumentException("maxChunkSize=" + maxChunkSize);
 
-    int length = data.length;
+    val length = data.length;
 
     if (length < maxChunkSize)
       stream.write(data, 0, length);
@@ -127,7 +121,7 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static String readAllCharacters(InputStream stream)
+  public static String readAllCharacters(final InputStream stream)
       throws IOException
   {
     return readAllCharacters(stream, CONSTANT.UTF8);
@@ -139,15 +133,11 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static String readAllCharacters(InputStream stream, Charset streamEncoding)
+  @Validate
+  public static String readAllCharacters(@NotNull final InputStream stream, @NotNull final Charset streamEncoding)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-    if (streamEncoding == null)
-      throw new NullPointerException("streamEncoding");
-
-    byte[] data = readFully(stream, stream.available());
+    val data = readFully(stream, stream.available());
     return new String(data, streamEncoding);
   }
 
@@ -158,13 +148,10 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static void readFully(InputStream stream, byte[] buffer, long length)
+  @Validate
+  public static void readFully(@NotNull final InputStream stream, @NotNull final byte[] buffer, final long length)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-    if (buffer == null)
-      throw new NullPointerException("buffer");
     if (length < 0)
       throw new IllegalArgumentException("length=" + length);
     if (buffer.length < length)
@@ -196,17 +183,16 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static byte[] readFully(InputStream stream, long length)
+  @Validate
+  public static byte[] readFully(@NotNull final InputStream stream, final long length)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
     if (length < 0)
       throw new IllegalArgumentException("length=" + length);
     if (length > Integer.MAX_VALUE)
       throw new IllegalArgumentException("length=" + length);
 
-    byte[] buffer = new byte[(int) length];
+    val buffer = new byte[(int) length];
     readFully(stream, buffer, length);
     return buffer;
   }
@@ -219,13 +205,10 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static void readFully(InputStream stream, byte[] buffer, long length, int maxChunkSize)
+  @Validate
+  public static void readFully(@NotNull final InputStream stream, @NotNull final byte[] buffer, final long length, final int maxChunkSize)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-    if (buffer == null)
-      throw new NullPointerException("buffer");
     if (length < 0)
       throw new IllegalArgumentException("length=" + length);
     if (buffer.length < length)
@@ -260,15 +243,14 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static byte[] readFully(InputStream stream, long length, int maxChunkSize)
+  @Validate
+  public static byte[] readFully(@NotNull final InputStream stream, final long length, final int maxChunkSize)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
     if (length < 0 || length > Integer.MAX_VALUE)
       throw new IllegalArgumentException("length=" + length);
 
-    byte[] buffer = new byte[(int) length];
+    val buffer = new byte[(int) length];
     readFully(stream, buffer, length, maxChunkSize);
     return buffer;
   }
@@ -279,7 +261,7 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipUntil(InputStream stream, char terminator)
+  public static void skipUntil(final InputStream stream, final char terminator)
       throws IOException
   {
     skipUntil(stream, terminator, CONSTANT.UTF8);
@@ -292,7 +274,7 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipUntil(InputStream stream, char terminator, Charset streamEncoding)
+  public static void skipUntil(final InputStream stream, final char terminator, final Charset streamEncoding)
       throws IOException
   {
     while (readCharacter(stream, streamEncoding) != terminator)
@@ -306,7 +288,7 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipUntil(InputStream stream, String terminator)
+  public static void skipUntil(final InputStream stream, final String terminator)
       throws IOException
   {
     skipUntil(stream, terminator, CONSTANT.UTF8);
@@ -319,18 +301,12 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipUntil(InputStream stream, String terminator, Charset streamEncoding)
+  @Validate
+  public static void skipUntil(@NotNull final InputStream stream, @NotNull final String terminator, @NotNull final Charset streamEncoding)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-    if (terminator == null)
-      throw new NullPointerException("terminator");
-    if (streamEncoding == null)
-      throw new NullPointerException("streamEncoding");
-
     // this is the terminator string
-    CharBuffer terminatorCharBuffer = ByteBuffer.wrap(terminator.getBytes(streamEncoding)).asCharBuffer();
+    val terminatorCharBuffer = ByteBuffer.wrap(terminator.getBytes(streamEncoding)).asCharBuffer();
 
     // buffer holding the latest characters
     CharBuffer tempCharBuffer = CharBuffer.allocate(terminatorCharBuffer.length());
@@ -343,7 +319,7 @@ public final class StreamUtils
     while (!(StringUtils.sequenceEqual(terminatorCharBuffer.array(), tempCharBuffer.array())))
     {
       // read next char
-      char ch = readCharacter(stream, streamEncoding);
+      val ch = readCharacter(stream, streamEncoding);
 
       // left shift elements in array, throw away the first read
       tempCharBuffer = CharBuffer.wrap(tempCharBuffer.subSequence(1, tempCharBuffer.length())).append(ch);
@@ -356,16 +332,14 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipUntil(InputStream stream, byte terminator)
+  @Validate
+  public static void skipUntil(@NotNull final InputStream stream, final byte terminator)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-
     while (true)
     {
       // read next byte
-      int read = stream.read();
+      val read = stream.read();
 
       // check status
       if (read >= 0)
@@ -383,21 +357,17 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipUntil(InputStream stream, byte[] terminator)
+  @Validate
+  public static void skipUntil(@NotNull final InputStream stream, @NotNull final byte[] terminator)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-    if (terminator == null)
-      throw new NullPointerException("terminator");
-
     // buffer holding the latest bytes
-    byte[] tempBuffer = new byte[terminator.length];
+    val tempBuffer = new byte[terminator.length];
 
     // read the first batch
     for (int i = 0; i < tempBuffer.length; i++)
     {
-      int read = stream.read();
+      val read = stream.read();
 
       // check status
       if (read >= 0)
@@ -410,7 +380,7 @@ public final class StreamUtils
     while (!(ByteArrayUtils.sequenceEqual(tempBuffer, terminator)))
     {
       // read next byte
-      int read = stream.read();
+      val read = stream.read();
 
       // check status
       if (read >= 0)
@@ -433,7 +403,7 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipBytes(InputStream stream, int length)
+  public static void skipBytes(final InputStream stream, final int length)
       throws IOException
   {
     readFully(stream, length);
@@ -446,7 +416,7 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipCharacters(InputStream stream, int count)
+  public static void skipCharacters(final InputStream stream, final int count)
       throws IOException
   {
     skipCharacters(stream, count, CONSTANT.UTF8);
@@ -459,11 +429,10 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipCharacters(InputStream stream, int count, Charset streamEncoding)
+  @Validate
+  public static void skipCharacters(final InputStream stream, final int count, @NotNull final Charset streamEncoding)
       throws IOException
   {
-    if (streamEncoding == null)
-      throw new NullPointerException("streamEncoding");
     if (count < 0)
       throw new IllegalArgumentException("count");
 
@@ -478,7 +447,7 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static String readUntil(InputStream stream, char terminator)
+  public static String readUntil(final InputStream stream, final char terminator)
       throws IOException
   {
     return readUntil(stream, terminator, CONSTANT.UTF8);
@@ -491,19 +460,17 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static String readUntil(InputStream stream, char terminator, Charset streamEncoding)
+  @Validate
+  public static String readUntil(final InputStream stream, final char terminator, @NotNull final Charset streamEncoding)
       throws IOException
   {
-    if (streamEncoding == null)
-      throw new NullPointerException("streamEncoding");
-
     char ch;
-    StringBuilder name = new StringBuilder(256);
+    val sb = new StringBuilder(256);
 
     while ((ch = readCharacter(stream, streamEncoding)) != terminator)
-      name.append(ch);
+      sb.append(ch);
 
-    return name.toString();
+    return sb.toString();
   }
 
   /**
@@ -513,7 +480,7 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static String readUntil(InputStream stream, String terminator)
+  public static String readUntil(final InputStream stream, final String terminator)
       throws IOException
   {
     return readUntil(stream, terminator, CONSTANT.UTF8);
@@ -526,20 +493,15 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static String readUntil(InputStream stream, String terminator, Charset streamEncoding)
-      throws IOException
+  @Validate
+  public static String
+      readUntil(@NotNull final InputStream stream, @NotNull final String terminator, @NotNull final Charset streamEncoding)
+          throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-    if (terminator == null)
-      throw new NullPointerException("terminator");
-    if (streamEncoding == null)
-      throw new NullPointerException("streamEncoding");
-
-    StringBuilder result = new StringBuilder(256);
+    val result = new StringBuilder(256);
 
     // this is the terminator string
-    CharBuffer terminatorCharBuffer = CharBuffer.wrap(terminator.toCharArray());
+    val terminatorCharBuffer = CharBuffer.wrap(terminator.toCharArray());
 
     // buffer holding the latest characters read
     CharBuffer tempCharBuffer = CharBuffer.allocate(terminatorCharBuffer.length());
@@ -552,7 +514,7 @@ public final class StreamUtils
     while (!(StringUtils.sequenceEqual(terminatorCharBuffer.array(), tempCharBuffer.array())))
     {
       // read next char
-      char ch = readCharacter(stream, streamEncoding);
+      val ch = readCharacter(stream, streamEncoding);
 
       // left shift elements in array, throw away the first read
       tempCharBuffer = CharBuffer.wrap(tempCharBuffer.subSequence(1, tempCharBuffer.length())).append(ch);
@@ -570,23 +532,21 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static byte[] readUntil(InputStream stream, byte terminator)
+  @Validate
+  public static byte[] readUntil(@NotNull final InputStream stream, final byte terminator)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-
-    ByteArrayOutputStream result = new ByteArrayOutputStream(128);
+    val result = new ByteArrayOutputStream(128);
 
     while (true)
     {
       // read next byte
-      int read = stream.read();
+      val read = stream.read();
 
       // check status
       if (read >= 0)
       {
-        byte bt = (byte) read;
+        val bt = (byte) read;
 
         if (bt == terminator)
           break;
@@ -605,18 +565,14 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static byte[] readUntil(InputStream stream, byte[] terminator)
+  @Validate
+  public static byte[] readUntil(@NotNull final InputStream stream, @NotNull final byte[] terminator)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-    if (terminator == null)
-      throw new NullPointerException("terminator");
-
-    ByteArrayOutputStream result = new ByteArrayOutputStream(128);
+    val result = new ByteArrayOutputStream(128);
 
     // buffer holding the latest bytes
-    byte[] tempBuffer = new byte[terminator.length];
+    val tempBuffer = new byte[terminator.length];
 
     // read the first batch
     for (int i = 0; i < tempBuffer.length; i++)
@@ -635,12 +591,12 @@ public final class StreamUtils
     while (!(ByteArrayUtils.sequenceEqual(tempBuffer, terminator)))
     {
       // read next byte
-      int read = stream.read();
+      val read = stream.read();
 
       // check status
       if (read >= 0)
       {
-        byte bt = (byte) read;
+        val bt = (byte) read;
 
         // shift elements in array to the left, throw away the first read
         for (int i = 0; i < tempBuffer.length - 1; i++)
@@ -665,14 +621,12 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static String readUntil(InputStream stream, byte[] terminator, Charset streamEncoding)
+  @Validate
+  public static String readUntil(InputStream stream, byte[] terminator, @NotNull final Charset streamEncoding)
       throws IOException
   {
-    if (streamEncoding == null)
-      throw new NullPointerException("streamEncoding");
-
-    byte[] ba = readUntil(stream, terminator);
-    CharBuffer result = streamEncoding.decode(ByteBuffer.wrap(ba));
+    val ba = readUntil(stream, terminator);
+    val result = streamEncoding.decode(ByteBuffer.wrap(ba));
     return result.toString();
   }
 
@@ -683,7 +637,7 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static char[] readCharacters(InputStream stream, int count)
+  public static char[] readCharacters(final InputStream stream, final int count)
       throws IOException
   {
     return readCharacters(stream, CONSTANT.UTF8, count);
@@ -696,7 +650,7 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static char[] readCharacters(InputStream stream, Charset streamEncoding, int count)
+  public static char[] readCharacters(final InputStream stream, final Charset streamEncoding, final int count)
       throws IOException
   {
     if (count < 0)
@@ -727,7 +681,7 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static char readCharacter(InputStream stream)
+  public static char readCharacter(final InputStream stream)
       throws IOException
   {
     return readCharacter(stream, CONSTANT.UTF8);
@@ -740,15 +694,11 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static char readCharacter(InputStream stream, Charset streamEncoding)
+  @Validate
+  public static char readCharacter(@NotNull final InputStream stream, @NotNull final Charset streamEncoding)
       throws IOException
   {
-    if (stream == null)
-      throw new NullPointerException("stream");
-    if (streamEncoding == null)
-      throw new NullPointerException("decoder");
-
-    ByteBuffer byteBuffer = ByteBuffer.allocate(8);
+    val byteBuffer = ByteBuffer.allocate(8);
 
     CharBuffer chars;
     do
@@ -774,12 +724,10 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static String readAllCharacters(Reader textStream)
+  @Validate
+  public static String readAllCharacters(@NotNull final Reader textStream)
       throws IOException
   {
-    if (textStream == null)
-      throw new NullPointerException("textStream");
-
     // create a 4KB buffer to read the file
     CharArrayWriter writer = new CharArrayWriter();
     final char[] bytes = new char[4096];
@@ -800,7 +748,7 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipUntil(Reader textStream, char terminator)
+  public static void skipUntil(final Reader textStream, final char terminator)
       throws IOException
   {
     while (readCharacter(textStream) != terminator)
@@ -813,7 +761,7 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipUntil(Reader textStream, String terminator)
+  public static void skipUntil(final Reader textStream, final String terminator)
       throws IOException
   {
     readUntil(textStream, terminator);
@@ -826,13 +774,13 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static String readFully(Reader textStream, int count)
+  public static String readFully(final Reader textStream, final int count)
       throws IOException
   {
     if (count < 0)
       throw new IllegalArgumentException("count=" + count);
 
-    StringBuilder sb = new StringBuilder(256);
+    val sb = new StringBuilder(256);
 
     for (int i = 0; i < count; i++)
       sb.append(readCharacter(textStream));
@@ -847,7 +795,7 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static void skipCharacters(Reader textStream, int count)
+  public static void skipCharacters(final Reader textStream, final int count)
       throws IOException
   {
     if (count < 0)
@@ -864,16 +812,16 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static String readUntil(Reader textStream, char terminator)
+  public static String readUntil(final Reader textStream, final char terminator)
       throws IOException
   {
     char ch;
-    StringBuilder name = new StringBuilder(256);
+    val sb = new StringBuilder(256);
 
     while ((ch = readCharacter(textStream)) != terminator)
-      name.append(ch);
+      sb.append(ch);
 
-    return name.toString();
+    return sb.toString();
   }
 
   /**
@@ -882,19 +830,17 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static String readUntil(Reader textStream, String terminator)
+  @Validate
+  public static String readUntil(final Reader textStream, @NotNull final String terminator)
       throws IOException
   {
-    if (terminator == null)
-      throw new NullPointerException("terminator");
-
-    StringBuilder result = new StringBuilder(256);
+    val result = new StringBuilder(256);
 
     // this is the terminator string
-    char[] terminatorChars = terminator.toCharArray();
+    val terminatorChars = terminator.toCharArray();
 
     // buffer holding the latest characters
-    char[] tempBuffer = new char[terminatorChars.length];
+    val tempBuffer = new char[terminatorChars.length];
 
     // read the first batch
     for (int i = 0; i < tempBuffer.length; i++)
@@ -907,7 +853,7 @@ public final class StreamUtils
     while (!(StringUtils.sequenceEqual(terminatorChars, tempBuffer)))
     {
       // read next char
-      char ch = readCharacter(textStream);
+      val ch = readCharacter(textStream);
 
       // left shift elements in array, throw away the first read
       for (int i = 0; i < tempBuffer.length - 1; i++)
@@ -931,10 +877,10 @@ public final class StreamUtils
    * @throws IllegalArgumentException A stream was passed that does not support peeking (mark/reset)
    * @throws IOException An I/O exception occurred.
    */
-  public static String readUntilPeeking(Reader textStream, char terminator)
+  public static String readUntilPeeking(final Reader textStream, final char terminator)
       throws IOException
   {
-    StringBuilder result = new StringBuilder(256);
+    val result = new StringBuilder(256);
     while (peekCharacter(textStream) != terminator)
       result.append(readCharacter(textStream));
 
@@ -947,13 +893,11 @@ public final class StreamUtils
    * @throws NullPointerException An argument is null.
    * @throws IOException An I/O exception occurred.
    */
-  public static char readCharacter(Reader textStream)
+  @Validate
+  public static char readCharacter(@NotNull final Reader textStream)
       throws IOException
   {
-    if (textStream == null)
-      throw new NullPointerException("textStream");
-
-    int ch = textStream.read();
+    val ch = textStream.read();
 
     if (ch < 0)
       throw new IOException(String.format(EOF_EXCEPTION_MESSAGE_CHARACTERS, 1));
@@ -968,13 +912,13 @@ public final class StreamUtils
    * @throws IllegalArgumentException An argument is out of range.
    * @throws IOException An I/O exception occurred.
    */
-  public static char[] readCharacters(Reader textStream, int count)
+  public static char[] readCharacters(final Reader textStream, final int count)
       throws IOException
   {
     if (count < 0)
       throw new IllegalArgumentException("count=" + count);
 
-    char[] result = new char[count];
+    val result = new char[count];
     int i = 0;
 
     try
@@ -1000,18 +944,16 @@ public final class StreamUtils
    * @throws IllegalArgumentException A stream was passed that does not support peeking (mark/reset)
    * @throws IOException An I/O exception occurred.
    */
-  public static char peekCharacter(Reader textStream)
+  @Validate
+  public static char peekCharacter(@NotNull final Reader textStream)
       throws IOException
   {
-    if (textStream == null)
-      throw new NullPointerException("textStream");
-
     if (!textStream.markSupported())
       throw new IllegalArgumentException("Peeking is not possible because mark()/reset() are not supported!");
 
     textStream.mark(1);
 
-    int ch = textStream.read();
+    val ch = textStream.read();
 
     textStream.reset();
 
@@ -1019,5 +961,9 @@ public final class StreamUtils
       throw new IOException(String.format(EOF_EXCEPTION_MESSAGE_CHARACTERS, 1));
 
     return (char) ch;
+  }
+
+  private StreamUtils()
+  {
   }
 }
