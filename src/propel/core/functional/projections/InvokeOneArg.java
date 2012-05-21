@@ -39,11 +39,11 @@ public final class InvokeOneArg
    */
   @Action
   @SneakyThrows
-  public static void invokeMethod(final Object obj, final Method _method,final  Object _arg)
+  public static void invokeMethod(final Object arg, final Object _obj, final Method _method)
   {
     try
     {
-      _method.invoke(obj, _arg);
+      _method.invoke(_obj, arg);
     }
     catch(InvocationTargetException e)
     {
@@ -61,11 +61,11 @@ public final class InvokeOneArg
    */
   @Function
   @SneakyThrows
-  public static Void invokeMethodFunc(final Object obj, final Method _method, final Object _arg)
+  public static Void invokeMethodFunc(final Object arg, final Object _obj, final Method _method)
   {
     try
     {
-      _method.invoke(obj, _arg);
+      _method.invoke(_obj, arg);
       return null;
     }
     catch(InvocationTargetException e)
@@ -84,11 +84,11 @@ public final class InvokeOneArg
    */
   @Function
   @SneakyThrows
-  public static <T> T invokeFunction(final Object obj, final Method _method, final Object _arg)
+  public static <T> T invokeFunction(final Object arg, final Object _obj, final Method _method)
   {
     try
     {
-      return (T) _method.invoke(obj, _arg);
+      return (T) _method.invoke(_obj, arg);
     }
     catch(InvocationTargetException e)
     {
