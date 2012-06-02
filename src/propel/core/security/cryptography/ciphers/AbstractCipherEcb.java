@@ -83,7 +83,8 @@ public abstract class AbstractCipherEcb
       throw new IndexOutOfBoundsException("offset=" + offset + " dataInLen=" + dataIn.length);
     if (offset > dataOut.length)
       throw new IndexOutOfBoundsException("offset=" + offset + " dataOutLen=" + dataOut.length);
-    // TODO: fix integer overflow later
+    if(offset + count < 0)
+      throw new IllegalArgumentException("offset="+offset+" count="+count);
     if (offset + count > dataIn.length)
       throw new IndexOutOfBoundsException("offset+count=" + offset + count + " dataInLen=" + dataIn.length);
     if (offset + count > dataOut.length)

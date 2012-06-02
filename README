@@ -19,6 +19,10 @@ Highly recommended if you don't want extra dependencies in your libraries.
 
 Change logs
 ------------
+CHANGELOG 1.0.4
+- Bugfixing
+- Minor improvements
+
 CHANGELOG 1.0.3
 - Upgraded dependency lombok-pg to v0.11.0
 - Upgraded dependency slf4j-api to v1.6.4

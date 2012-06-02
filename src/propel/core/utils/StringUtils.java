@@ -927,7 +927,7 @@ public final class StringUtils
   }
 
   /**
-   * Concatenates the given values using their ToString method and appending the given delimiter between all values. Returns String.Empty if
+   * Concatenates the given values using their toString() method and appending the given delimiter between all values. Returns String.Empty if
    * an empty or null collection was provided. Ignores null collection items.
    * 
    * @throws NullPointerException An argument is null.
@@ -938,7 +938,7 @@ public final class StringUtils
   }
 
   /**
-   * Concatenates the given values using their ToString method and appending the given delimiter between all values. Returns String.Empty if
+   * Concatenates the given values using their toString() method and appending the given delimiter between all values. Returns String.Empty if
    * an empty or null collection was provided. Substitutes null items with a null-replacement value, if provided and is not null.
    * 
    * @throws NullPointerException An argument is null.
@@ -968,7 +968,7 @@ public final class StringUtils
   }
 
   /**
-   * Concatenates the given values using their ToString method and appending the given delimiter between all values. Returns String.Empty if
+   * Concatenates the given values using their toString() method and appending the given delimiter between all values. Returns String.Empty if
    * an empty or null collection was provided. Ignores null collection items.
    * 
    * @throws NullPointerException An argument is null.
@@ -979,7 +979,7 @@ public final class StringUtils
   }
 
   /**
-   * Concatenates the given values using their ToString method and appending the given delimiter between all values. Returns String.Empty if
+   * Concatenates the given values using their toString() method and appending the given delimiter between all values. Returns String.Empty if
    * an empty or null collection was provided. Substitutes null items with a null-replacement value, if provided and is not null.
    * 
    * @throws NullPointerException An argument is null.

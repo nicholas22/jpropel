@@ -18,15 +18,17 @@
 // /////////////////////////////////////////////////////////
 package propel.core.common;
 
-// TODO: delete this when not in use any more
-public class NotImplementedException
+/**
+ * Exception signifying that a method has not been implemented yet
+ */
+public final class NotImplementedException
     extends RuntimeException
 {
   private static final long serialVersionUID = 4671314057021829168L;
 
   public NotImplementedException()
   {
-    super("TODO:");
+    super("Not implemented yet");
   }
 
   public NotImplementedException(String msg)

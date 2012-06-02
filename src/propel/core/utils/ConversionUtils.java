@@ -18,24 +18,30 @@
 // /////////////////////////////////////////////////////////
 package propel.core.utils;
 
-import lombok.Predicate;
-import lombok.Validate;
-import lombok.Validate.NotNull;
-import lombok.val;
-import propel.core.collections.maps.avl.AvlHashtable;
-import propel.core.common.CONSTANT;
-import propel.core.userTypes.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.Calendar;
+import java.util.Formatter;
 import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import lombok.Predicate;
+import lombok.Validate;
+import lombok.Validate.NotNull;
+import lombok.val;
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
+import propel.core.collections.maps.avl.AvlHashtable;
+import propel.core.common.CONSTANT;
+import propel.core.userTypes.Int128;
+import propel.core.userTypes.SignedByte;
+import propel.core.userTypes.UnsignedByte;
+import propel.core.userTypes.UnsignedInteger;
+import propel.core.userTypes.UnsignedLong;
+import propel.core.userTypes.UnsignedShort;
 
 /**
  * Class aiding in casting, encoding/decoding and converting
@@ -1422,63 +1428,121 @@ public final class ConversionUtils
     return _totalMinutes < key;
   }
 
+  /**
+   * Returns the value of the given number in a human-readable form. Example: 1000 becomes 1,000 (UK) or 1.000 (US).
+   */
+  public static String toHumanReadable(long number)
+  {
+    return new Formatter().format("%,d", number).toString();
+  }
+
+  /**
+   * Returns the value of the given number in a human-readable form. Example: 1000 becomes 1,000 (UK) or 1.000 (US).
+   */
+  public static String toHumanReadable(int number)
+  {
+    return new Formatter().format("%,d", number).toString();
+  }
+
+  /**
+   * Returns the value of the given number in a human-readable form. Example: 1000 becomes 1,000 (UK) or 1.000 (US).
+   */
+  public static String toHumanReadable(short number)
+  {
+    return new Formatter().format("%,d", number).toString();
+  }
+
+  /**
+   * Returns the value of the given number in a human-readable form. Example: 1000 becomes 1,000 (UK) or 1.000 (US).
+   */
+  public static String toHumanReadable(byte number)
+  {
+    return new Formatter().format("%,d", number).toString();
+  }
+
+  /**
+   * Returns the value of the given number in a human-readable form. Example: 1000 becomes 1,000 (UK) or 1.000 (US).
+   */
+  public static String toHumanReadable(float number)
+  {
+    return new Formatter().format("%,f", number).toString();
+  }
+
+  /**
+   * Returns the value of the given number in a human-readable form. Example: 1000 becomes 1,000 (UK) or 1.000 (US).
+   * 
+   * @throws IllegalArgumentException An argument was invalid
+   */
+  public static String toHumanReadable(float number, int decimalPlaces)
+  {
+    if (decimalPlaces < 0)
+      throw new IllegalArgumentException("decimalPlaces=" + decimalPlaces);
+
+    return new Formatter().format("%,." + decimalPlaces + "f", number).toString();
+  }
+
+  /**
+   * Returns the value of the given number in a human-readable form. Example: 1000 becomes 1,000 (UK) or 1.000 (US).
+   */
+  public static String toHumanReadable(double number)
+  {
+    return new Formatter().format("%,f", number).toString();
+  }
+
+  /**
+   * Returns the value of the given number in a human-readable form. Example: 1000 becomes 1,000 (UK) or 1.000 (US).
+   * 
+   * @throws IllegalArgumentException An argument was invalid
+   */
+  public static String toHumanReadable(double number, int decimalPlaces)
+  {
+    if (decimalPlaces < 0)
+      throw new IllegalArgumentException("decimalPlaces=" + decimalPlaces);
+
+    return new Formatter().format("%,." + decimalPlaces + "f", number).toString();
+  }
+
+  /**
+   * Returns the value of the given number in a human-readable form. Example: 1000 becomes 1,000 (UK) or 1.000 (US).
+   * 
+   * @throws NullPointerException An argument is null
+   */
+  @Validate
+  public static String toHumanReadable(@NotNull final BigDecimal number)
+  {
+    return new Formatter().format("%,f", number).toString();
+  }
+
+  /**
+   * Returns the value of the given number in a human-readable form. Example: 1000 becomes 1,000 (UK) or 1.000 (US).
+   * 
+   * @throws NullPointerException An argument is null
+   * @throws IllegalArgumentException An argument was invalid
+   */
+  @Validate
+  public static String toHumanReadable(@NotNull final BigDecimal number, int decimalPlaces)
+  {
+    return new Formatter().format("%,." + decimalPlaces + "f", number).toString();
+  }
+
+  // TODO: implement these
   /*
-   * // TODO: implement these /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000 becomes
-   * 1,000 (UK locale) or 1.000 (US). /// </summary> public static String ToHumanReadable(long number) { return number.ToString("N0"); }
-   * 
-   * /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000 becomes 1,000 (UK locale) or 1.000
-   * (US). /// </summary> public static String ToHumanReadable(int number) { return number.ToString("N0"); }
-   * 
-   * /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000 becomes 1,000 (UK locale) or 1.000
-   * (US). /// </summary> public static String ToHumanReadable(short number) { return number.ToString("N0"); }
-   * 
-   * /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000 becomes 1,000 (UK locale) or 1.000
-   * (US). /// </summary> public static String ToHumanReadable(ulong number) { return number.ToString("N0"); }
-   * 
-   * /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000 becomes 1,000 (UK locale) or 1.000
-   * (US). /// </summary> public static String ToHumanReadable(uint number) { return number.ToString("N0"); }
-   * 
-   * /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000 becomes 1,000 (UK locale) or 1.000
-   * (US). /// </summary> public static String ToHumanReadable(ushort number) { return number.ToString("N0"); }
-   * 
-   * /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000.00 becomes 1,000 (UK locale) or
-   * 1.000 (US). /// </summary> public static String ToHumanReadable(float number) { return number.ToString("N0"); }
-   * 
-   * /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000.00 becomes 1,000.00 (UK locale) or
-   * 1.000,00 (US) for 2 decimal places. /// </summary> public static String ToHumanReadable(float number, int decimalPlaces) { return
-   * number.ToString("N" + decimalPlaces); }
-   * 
-   * /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000.00 becomes 1,000 (UK locale) or
-   * 1.000 (US). /// </summary> public static String ToHumanReadable(double number) { return number.ToString("N0"); }
-   * 
-   * /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000.00 becomes 1,000.00 (UK locale) or
-   * 1.000,00 (US) for 2 decimal places. /// </summary> public static String ToHumanReadable(double number, int decimalPlaces) { return
-   * number.ToString("N" + decimalPlaces); }
-   * 
-   * /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000.00 becomes 1,000 (UK locale) or
-   * 1.000 (US). /// </summary> public static String ToHumanReadable(decimal number) { return number.ToString("N0"); }
-   * 
-   * /// <summary> /// Returns the value of the given number in a human-readable form. /// Example: 1000.00 becomes 1,000.00 (UK locale) or
-   * 1.000,00 (US) for 2 decimal places. /// </summary> public static String ToHumanReadable(decimal number, int decimalPlaces) { return
-   * number.ToString("N" + decimalPlaces); }
-   * 
    * /// <summary> /// Returns the date/time value in a human-readable and standard form, /// as specified by the given style selection.
    * Uses current thread locale. /// </summary> public static String ToHumanReadable(DateTime dateTime, DateTimeStyle style) { return
-   * ToHumanReadable(dateTime, style, CultureInfo.CurrentCulture); }
-   * 
-   * /// <summary> /// Returns the date/time value in a human-readable and standard form, /// as specified by the given style selection.
-   * Uses current specified locale. /// </summary> /// <exception cref="ArgumentException">Unrecognized date/time style used.</exception>
-   * public static String ToHumanReadable(DateTime dateTime, DateTimeStyle style, CultureInfo cultureInfo) { switch(style) { case
-   * DateTimeStyle.ShortDate: return dateTime.ToString("d", cultureInfo); case DateTimeStyle.LongDate: return dateTime.ToString("D",
-   * cultureInfo); case DateTimeStyle.FullDateShortTime: return dateTime.ToString("f", cultureInfo); case DateTimeStyle.FullDateLongTime:
-   * return dateTime.ToString("F", cultureInfo); case DateTimeStyle.GeneralDateShortTime: return dateTime.ToString("g", cultureInfo); case
-   * DateTimeStyle.GeneralDateLongTime: return dateTime.ToString("G", cultureInfo); case DateTimeStyle.MonthDay: return
-   * dateTime.ToString("m", cultureInfo); case DateTimeStyle.RoundTrip: return dateTime.ToString("o", cultureInfo); case
-   * DateTimeStyle.Rfc1123: return dateTime.ToString("r", cultureInfo); case DateTimeStyle.Sortable: return dateTime.ToString("s",
-   * cultureInfo); case DateTimeStyle.ShortTime: return dateTime.ToString("t", cultureInfo); case DateTimeStyle.LongTime: return
-   * dateTime.ToString("T", cultureInfo); case DateTimeStyle.UniversalSortable: return dateTime.ToString("u", cultureInfo); case
-   * DateTimeStyle.UniversalFull: return dateTime.ToString("U", cultureInfo); case DateTimeStyle.YearMonth: return dateTime.ToString("y",
-   * cultureInfo); default: throw new ArgumentException("Unrecognized date/time format: " + style); } }
+   * ToHumanReadable(dateTime, style, CultureInfo.CurrentCulture); } /// <summary> /// Returns the date/time value in a human-readable and
+   * standard form, /// as specified by the given style selection. Uses current specified locale. /// </summary> /// <exception
+   * cref="ArgumentException">Unrecognized date/time style used.</exception> public static String ToHumanReadable(DateTime dateTime,
+   * DateTimeStyle style, CultureInfo cultureInfo) { switch(style) { case DateTimeStyle.ShortDate: return dateTime.ToString("d",
+   * cultureInfo); case DateTimeStyle.LongDate: return dateTime.ToString("D", cultureInfo); case DateTimeStyle.FullDateShortTime: return
+   * dateTime.ToString("f", cultureInfo); case DateTimeStyle.FullDateLongTime: return dateTime.ToString("F", cultureInfo); case
+   * DateTimeStyle.GeneralDateShortTime: return dateTime.ToString("g", cultureInfo); case DateTimeStyle.GeneralDateLongTime: return
+   * dateTime.ToString("G", cultureInfo); case DateTimeStyle.MonthDay: return dateTime.ToString("m", cultureInfo); case
+   * DateTimeStyle.RoundTrip: return dateTime.ToString("o", cultureInfo); case DateTimeStyle.Rfc1123: return dateTime.ToString("r",
+   * cultureInfo); case DateTimeStyle.Sortable: return dateTime.ToString("s", cultureInfo); case DateTimeStyle.ShortTime: return
+   * dateTime.ToString("t", cultureInfo); case DateTimeStyle.LongTime: return dateTime.ToString("T", cultureInfo); case
+   * DateTimeStyle.UniversalSortable: return dateTime.ToString("u", cultureInfo); case DateTimeStyle.UniversalFull: return
+   * dateTime.ToString("U", cultureInfo); case DateTimeStyle.YearMonth: return dateTime.ToString("y", cultureInfo); default: throw new
+   * ArgumentException("Unrecognized date/time format: " + style); } }
    */
 
   // Text <-> Byte-array conversions

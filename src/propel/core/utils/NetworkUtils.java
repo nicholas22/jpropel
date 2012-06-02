@@ -23,10 +23,12 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 /**
- * Provides utility functionality for networking stuff TODO: implement
+ * Provides utility functionality for networking stuff 
  */
 public final class NetworkUtils
 {
+  // TODO: implement missing methods
+  
   private NetworkUtils()
   {
   }

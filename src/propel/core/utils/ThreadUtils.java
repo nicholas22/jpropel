@@ -40,10 +40,10 @@ public final class ThreadUtils
           Thread.sleep(value);
           break;
         case MICROSECONDS:
-          Thread.sleep(0, value * 1000);
+          TimeUnit.MICROSECONDS.sleep(value);
           break;
         case NANOSECONDS:
-          Thread.sleep(0, value);
+          TimeUnit.NANOSECONDS.sleep(value);
           break;
         default:
           throw new IllegalStateException("Unrecognised time unit: " + unit);
@@ -65,16 +65,16 @@ public final class ThreadUtils
       switch(unit)
       {
         case DAYS:
-          while (sw.getElapsedSeconds() < value * 1000 * 3600 * 24);
+          while (sw.getElapsedSeconds() < value * 3600 * 24);
           break;
         case HOURS:
-          while (sw.getElapsedSeconds() < value * 1000 * 3600);
+          while (sw.getElapsedSeconds() < value * 3600);
           break;
         case MINUTES:
-          while (sw.getElapsedSeconds() < value * 1000 * 60);
+          while (sw.getElapsedSeconds() < value * 60);
           break;
         case SECONDS:
-          while (sw.getElapsedSeconds() < value * 1000);
+          while (sw.getElapsedSeconds() < value);
           break;
         case MILLISECONDS:
           while (sw.getElapsedMillis() < value);
@@ -105,19 +105,19 @@ public final class ThreadUtils
       switch(unit)
       {
         case DAYS:
-          while (sw.getElapsedSeconds() < value * 1000 * 3600 * 24)
+          while (sw.getElapsedSeconds() < value * 3600 * 24)
             Thread.yield();
           break;
         case HOURS:
-          while (sw.getElapsedSeconds() < value * 1000 * 3600)
+          while (sw.getElapsedSeconds() < value * 3600)
             Thread.yield();
           break;
         case MINUTES:
-          while (sw.getElapsedSeconds() < value * 1000 * 60)
+          while (sw.getElapsedSeconds() < value * 60)
             Thread.yield();
           break;
         case SECONDS:
-          while (sw.getElapsedSeconds() < value * 1000)
+          while (sw.getElapsedSeconds() < value)
             Thread.yield();
           break;
         case MILLISECONDS:

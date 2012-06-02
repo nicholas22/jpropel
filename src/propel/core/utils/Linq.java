@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import lombok.Predicates.Predicate1;
+import lombok.Actions.Action1;
 import lombok.Functions.Function1;
 import lombok.Functions.Function2;
 import lombok.Validate;
@@ -45,6 +46,7 @@ import propel.core.collections.lists.ReifiedArrayList;
 import propel.core.collections.lists.ReifiedList;
 import propel.core.collections.maps.ReifiedMap;
 import propel.core.collections.maps.avl.AvlHashtable;
+import propel.core.common.CONSTANT;
 import propel.core.configuration.ConfigurableConsts;
 import propel.core.configuration.ConfigurableParameters;
 import propel.core.counters.ModuloCounter;
@@ -687,6 +689,88 @@ public final class Linq
   }
 
   /**
+   * Concatenates the given values using their toString() method and appending the given delimiter between all values. Returns String.Empty
+   * if an empty or null collection was provided. Ignores null collection items.
+   * 
+   * @throws NullPointerException An argument is null.
+   */
+  public static <T> String delimit(Iterable<T> values, String delimiter)
+  {
+    return delimit(values, delimiter, null);
+  }
+
+  /**
+   * Concatenates the given values using their ToString method and appending the given delimiter between all values. Returns String.Empty if
+   * an empty or null collection was provided. Substitutes null items with a null-replacement value, if provided and is not null.
+   * 
+   * @throws NullPointerException An argument is null.
+   */
+  @Validate
+  public static <T> String delimit(@NotNull final Iterable<T> values, @NotNull final String delimiter, String nullReplacementValue)
+  {
+    val sb = new StringBuilder(256);
+
+    for (T value : values)
+      if (value != null)
+      {
+        sb.append(value.toString());
+        sb.append(delimiter);
+      } else
+      // append null replacement
+      if (nullReplacementValue != null)
+      {
+        sb.append(nullReplacementValue);
+        sb.append(delimiter);
+      }
+
+    if (sb.length() > 0)
+      return sb.subSequence(0, sb.length() - delimiter.length()).toString();
+
+    return CONSTANT.EMPTY_STRING;
+  }
+
+  /**
+   * Concatenates the given values using their toString() method and appending the given delimiter between all values. Returns String.Empty
+   * if an empty or null collection was provided. Ignores null collection items.
+   * 
+   * @throws NullPointerException An argument is null.
+   */
+  public static <T> String delimit(T[] values, String delimiter)
+  {
+    return delimit(values, delimiter, null);
+  }
+
+  /**
+   * Concatenates the given values using their ToString method and appending the given delimiter between all values. Returns String.Empty if
+   * an empty or null collection was provided. Substitutes null items with a null-replacement value, if provided and is not null.
+   * 
+   * @throws NullPointerException An argument is null.
+   */
+  @Validate
+  public static <T> String delimit(@NotNull final T[] values, @NotNull final String delimiter, String nullReplacementValue)
+  {
+    val sb = new StringBuilder(256);
+
+    for (T value : values)
+      if (value != null)
+      {
+        sb.append(value.toString());
+        sb.append(delimiter);
+      } else
+      // append null replacement
+      if (nullReplacementValue != null)
+      {
+        sb.append(nullReplacementValue);
+        sb.append(delimiter);
+      }
+
+    if (sb.length() > 0)
+      return sb.subSequence(0, sb.length() - delimiter.length()).toString();
+
+    return CONSTANT.EMPTY_STRING;
+  }
+
+  /**
    * Returns distinct (i.e. no duplicate) elements from a sequence.
    * 
    * @throws NullPointerException When an argument is null.
@@ -1021,6 +1105,34 @@ public final class Linq
     }
 
     return null;
+  }
+
+  /**
+   * Executes an action against all elements, returning them
+   * 
+   * @throws NullPointerException When an argument is null.
+   */
+  @Validate
+  public static <T> T[] forAll(@NotNull final T[] values, @NotNull final Action1<T> action)
+  {
+    for (val value : values)
+      action.apply(value);
+
+    return values;
+  }
+
+  /**
+   * Executes an action against all elements, returning them
+   * 
+   * @throws NullPointerException When an argument is null.
+   */
+  @Validate
+  public static <T> Iterable<T> forAll(@NotNull final Iterable<T> values, @NotNull final Action1<T> action)
+  {
+    for (val value : values)
+      action.apply(value);
+
+    return values;
   }
 
   /**
@@ -1877,8 +1989,8 @@ public final class Linq
    * @throws NullPointerException When an argument is null.
    */
   @Validate
-  public static <TKey extends Comparable<TKey>, TResult> Iterable<TResult> orderBy(@NotNull final Iterable<TResult> values,
-                                                                                   @NotNull final Function1<? super TResult, TKey> keySelector)
+  public static <TKey extends Comparable<TKey>, TResult> Iterable<TResult>
+      orderBy(@NotNull final Iterable<TResult> values, @NotNull final Function1<? super TResult, TKey> keySelector)
   {
     return orderBy(values, keySelector, null);
   }
@@ -1889,9 +2001,9 @@ public final class Linq
    * @throws NullPointerException When the values or keySelector argument is null.
    */
   @Validate
-  public static <TKey extends Comparable<TKey>, TResult> ReifiedList<TResult> orderBy(@NotNull final Iterable<TResult> values,
-                                                                                      @NotNull final Function1<? super TResult, TKey> keySelector,
-                                                                                      final Comparator<? super TKey> comparer)
+  public static <TKey extends Comparable<TKey>, TResult> ReifiedList<TResult>
+      orderBy(@NotNull final Iterable<TResult> values, @NotNull final Function1<? super TResult, TKey> keySelector,
+              final Comparator<? super TKey> comparer)
   {
     TreeMap<TKey, List<TResult>> dict;
     if (comparer == null)
@@ -2116,7 +2228,8 @@ public final class Linq
    * @throws NullPointerException The values argument is null.
    */
   @Validate
-  public static <T> Pair<Iterable<T>, Iterable<T>> partition(@NotNull final Iterable<T> values, @NotNull final Predicate1<? super T> predicate)
+  public static <T> Pair<Iterable<T>, Iterable<T>> partition(@NotNull final Iterable<T> values,
+                                                             @NotNull final Predicate1<? super T> predicate)
   {
     val matching = new ArrayList<T>(DEFAULT_LIST_SIZE);
     val nonMatching = new ArrayList<T>(DEFAULT_LIST_SIZE);
@@ -3902,7 +4015,7 @@ public final class Linq
 
     return -1;
   }
-  
+
   private Linq()
   {
   }

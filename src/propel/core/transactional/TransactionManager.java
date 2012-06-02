@@ -128,8 +128,7 @@ public class TransactionManager
       }
       catch(Throwable e2)
       {
-        // LLTODO:
-        // PropelLog.error("Rollback failed to complete: " + e2);
+        // LLTODO: PropelLog.error("Rollback failed to complete: " + e2);
         throw new Throwable("Rollback failed to complete: " + ExceptionUtils.getMessages(e2, CONSTANT.ENVIRONMENT_NEWLINE)
             + CONSTANT.ENVIRONMENT_NEWLINE + "Original exception: ", e);
       }
