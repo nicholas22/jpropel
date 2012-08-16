@@ -4,7 +4,7 @@
   <artifactId>propel-core</artifactId>
   <packaging>jar</packaging>
   <name>propel</name>
-  <version>1.0.3</version>
+  <version>1.0.5</version>
   <description>The core project of the JPropel library</description>
   <url>https://github.com/nicholas22/jpropel</url>
   <licenses>
