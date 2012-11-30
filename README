@@ -1,6 +1,6 @@
 Description
 -------------
-Boilerplate busting framework with features found modern programming 
+Boilerplate busting framework with features found in many modern programming 
 environments, such as LINQ, reified collections and numerous one-liner
 type utility methods, e.g. loading a file into memory.
 
