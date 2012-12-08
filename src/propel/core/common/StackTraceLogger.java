@@ -45,7 +45,7 @@ public class StackTraceLogger
   {
     this(e, StackTraceLevel.FULL);
   }
-  
+
   /**
    * Constructor, initialises with a Throwable
    * 
@@ -146,7 +146,7 @@ public class StackTraceLogger
     if (lastIndex < 0 || lastIndex >= fullClassName.length())
       return fullClassName;
 
-    return fullClassName.substring(lastIndex+1);
+    return fullClassName.substring(lastIndex + 1);
   }
 
   /**
@@ -155,7 +155,7 @@ public class StackTraceLogger
   @Override
   public String toString()
   {
-    return stackTrace;
+    return StringUtils.trimEnd(stackTrace, CONSTANT.CRLF_CHARS);
   }
 
 }

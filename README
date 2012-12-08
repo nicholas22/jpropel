@@ -19,6 +19,15 @@ Highly recommended if you don't want extra dependencies in your libraries.
 
 Change logs
 ------------
+CHANGELOG 1.0.7
+- StringUtils faster replace with StringBuilder
+- FileUtils methods for checking if a file exists
+- ConversionUtils support for Period and DateTime
+- XmlUtils faster compaction
+- ArrayUtils copy helper method
+- Nullable method for NPE check
+- StackTraceLogger remove trailing CRLF chars
+
 CHANGELOG 1.0.6
 - ReifiedArrayList fix (thanks to Redudent!)
 - syntax in readme
