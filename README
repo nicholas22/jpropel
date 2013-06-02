@@ -23,6 +23,12 @@ CHANGELOG 1.0.8
 - Remove runtime dependency of lombok-pg
 - Library is now compile-time only dependent on lombok (the parent project)
 - Made it clearer that license is LGPL
+- Added Nullable check methods
+- Added Linq.toString for collections
+- Added ReflectionUtils.toString for POJOs
+- FileUtils.moveFile returns boolean
+- Linq toList optimisation (check instanceof List)
+- ExceptionUtils unchecked throw (as sneakyThrows replacement)
 
 CHANGELOG 1.0.7
 - StringUtils faster replace with StringBuilder
