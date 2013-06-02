@@ -1,9 +1,7 @@
 import static propel.core.functional.predicates.Strings.startsWith;
-import static propel.core.functional.predicates.Objects.println;
 import static propel.core.utils.Linq.where;
 import static propel.core.utils.Linq.distinct;
-import static propel.core.utils.Linq.toList;
-import static propel.core.utils.Linq.all;
+import propel.core.utils.Linq;
 import lombok.val;
 
 public class Main
@@ -15,7 +13,8 @@ public class Main
     val names = new String[] {"john", "james", "john", "eddie"};
     val jnames = where(names, startsWith("j"));
     val djnames = distinct(jnames);
-    all(toList(djnames), println());
+    
+    System.out.println(Linq.toString(djnames));
     
     // Note: if you get compilation errors, make sure you've patched your IDE with "lombok-pg"
     // Simply copy the lombok-pg-11.0.jar (from lib) to your $ECLIPSE_HOME and edit eclipse.ini, add the following at the end of the file:

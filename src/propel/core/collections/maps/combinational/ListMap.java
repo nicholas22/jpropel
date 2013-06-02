@@ -437,4 +437,12 @@ public class ListMap<TKey extends Comparable<TKey>, TValue>
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString()
+  {
+    return Linq.toString(this);
+  }
 }

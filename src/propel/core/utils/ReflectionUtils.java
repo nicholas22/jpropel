@@ -1508,6 +1508,65 @@ public final class ReflectionUtils
   }
 
   /**
+   * Returns a reflective toString() of the fields of this object
+   * 
+   * @throws SecurityException if cannot perform reflection operations in this context
+   * @throws IllegalAccessException if this Field object is enforcing Java language access control and the underlying field is inaccessible
+   * @throws IllegalArgumentException if the specified object is not an instance of the class or interface declaring the underlying field
+   *           (or a subclass or implementor thereof)
+   * @throws ExceptionInInitializerError if the initialization provoked by this method fails
+   */
+  public static String toString(final Object obj)
+      throws IllegalArgumentException, IllegalAccessException
+  {
+    return toString(obj, true);
+  }
+
+  /**
+   * Returns a reflective toString() of the fields of this object
+   * 
+   * @throws SecurityException if cannot perform reflection operations in this context
+   * @throws IllegalAccessException if this Field object is enforcing Java language access control and the underlying field is inaccessible
+   * @throws IllegalArgumentException if the specified object is not an instance of the class or interface declaring the underlying field
+   *           (or a subclass or implementor thereof)
+   * @throws ExceptionInInitializerError if the initialization provoked by this method fails
+   */
+  public static String toString(final Object obj, final boolean includeInherited)
+      throws IllegalArgumentException, IllegalAccessException
+  {
+    if (obj == null)
+      return "null";
+
+    StringBuilder result = new StringBuilder();
+    result.append(obj.getClass().getName());
+    result.append(" {");
+
+    // determine fields declared in this class only (no fields of superclass)
+    Field[] fields = getFields(obj.getClass(), includeInherited);
+    if (fields.length == 0)
+    {
+      result.append("}");
+      return result.toString();
+    }
+    {
+      // print field names paired with their values
+      for (Field field : fields)
+      {
+        result.append(field.getName());
+        result.append(": ");
+        field.setAccessible(true);
+        result.append(field.get(obj));
+        result.append(", ");
+      }
+
+      result.delete(result.length() - 2, result.length());
+      result.append("}");
+    }
+
+    return result.toString();
+  }
+
+  /**
    * Internal-use function, matches a method in the declared methods of a class, returning the method found in the class instead of the
    * method given. Returns null if the method is not found.
    * 

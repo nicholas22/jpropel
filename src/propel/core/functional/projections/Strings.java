@@ -256,6 +256,40 @@ public final class Strings
   }
 
   /**
+   * Returns a sub-string of the given string, using a start index from start
+   * 
+   * @throws NullPointerException An argument is null
+   * @throws IndexOutOfBoundsException The index or length is out of range
+   */
+  public static Function1<String, String> substringStart(final int _startIndex)
+  {
+    return new Function1<String, String>() {
+      @Override
+      public String apply(final String element)
+      {
+        return StringUtils.substring(element, _startIndex);
+      }
+    };
+  }
+
+  /**
+   * Returns a sub-string of the given string, using a start index from start
+   * 
+   * @throws NullPointerException An argument is null
+   * @throws IndexOutOfBoundsException The index or length is out of range
+   */
+  public static Function1<String, String> substringEnd(final int _length)
+  {
+    return new Function1<String, String>() {
+      @Override
+      public String apply(final String element)
+      {
+        return StringUtils.substring(element, element.length() - _length, _length);
+      }
+    };
+  }
+
+  /**
    * Returns a sub-string of the given string, using a start index and a length from start
    * 
    * @throws NullPointerException An argument is null

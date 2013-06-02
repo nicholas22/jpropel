@@ -384,4 +384,12 @@ public class AvlTreeList<TKey extends Comparable<TKey>, TValue>
     return list.size();
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString()
+  {
+    return Linq.toString(this);
+  }
 }

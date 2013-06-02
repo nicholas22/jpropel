@@ -21,6 +21,7 @@ package propel.core.collections.maps.data;
 import propel.core.collections.KeyValuePair;
 import propel.core.collections.lists.ReifiedArrayList;
 import propel.core.collections.lists.ReifiedList;
+import propel.core.utils.Linq;
 import propel.core.utils.SuperTypeToken;
 import propel.core.utils.SuperTypeTokenException;
 import java.util.Iterator;
@@ -167,4 +168,12 @@ public class MapData<TKey, TValue>
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString()
+  {
+    return Linq.toString(this);
+  }
 }

@@ -23,6 +23,7 @@ import static propel.core.functional.predicates.Iterables.isNotEmpty;
 import static lombok.Yield.yield;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -3295,6 +3296,9 @@ public final class Linq
   @Validate
   public static <T> List<T> toList(@NotNull final Iterable<? extends T> values)
   {
+    if (values instanceof List)
+      return (List<T>) values;
+
     val result = new ArrayList<T>(DEFAULT_LIST_SIZE);
     for (T item : values)
       result.add(item);
@@ -3333,6 +3337,34 @@ public final class Linq
   public static <T> ReifiedList<T> toList(@NotNull final T[] values)
   {
     return new ReifiedArrayList<T>(values);
+  }
+
+  /**
+   * Returns a toString() of the given collection
+   */
+  public static <T> String toString(final Iterable<T> iterable)
+  {
+    Iterator<T> i = iterable.iterator();
+    if (!i.hasNext())
+      return "[]";
+    StringBuilder sb = new StringBuilder();
+    sb.append('[');
+    for (;;)
+    {
+      T e = i.next();
+      sb.append(e == iterable ? "(this Collection)" : e);
+      if (!i.hasNext())
+        return sb.append(']').toString();
+      sb.append(", ");
+    }
+  }
+
+  /**
+   * Returns a toString() of the given array
+   */
+  public static <T> String toString(final T[] iterable)
+  {
+    return Arrays.toString(iterable);
   }
 
   /**
