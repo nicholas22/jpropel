@@ -4,7 +4,7 @@ Boilerplate busting framework with features found in many modern programming
 environments, such as LINQ, reified collections and numerous one-liner
 type utility methods, e.g. loading a file into memory.
 
-Open source, cross platform, cross culture, compatible with legacy 
+Open source (LGPL), cross platform, cross culture, compatible with legacy 
 environments (e.g. JDK 1.5) and single JAR deployment.
 
 
@@ -19,6 +19,11 @@ Highly recommended if you don't want extra dependencies in your libraries.
 
 Change logs
 ------------
+CHANGELOG 1.0.8
+- Remove runtime dependency of lombok-pg
+- Library is now compile-time only dependent on lombok (the parent project)
+- Made it clearer that license is LGPL
+
 CHANGELOG 1.0.7
 - StringUtils faster replace with StringBuilder
 - FileUtils methods for checking if a file exists

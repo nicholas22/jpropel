@@ -4,7 +4,7 @@
   <artifactId>propel-core</artifactId>
   <packaging>jar</packaging>
   <name>propel</name>
-  <version>1.0.6</version>
+  <version>1.0.8</version>
   <description>The core project of the JPropel library</description>
   <url>https://github.com/nicholas22/jpropel</url>
   <licenses>
@@ -28,9 +28,9 @@
   
   <dependencies>
     <dependency>
-      <groupId>com.github.peichhorn</groupId>
-      <artifactId>lombok-pg</artifactId>
-      <version>0.11.0</version>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>0.11.8</version>
     </dependency>
     <dependency>
       <groupId>joda-time</groupId>

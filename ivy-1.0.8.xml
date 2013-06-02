@@ -3,11 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
 	
-	<info organisation="nt" module="propel-core" revision="1.0.6" status="release" />
+	<info organisation="nt" module="propel-core" revision="1.0.8" status="release" />
 
 	<dependencies>
 		<dependency org="joda-time" name="joda-time" rev="1.6.2" />
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.4" />
-		<dependency org="com.github.peichhorn" name="lombok-pg" rev="0.11.0" />
+		<dependency org="org.projectlombok" name="lombok" rev="0.11.8" />
 	</dependencies>
 </ivy-module>
