@@ -18,6 +18,7 @@ propel.core.collections.volatiles
 propel.core.common
 propel.core.configuration
 propel.core.counters
+propel.core.functional
 propel.core.functional.closure
 propel.core.functional.predicates
 propel.core.functional.projections
